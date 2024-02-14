@@ -1,7 +1,8 @@
 package com.example.weather_app.data.source
 
-import com.example.weather_app.remote.model.RealtimeWeatherResponse
+import com.example.weather_app.data.model.CurrentWeatherEntity
+
 
 interface WeatherRemoteDataSource {
-    suspend fun fetchRealtimeWeather(): RealtimeWeatherResponse
+    suspend fun fetchRealtimeWeather(): CurrentWeatherEntity
 }

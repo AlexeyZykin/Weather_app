@@ -3,6 +3,12 @@ package com.example.weather_app.remote.koin
 import com.example.weather_app.data.source.WeatherRemoteDataSource
 import com.example.weather_app.remote.api.WeatherService
 import com.example.weather_app.remote.constants.ApiConstants
+import com.example.weather_app.remote.mapper.CoordinatesResponseMapper
+import com.example.weather_app.remote.mapper.CurrentWeatherResponseMapper
+import com.example.weather_app.remote.mapper.MainInfoResponseMapper
+import com.example.weather_app.remote.mapper.SysResponseMapper
+import com.example.weather_app.remote.mapper.WeatherResponseMapper
+import com.example.weather_app.remote.mapper.WindResponseMapper
 import com.example.weather_app.remote.source.WeatherRemoteDataSourceImpl
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -13,10 +19,16 @@ import retrofit2.converter.gson.GsonConverterFactory
 val remoteModule = module {
     single { provideRetrofit(get()) }
     single { provideWeatherService(get()) }
-    single<WeatherRemoteDataSource> { WeatherRemoteDataSourceImpl(get()) }
+    single<WeatherRemoteDataSource> { WeatherRemoteDataSourceImpl(get(), get()) }
     single { provideInterceptor() }
     single { provideOkHttpClient(get()) }
 
+    factory { CoordinatesResponseMapper() }
+    factory { CurrentWeatherResponseMapper(get(), get(), get(), get(), get()) }
+    factory { MainInfoResponseMapper() }
+    factory { SysResponseMapper() }
+    factory { WeatherResponseMapper() }
+    factory { WindResponseMapper() }
 }
 
 private fun provideRetrofit(client: OkHttpClient): Retrofit {
