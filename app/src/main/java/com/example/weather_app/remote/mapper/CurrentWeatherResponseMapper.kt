@@ -8,6 +8,7 @@ class CurrentWeatherResponseMapper(
     private val weatherResponseMapper: WeatherResponseMapper,
     private val mainInfoResponseMapper: MainInfoResponseMapper,
     private val windResponseMapper: WindResponseMapper,
+    private val cloudsResponseMapper: CloudsResponseMapper,
     private val sysResponseMapper: SysResponseMapper
 
 ) : Mapper<CurrentWeatherResponse, CurrentWeatherEntity> {
@@ -20,7 +21,9 @@ class CurrentWeatherResponseMapper(
             wind = windResponseMapper.mapFromResponse(data.wind),
             dt = data.dt,
             name = data.name,
-            sys = sysResponseMapper.mapFromResponse(data.sys)
+            sys = sysResponseMapper.mapFromResponse(data.sys),
+            visibility = data.visibility,
+            clouds = cloudsResponseMapper.mapFromResponse(data.clouds)
         )
     }
 
@@ -33,7 +36,9 @@ class CurrentWeatherResponseMapper(
             wind = windResponseMapper.mapToResponse(data.wind),
             dt = data.dt,
             name = data.name,
-            sys = sysResponseMapper.mapToResponse(data.sys)
+            sys = sysResponseMapper.mapToResponse(data.sys),
+            visibility = data.visibility,
+            clouds = cloudsResponseMapper.mapToResponse(data.clouds)
         )
     }
 

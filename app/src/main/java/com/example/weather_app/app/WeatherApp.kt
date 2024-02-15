@@ -1,6 +1,7 @@
 package com.example.weather_app.app
 
 import android.app.Application
+import androidx.appcompat.app.AppCompatDelegate
 import com.example.weather_app.app.koin.koinModules
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -16,5 +17,6 @@ class WeatherApp : Application() {
             androidContext(this@WeatherApp)
             modules(koinModules)
         }
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
     }
 }

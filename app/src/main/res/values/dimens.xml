@@ -18,5 +18,5 @@
     <dimen name="current_cardView_width">150dp</dimen>
     <dimen name="current_cardView_height">150dp</dimen>
     <dimen name="cardView_elevation">8dp</dimen>
-    <dimen name="cardView_corner_radius">12dp</dimen>
+    <dimen name="cardView_corner_radius">16dp</dimen>
 </resources>

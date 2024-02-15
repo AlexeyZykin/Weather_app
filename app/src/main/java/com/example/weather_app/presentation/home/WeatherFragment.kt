@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.weather_app.R
 import com.example.weather_app.databinding.FragmentWeatherBinding
-import com.example.weather_app.domain.model.Weather
 import com.example.weather_app.presentation.utils.DateTypeConverter
 import com.squareup.picasso.Picasso
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -37,23 +36,22 @@ class WeatherFragment : Fragment() {
             it?.let { currentWeather ->
                 val isNight = isNight(it.dt, it.sys.sunset)
                 weatherImageListener(it.weather.first().id, isNight)
-                binding.tvTemp.text =
-                    "${currentWeather.main.temp}${getString(R.string.metric_celsius)}"
+                Picasso.get()
+                    .load("https://openweathermap.org/img/wn/${it.weather.first().icon}@4x.png")
+                    .into(binding.iconWeather)
+                binding.tvTemp.text = "${currentWeather.main.temp}${getString(R.string.metric_celsius)}"
                 binding.tvRealtimeWeatherTitle.text = currentWeather.weather.first().main
                 binding.tvRealtimeWeatherDesc.text =
                     currentWeather.weather.first().description.replaceFirstChar {
                         if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString()
                     }
-                binding.tvUpdateTime.text =
-                    DateTypeConverter.convertUnixToDateString(currentWeather.dt)
-                binding.tvFeelsLike.text =
-                    "${currentWeather.main.feelsLike}${getString(R.string.metric_celsius)}"
-                binding.tvWindSpeed.text =
-                    "${currentWeather.wind.speed} ${getString(R.string.metric_wind_speed)}"
-                binding.tvHumidity.text =
-                    "${currentWeather.main.humidity} ${getString(R.string.metric_percent)}"
-                binding.tvPressure.text =
-                   "${currentWeather.main.pressure} ${getString(R.string.metric_pressure)}"
+                binding.tvUpdateTime.text = DateTypeConverter.convertUnixToDateString(currentWeather.dt)
+                binding.tvFeelsLike.text = "${currentWeather.main.feelsLike}${getString(R.string.metric_celsius)}"
+                binding.tvWindSpeed.text = "${currentWeather.wind.speed} ${getString(R.string.metric_wind_speed)}"
+                binding.tvHumidity.text = "${currentWeather.main.humidity} ${getString(R.string.metric_percent)}"
+                binding.tvPressure.text = "${currentWeather.main.pressure} ${getString(R.string.metric_pressure)}"
+                binding.tvClouds.text = "${currentWeather.clouds.all} ${getString(R.string.metric_percent)}"
+                binding.tvVisibility.text = "${currentWeather.visibility} ${getString(R.string.metric_visibility)}"
             }
         }
     }
@@ -64,7 +62,7 @@ class WeatherFragment : Fragment() {
 
     private fun weatherImageListener(state: Int, isNight: Boolean) {
         val imageUrl = if (isNight) {
-            when(state) {
+            when (state) {
                 in 200..202, in 230..232 -> R.drawable.image_thunder_rain
                 in 210..221 -> R.drawable.image_night_thunderstorm
                 in 300..311 -> R.drawable.image_drizzle
@@ -84,9 +82,8 @@ class WeatherFragment : Fragment() {
                 803, 804 -> R.drawable.image_night_overcast
                 else -> R.drawable.image_default
             }
-        }
-        else {
-            when(state) {
+        } else {
+            when (state) {
                 in 200..202, in 230..232 -> R.drawable.image_thunder_rain
                 in 210..221 -> R.drawable.image_day_thunderstorm
                 in 300..311 -> R.drawable.image_drizzle

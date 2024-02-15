@@ -8,6 +8,7 @@ class CurrentWeatherEntityMapper(
     private val weatherEntityMapper: WeatherEntityMapper,
     private val mainInfoEntityMapper: MainInfoEntityMapper,
     private val windEntityMapper: WindEntityMapper,
+    private val cloudsEntityMapper: CloudsEntityMapper,
     private val sysEntityMapper: SysEntityMapper
 ) : Mapper<CurrentWeatherEntity, CurrentWeather>{
     override fun mapFromEntity(data: CurrentWeatherEntity): CurrentWeather {
@@ -19,7 +20,9 @@ class CurrentWeatherEntityMapper(
             wind = windEntityMapper.mapFromEntity(data.wind),
             dt = data.dt,
             name = data.name,
-            sys = sysEntityMapper.mapFromEntity(data.sys)
+            sys = sysEntityMapper.mapFromEntity(data.sys),
+            visibility = data.visibility,
+            clouds = cloudsEntityMapper.mapFromEntity(data.clouds)
         )
     }
 
@@ -32,7 +35,9 @@ class CurrentWeatherEntityMapper(
             wind = windEntityMapper.mapToEntity(data.wind),
             dt = data.dt,
             name = data.name,
-            sys = sysEntityMapper.mapToEntity(data.sys)
+            sys = sysEntityMapper.mapToEntity(data.sys),
+            visibility = data.visibility,
+            clouds = cloudsEntityMapper.mapToEntity(data.clouds)
         )
     }
 }

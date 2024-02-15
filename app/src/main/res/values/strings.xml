@@ -9,5 +9,8 @@
     <string name="metric_wind_speed">m/s</string>
     <string name="metric_percent">%</string>
     <string name="metric_pressure">hPa</string>
+    <string name="metric_visibility">m</string>
+    <string name="clouds">Cloud cover</string>
+    <string name="visibility">Visibility</string>
 
 </resources>

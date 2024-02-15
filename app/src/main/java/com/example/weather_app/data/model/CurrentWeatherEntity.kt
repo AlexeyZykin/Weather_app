@@ -6,7 +6,9 @@ data class CurrentWeatherEntity(
     val coord: CoordinatesEntity,
     val weather: List<WeatherEntity>,
     val main: MainInfoEntity,
+    val visibility: Int,
     val wind: WindEntity,
+    val clouds: CloudsEntity,
     val dt: Long,
     val name: String,
     val sys: SysEntity

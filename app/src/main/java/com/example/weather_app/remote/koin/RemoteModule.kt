@@ -2,7 +2,8 @@ package com.example.weather_app.remote.koin
 
 import com.example.weather_app.data.source.WeatherRemoteDataSource
 import com.example.weather_app.remote.api.WeatherService
-import com.example.weather_app.remote.constants.ApiConstants
+import com.example.weather_app.core.Constants
+import com.example.weather_app.remote.mapper.CloudsResponseMapper
 import com.example.weather_app.remote.mapper.CoordinatesResponseMapper
 import com.example.weather_app.remote.mapper.CurrentWeatherResponseMapper
 import com.example.weather_app.remote.mapper.MainInfoResponseMapper
@@ -24,18 +25,19 @@ val remoteModule = module {
     single { provideOkHttpClient(get()) }
 
     factory { CoordinatesResponseMapper() }
-    factory { CurrentWeatherResponseMapper(get(), get(), get(), get(), get()) }
+    factory { CurrentWeatherResponseMapper(get(), get(), get(), get(), get(), get()) }
     factory { MainInfoResponseMapper() }
     factory { SysResponseMapper() }
     factory { WeatherResponseMapper() }
     factory { WindResponseMapper() }
+    factory { CloudsResponseMapper() }
 }
 
 private fun provideRetrofit(client: OkHttpClient): Retrofit {
     return Retrofit.Builder()
         .addConverterFactory(GsonConverterFactory.create())
         .client(client)
-        .baseUrl(ApiConstants.BASE_URL_WEATHER_API)
+        .baseUrl(Constants.BASE_URL_WEATHER_API)
         .build()
 }
 

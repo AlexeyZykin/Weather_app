@@ -5,7 +5,9 @@ data class CurrentWeather(
     val coord: Coordinates,
     val weather: List<Weather>,
     val main: MainInfo,
+    val visibility: Int,
     val wind: Wind,
+    val clouds: Clouds,
     val dt: Long,
     val name: String,
     val sys: Sys

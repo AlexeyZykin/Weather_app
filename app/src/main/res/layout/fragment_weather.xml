@@ -54,8 +54,9 @@
             <LinearLayout
                 android:id="@+id/linear_layout_mainInfo"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toTopOf="@+id/linear_layout_weather_desc">
 
                 <TextView
                     android:id="@+id/tvTemp"
@@ -73,37 +74,49 @@
                     android:textSize="@dimen/medium_text_size" />
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/tvRealtimeWeatherDesc"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/linear_layout_weather_desc"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/standard_margin"
-                android:layout_marginTop="@dimen/medium_margin"
-                android:padding="@dimen/standard_padding"
-                android:textSize="@dimen/standard_text_size"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linear_layout_mainInfo" />
+                app:layout_constraintTop_toBottomOf="@+id/linear_layout_mainInfo">
 
-            <TextView
-                android:id="@+id/tvUpdateTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/medium_margin"
-                android:padding="@dimen/standard_padding"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linear_layout_mainInfo" />
+                <ImageView
+                    android:id="@+id/iconWeather"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginStart="@dimen/standard_margin" />
+
+                <TextView
+                    android:id="@+id/tvRealtimeWeatherDesc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/medium_margin"
+                    android:padding="@dimen/standard_padding"
+                    android:textSize="@dimen/standard_text_size" />
+            </LinearLayout>
+
 
             <TextView
                 android:id="@+id/labelCurrentWeather"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/standard_margin"
+                android:layout_marginStart="@dimen/medium_margin"
                 android:layout_marginTop="@dimen/medium_margin"
-                android:padding="@dimen/standard_padding"
                 android:text="@string/current_weather"
                 android:textSize="@dimen/title_text_size"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvUpdateTime" />
+                app:layout_constraintTop_toBottomOf="@+id/linear_layout_weather_desc" />
+
+            <TextView
+                android:id="@+id/tvUpdateTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/standard_margin"
+                android:padding="@dimen/standard_padding"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/labelCurrentWeather" />
+
 
             <androidx.cardview.widget.CardView
                 android:layout_width="@dimen/current_cardView_width"
@@ -113,7 +126,7 @@
                 app:cardCornerRadius="@dimen/cardView_corner_radius"
                 app:cardElevation="@dimen/cardView_elevation"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/labelCurrentWeather">
+                app:layout_constraintTop_toBottomOf="@+id/tvUpdateTime">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -155,7 +168,7 @@
                 app:cardCornerRadius="@dimen/cardView_corner_radius"
                 app:cardElevation="@dimen/cardView_elevation"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/labelCurrentWeather">
+                app:layout_constraintTop_toBottomOf="@+id/tvUpdateTime">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -230,6 +243,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/cardViewPressure"
                 android:layout_width="@dimen/current_cardView_width"
                 android:layout_height="@dimen/current_cardView_height"
                 android:layout_marginTop="@dimen/medium_margin"
@@ -261,6 +275,88 @@
 
                     <TextView
                         android:id="@+id/tvPressure"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/standard_margin"
+                        android:textSize="@dimen/medium_text_size" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="@dimen/current_cardView_width"
+                android:layout_height="@dimen/current_cardView_height"
+                android:layout_marginStart="@dimen/medium_margin"
+                android:layout_marginTop="@dimen/medium_margin"
+                app:cardCornerRadius="@dimen/cardView_corner_radius"
+                app:cardElevation="@dimen/cardView_elevation"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cardViewPressure">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/standard_margin"
+                        android:src="@drawable/ic_cloud" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/standard_margin"
+                        android:text="@string/clouds"
+                        android:textSize="@dimen/standard_text_size" />
+
+                    <TextView
+                        android:id="@+id/tvClouds"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/standard_margin"
+                        android:textSize="@dimen/medium_text_size" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="@dimen/current_cardView_width"
+                android:layout_height="@dimen/current_cardView_height"
+                android:layout_marginTop="@dimen/medium_margin"
+                android:layout_marginEnd="@dimen/medium_margin"
+                app:cardCornerRadius="@dimen/cardView_corner_radius"
+                app:cardElevation="@dimen/cardView_elevation"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cardViewPressure">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/standard_margin"
+                        android:src="@drawable/ic_visibility" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/standard_margin"
+                        android:text="@string/visibility"
+                        android:textSize="@dimen/standard_text_size" />
+
+                    <TextView
+                        android:id="@+id/tvVisibility"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
