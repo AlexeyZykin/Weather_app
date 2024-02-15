@@ -21,15 +21,15 @@
             android:layout_height="wrap_content"
             app:expandedTitleMarginBottom="48dp"
             app:layout_scrollFlags="scroll|snap|exitUntilCollapsed"
-            app:title="Weather Today"
-            >
+            app:title="Weather Today">
 
             <ImageView
+                android:id="@+id/imageWeather"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/main_image_height"
                 android:fitsSystemWindows="true"
                 android:scaleType="centerCrop"
-                android:src="@drawable/image_sunset"
+                android:src="@drawable/image_default"
                 app:layout_collapseMode="parallax" />
 
             <Toolbar
