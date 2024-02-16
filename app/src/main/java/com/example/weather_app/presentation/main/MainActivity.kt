@@ -9,7 +9,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import com.example.weather_app.R
 import com.example.weather_app.databinding.ActivityMainBinding
-import com.example.weather_app.presentation.home.WeatherFragment
+import com.example.weather_app.presentation.features.home.WeatherFragment
 
 
 class MainActivity : AppCompatActivity() {

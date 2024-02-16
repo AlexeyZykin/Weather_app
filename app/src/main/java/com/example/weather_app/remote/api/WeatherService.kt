@@ -1,6 +1,8 @@
 package com.example.weather_app.remote.api
 
 import com.example.weather_app.core.Constants
+import com.example.weather_app.core.Response
+
 import com.example.weather_app.remote.model.CurrentWeatherResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
