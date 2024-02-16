@@ -15,7 +15,7 @@ class CurrentWeatherUiMapper(
         return CurrentWeather(
             id = data.id,
             coord = coordinatesUiMapper.mapFromUi(data.coord),
-            weather = data.weather.map { weatherUiMapper.mapFromUi(it) },
+            weather = weatherUiMapper.mapFromUi(data.weather),
             main = mainInfoUiMapper.mapFromUi(data.main),
             visibility = data.visibility,
             wind = windUiMapper.mapFromUi(data.wind),
@@ -30,7 +30,7 @@ class CurrentWeatherUiMapper(
         return CurrentWeatherUi(
             id = data.id,
             coord = coordinatesUiMapper.mapToUi(data.coord),
-            weather = data.weather.map { weatherUiMapper.mapToUi(it) },
+            weather = weatherUiMapper.mapToUi(data.weather),
             main = mainInfoUiMapper.mapToUi(data.main),
             visibility = data.visibility,
             wind = windUiMapper.mapToUi(data.wind),

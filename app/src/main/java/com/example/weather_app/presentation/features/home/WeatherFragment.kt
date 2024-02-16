@@ -63,14 +63,14 @@ class WeatherFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     private fun updateUi(currentWeather: CurrentWeatherUi) {
         val isNight = isNight(currentWeather.dt, currentWeather.sys.sunrise, currentWeather.sys.sunset)
-        weatherImageListener(currentWeather.weather.first().id, isNight)
+        weatherImageListener(currentWeather.weather.id, isNight)
         Picasso.get()
-            .load("https://openweathermap.org/img/wn/${currentWeather.weather.first().icon}@4x.png")
+            .load("https://openweathermap.org/img/wn/${currentWeather.weather.icon}@4x.png")
             .into(binding.iconWeather)
         binding.tvTemp.text = "${currentWeather.main.temp}${getString(R.string.metric_celsius)}"
-        binding.tvRealtimeWeatherTitle.text = currentWeather.weather.first().main
+        binding.tvRealtimeWeatherTitle.text = currentWeather.weather.main
         binding.tvRealtimeWeatherDesc.text =
-            currentWeather.weather.first().description.replaceFirstChar {
+            currentWeather.weather.description.replaceFirstChar {
                 if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString()
             }
         binding.tvUpdateTime.text = DateTypeConverter.convertUnixToDateString(currentWeather.dt)

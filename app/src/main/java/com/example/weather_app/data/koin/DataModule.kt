@@ -13,8 +13,7 @@ import com.example.weather_app.domain.repository.WeatherRepository
 import org.koin.dsl.module
 
 val dataModule = module {
-    single<WeatherRepository> { WeatherRepositoryImpl(get(), get()) }
-
+    single<WeatherRepository> { WeatherRepositoryImpl(get(), get(), get()) }
     factory { CoordinatesEntityMapper() }
     factory { CurrentWeatherEntityMapper(get(), get(), get(), get(), get(), get()) }
     factory { MainInfoEntityMapper() }

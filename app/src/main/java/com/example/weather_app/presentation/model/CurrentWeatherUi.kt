@@ -10,7 +10,7 @@ import com.example.weather_app.domain.model.Wind
 data class CurrentWeatherUi(
     val id: Int,
     val coord: CoordinatesUi,
-    val weather: List<WeatherUi>,
+    val weather: WeatherUi,
     val main: MainInfoUi,
     val visibility: Int,
     val wind: WindUi,

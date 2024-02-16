@@ -15,7 +15,7 @@ class CurrentWeatherEntityMapper(
         return CurrentWeather(
             id = data.id,
             coord = coordinatesEntityMapper.mapFromEntity(data.coord),
-            weather = data.weather.map { weatherEntityMapper.mapFromEntity(it) },
+            weather = weatherEntityMapper.mapFromEntity(data.weather),
             main = mainInfoEntityMapper.mapFromEntity(data.main),
             wind = windEntityMapper.mapFromEntity(data.wind),
             dt = data.dt,
@@ -30,7 +30,7 @@ class CurrentWeatherEntityMapper(
         return CurrentWeatherEntity(
             id = data.id,
             coord = coordinatesEntityMapper.mapToEntity(data.coord),
-            weather = data.weather.map { weatherEntityMapper.mapToEntity(it) },
+            weather = weatherEntityMapper.mapToEntity(data.weather),
             main = mainInfoEntityMapper.mapToEntity(data.main),
             wind = windEntityMapper.mapToEntity(data.wind),
             dt = data.dt,

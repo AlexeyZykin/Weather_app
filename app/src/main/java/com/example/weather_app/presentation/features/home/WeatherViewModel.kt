@@ -22,9 +22,6 @@ class WeatherViewModel(
 ) : ViewModel() {
     private val _currentWeather = MutableLiveData<CurrentWeatherUiState>()
     val currentWeather: LiveData<CurrentWeatherUiState> get() = _currentWeather
-    private val coroutineExceptionHandler = CoroutineExceptionHandler { _, exception ->
-        _currentWeather.postValue(CurrentWeatherUiState.Error(exception.message ?: "Error"))
-    }
 
     init {
         fetchRealtimeWeather()
@@ -47,15 +44,5 @@ class WeatherViewModel(
             }
         }
     }
-
-
-//    fun fetchRealtimeWeather() = viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
-//        _currentWeather.postValue(CurrentWeatherUiState.Loading)
-//        fetchRealtimeWeatherUseCase.invoke().distinctUntilChanged().collect { currentWeather ->
-//            _currentWeather.postValue(
-//                CurrentWeatherUiState.Success(currentWeatherUiMapper.mapToUi(currentWeather))
-//            )
-//        }
-//    }
 
 }

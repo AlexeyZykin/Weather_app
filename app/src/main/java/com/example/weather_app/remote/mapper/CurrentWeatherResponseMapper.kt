@@ -16,7 +16,7 @@ class CurrentWeatherResponseMapper(
         return CurrentWeatherEntity(
             id = data.id,
             coord = coordinatesResponseMapper.mapFromResponse(data.coord),
-            weather = data.weather.map { weatherResponseMapper.mapFromResponse(it) },
+            weather = data.weather.map { weatherResponseMapper.mapFromResponse(it) }.first(),
             main = mainInfoResponseMapper.mapFromResponse(data.main),
             wind = windResponseMapper.mapFromResponse(data.wind),
             dt = data.dt,
@@ -31,7 +31,7 @@ class CurrentWeatherResponseMapper(
         return CurrentWeatherResponse(
             id = data.id,
             coord = coordinatesResponseMapper.mapToResponse(data.coord),
-            weather = data.weather.map { weatherResponseMapper.mapToResponse(it) },
+            weather = listOf(weatherResponseMapper.mapToResponse(data.weather)),
             main = mainInfoResponseMapper.mapToResponse(data.main),
             wind = windResponseMapper.mapToResponse(data.wind),
             dt = data.dt,
