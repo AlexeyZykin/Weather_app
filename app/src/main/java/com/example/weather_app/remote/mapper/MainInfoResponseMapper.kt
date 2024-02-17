@@ -21,5 +21,4 @@ class MainInfoResponseMapper : Mapper<MainInfoResponse, MainInfoEntity> {
             humidity = data.humidity
         )
     }
-
 }

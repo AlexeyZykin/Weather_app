@@ -21,5 +21,4 @@ class MainInfoEntityMapper : Mapper<MainInfoEntity, MainInfo> {
             humidity = data.humidity
         )
     }
-
 }

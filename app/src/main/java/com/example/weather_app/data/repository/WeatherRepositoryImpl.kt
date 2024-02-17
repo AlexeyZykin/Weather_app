@@ -40,6 +40,5 @@ class WeatherRepositoryImpl(
                         weatherCacheDataSource.getCurrentWeatherFromCache())))
             emit(Response.Loading(false))
         }
-
     }
 }

@@ -11,7 +11,9 @@ import androidx.appcompat.app.AlertDialog
 import com.example.weather_app.R
 import com.example.weather_app.databinding.FragmentWeatherBinding
 import com.example.weather_app.presentation.model.CurrentWeatherUi
+import com.example.weather_app.presentation.model.WeatherType
 import com.example.weather_app.presentation.utils.DateTypeConverter
+import com.example.weather_app.presentation.utils.imageRes
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.flow.combine
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -51,7 +53,7 @@ class WeatherFragment : Fragment() {
 
                 is CurrentWeatherUiState.Success -> {
                     alertDialog.cancel()
-                    updateUi(state.data)
+                    updateView(state.data)
                 }
 
                 is CurrentWeatherUiState.Error ->
@@ -61,9 +63,8 @@ class WeatherFragment : Fragment() {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun updateUi(currentWeather: CurrentWeatherUi) {
-        val isNight = isNight(currentWeather.dt, currentWeather.sys.sunrise, currentWeather.sys.sunset)
-        weatherImageListener(currentWeather.weather.id, isNight)
+    private fun updateView(currentWeather: CurrentWeatherUi) {
+        weatherImageListener(currentWeather)
         Picasso.get()
             .load("https://openweathermap.org/img/wn/${currentWeather.weather.icon}@4x.png")
             .into(binding.iconWeather)
@@ -92,53 +93,9 @@ class WeatherFragment : Fragment() {
         return dt !in (sunrise ..<sunset)
     }
 
-    private fun weatherImageListener(state: Int, isNight: Boolean) {
-        val imageUrl = if (isNight) {
-            when (state) {
-                in 200..202, in 230..232 -> R.drawable.image_thunder_rain
-                in 210..221 -> R.drawable.image_night_thunderstorm
-                in 300..311 -> R.drawable.image_drizzle
-                in 312..321 -> R.drawable.image_night_heavy_drizzle
-                in 500..501 -> R.drawable.image_night_light_rain
-                in 502..511 -> R.drawable.image_night_rain
-                //in 520..531 -> heavy rain
-                in 600..601 -> R.drawable.image_night_light_snow
-                in 602..611 -> R.drawable.image_night_heavy_snow
-                in 612..622 -> R.drawable.image_snow_with_rain
-                701, 711, 741 -> R.drawable.image_night_mist
-                721 -> R.drawable.image_night_haze
-                781 -> R.drawable.image_tornado
-                800 -> R.drawable.image_night_clear
-                801 -> R.drawable.image_night_few_clouds
-                802 -> R.drawable.image_night_clouds
-                803, 804 -> R.drawable.image_night_overcast
-                else -> R.drawable.image_default
-            }
-        } else {
-            when (state) {
-                in 200..202, in 230..232 -> R.drawable.image_thunder_rain
-                in 210..221 -> R.drawable.image_day_thunderstorm
-                in 300..311 -> R.drawable.image_drizzle
-                in 312..321 -> R.drawable.image_day_heavy_drizzle
-                in 500..501 -> R.drawable.image_day_light_rain
-                in 502..511 -> R.drawable.image_day_rain
-                in 520..531 -> R.drawable.image_day_heavy_rain
-                in 600..601 -> R.drawable.image_day_snow
-                in 602..611 -> R.drawable.image_day_heavy_snow
-                in 612..622 -> R.drawable.image_snow_with_rain
-                701, 711 -> R.drawable.image_day_mist
-                721 -> R.drawable.image_day_haze
-                741 -> R.drawable.image_day_fog
-                781 -> R.drawable.image_tornado
-                800 -> R.drawable.image_day_clear
-                801 -> R.drawable.image_day_few_clouds
-                802 -> R.drawable.image_day_clouds
-                803 -> R.drawable.image_day_broken_clouds
-                804 -> R.drawable.image_day_overcast
-                else -> R.drawable.image_default
-            }
-        }
-        Picasso.get().load(imageUrl).into(binding.imageWeather)
+    private fun weatherImageListener(weather: CurrentWeatherUi) {
+        val isNight = isNight(weather.dt, weather.sys.sunrise, weather.sys.sunset)
+        val imageRes = weather.weatherType.imageRes(isNight)
+        Picasso.get().load(imageRes).into(binding.imageWeather)
     }
-
 }

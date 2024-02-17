@@ -11,6 +11,7 @@ data class CurrentWeatherUi(
     val id: Int,
     val coord: CoordinatesUi,
     val weather: WeatherUi,
+    val weatherType: WeatherType,
     val main: MainInfoUi,
     val visibility: Int,
     val wind: WindUi,
