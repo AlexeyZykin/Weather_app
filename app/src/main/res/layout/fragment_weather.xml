@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+git<?xml version="1.0" encoding="utf-8"?>
 <androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 app:expandedTitleMarginBottom="48dp"
                 app:layout_scrollFlags="scroll|snap|exitUntilCollapsed"
-                app:title="Weather Today">
+                >
 
                 <ImageView
                     android:id="@+id/imageWeather"

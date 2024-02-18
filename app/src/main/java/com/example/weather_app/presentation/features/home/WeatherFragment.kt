@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.Geocoder
 import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
@@ -87,8 +88,8 @@ class WeatherFragment : Fragment() {
         Picasso.get()
             .load("https://openweathermap.org/img/wn/${currentWeather.weather.icon}@4x.png")
             .into(binding.iconWeather)
+        getCityName(currentWeather.coord.lat, currentWeather.coord.lon)
         binding.imgSwipeDown.visibility = View.GONE
-        binding.collapsingToolbar.title = currentWeather.name
         binding.tvTemp.text = "${currentWeather.main.temp}${getString(R.string.metric_celsius)}"
         binding.tvRealtimeWeatherTitle.text = currentWeather.weather.main
         binding.tvRealtimeWeatherDesc.text =
@@ -118,6 +119,15 @@ class WeatherFragment : Fragment() {
         val isNight = isNight(weather.dt, weather.sys.sunrise, weather.sys.sunset)
         val imageRes = weather.weatherType.imageRes(isNight)
         Picasso.get().load(imageRes).into(binding.imageWeather)
+    }
+
+    private fun getCityName(lat: Double, long: Double) {
+        val cityName: String?
+        //todo("change geocoder language")
+        val geoCoder = Geocoder(requireContext(), Locale("en"))
+        val address = geoCoder.getFromLocation(lat, long, 3)
+        cityName = address?.get(0)?.locality
+        cityName?.let { binding.collapsingToolbar.title = cityName }
     }
 
     private fun checkLocationPermission(): Boolean {
