@@ -1,6 +1,5 @@
 package com.example.weather_app.presentation.mapper
 
-import com.example.weather_app.R
 import com.example.weather_app.domain.model.CurrentWeather
 import com.example.weather_app.presentation.model.CurrentWeatherUi
 import com.example.weather_app.presentation.model.WeatherType

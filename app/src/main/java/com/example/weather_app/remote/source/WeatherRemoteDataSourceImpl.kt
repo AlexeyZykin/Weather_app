@@ -9,7 +9,7 @@ class WeatherRemoteDataSourceImpl(
     private val weatherService: WeatherService,
     private val currentWeatherResponseMapper: CurrentWeatherResponseMapper
     ) : WeatherRemoteDataSource {
-    override suspend fun fetchRealtimeWeather(): CurrentWeatherEntity {
-        return currentWeatherResponseMapper.mapFromResponse(weatherService.getRealtimeWeather())
+    override suspend fun fetchRealtimeWeather(lat: Double, lon: Double): CurrentWeatherEntity {
+        return currentWeatherResponseMapper.mapFromResponse(weatherService.getRealtimeWeather(lat = lat, lon = lon))
     }
 }

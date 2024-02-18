@@ -17,14 +17,14 @@ class WeatherRepositoryImpl(
     private val weatherCacheDataSource: WeatherCacheDataSource,
     private val currentWeatherEntityMapper: CurrentWeatherEntityMapper
 ) : WeatherRepository {
-    override suspend fun fetchRealtimeWeather(): Flow<Response<CurrentWeather>> = flow {
+    override suspend fun fetchRealtimeWeather(lat: Double, lon: Double): Flow<Response<CurrentWeather>> = flow {
         emit(Response.Loading(isLoading = true))
         if (weatherCacheDataSource.isCached())
             emit(Response.Success(currentWeatherEntityMapper.mapFromEntity(
                 weatherCacheDataSource.getCurrentWeatherFromCache())))
 
         val response = try {
-            weatherRemoteDataSource.fetchRealtimeWeather()
+            weatherRemoteDataSource.fetchRealtimeWeather(lat, lon)
         } catch (e: Exception) {
             emit(Response.Error("No network available, please check your WiFi or Data connection"))
             null
