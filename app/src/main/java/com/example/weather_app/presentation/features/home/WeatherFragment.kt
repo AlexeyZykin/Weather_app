@@ -10,7 +10,6 @@ import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -21,6 +20,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import com.example.weather_app.R
+import com.example.weather_app.data.model.ForecastItemEntity
 import com.example.weather_app.databinding.FragmentWeatherBinding
 import com.example.weather_app.presentation.dialog.PermissionDialog
 import com.example.weather_app.presentation.model.CurrentWeatherUi
@@ -36,6 +36,7 @@ class WeatherFragment : Fragment() {
     private lateinit var binding: FragmentWeatherBinding
     private lateinit var pLauncher: ActivityResultLauncher<String>
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var adapter: DailyForecastAdapter
     private val viewModel by viewModel<WeatherViewModel>()
     private val alertDialog: AlertDialog by lazy {
         AlertDialog.Builder(requireContext()).create()
@@ -52,8 +53,9 @@ class WeatherFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
+        initRecyclerView()
         permissionListener()
-        subscribeObserver()
+        subscribeObservers()
         getWeatherByCurrentLocation()
         binding.swipeRefresh.setOnRefreshListener {
             getWeatherByCurrentLocation()
@@ -65,8 +67,12 @@ class WeatherFragment : Fragment() {
         }
     }
 
+   private fun initRecyclerView() {
+//        adapter = DailyForecastAdapter(this@WeatherFragment)
+//        binding.rvDailyForecast.adapter = adapter
+    }
 
-    private fun subscribeObserver() {
+    private fun subscribeObservers() {
         viewModel.currentWeather.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is CurrentWeatherUiState.Loading -> alertDialog.show()
@@ -80,6 +86,11 @@ class WeatherFragment : Fragment() {
                     Toast.makeText(requireActivity(), state.msg, Toast.LENGTH_LONG).show()
             }
         }
+//        viewModel.forecastWeather.observe(viewLifecycleOwner) {
+//            it?.let {
+//                adapter.map(it)
+//            }
+//        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -120,6 +131,7 @@ class WeatherFragment : Fragment() {
         val imageRes = weather.weatherType.imageRes(isNight)
         Picasso.get().load(imageRes).into(binding.imageWeather)
     }
+
 
     private fun getCityName(lat: Double, long: Double) {
         val cityName: String?
@@ -193,6 +205,7 @@ class WeatherFragment : Fragment() {
             val location = task.result
             if (location != null) {
                 viewModel.fetchRealtimeWeather(task.result.latitude, task.result.longitude)
+                //viewModel.fetchForecast(task.result.latitude, task.result.longitude)
             }
         }
     }

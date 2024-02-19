@@ -3,6 +3,7 @@ package com.example.weather_app.data.repository
 import android.util.Log
 import com.example.weather_app.core.Response
 import com.example.weather_app.data.mapper.CurrentWeatherEntityMapper
+import com.example.weather_app.data.model.ForecastWeatherEntity
 import com.example.weather_app.data.source.WeatherCacheDataSource
 import com.example.weather_app.data.source.WeatherRemoteDataSource
 import com.example.weather_app.domain.model.CurrentWeather
@@ -38,6 +39,31 @@ class WeatherRepositoryImpl(
             emit(Response.Success(
                     currentWeatherEntityMapper.mapFromEntity(
                         weatherCacheDataSource.getCurrentWeatherFromCache())))
+            emit(Response.Loading(false))
+        }
+    }
+
+    override suspend fun fetchForecast(
+        lat: Double,
+        lon: Double
+    ): Flow<Response<ForecastWeatherEntity>> = flow {
+        emit(Response.Loading(isLoading = true))
+        val response = try {
+            weatherRemoteDataSource.fetchForecast(lat, lon)
+        } catch (e: Exception) {
+            emit(Response.Error("No network available, please check your WiFi or Data connection"))
+            null
+        } catch (e: UnknownHostException) {
+            emit(Response.Error(e.message ?: "Error"))
+            null
+        }
+        if (response != null) {
+            //weatherCacheDataSource.clearCache()
+            //weatherCacheDataSource.addForecastToCache(response)
+            emit(Response.Success(weatherRemoteDataSource.fetchForecast(lat, lon)))
+//            emit(Response.Success(
+//                currentWeatherEntityMapper.mapFromEntity(
+//                    weatherCacheDataSource.getCurrentWeatherFromCache())))
             emit(Response.Loading(false))
         }
     }

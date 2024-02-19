@@ -1,0 +1,12 @@
+package com.example.weather_app.domain.usecase
+
+import com.example.weather_app.core.Response
+import com.example.weather_app.data.model.ForecastWeatherEntity
+import com.example.weather_app.domain.repository.WeatherRepository
+import kotlinx.coroutines.flow.Flow
+
+class FetchForecastUseCase(private val weatherRepository: WeatherRepository) {
+    suspend fun invoke(lat: Double, lon: Double): Flow<Response<ForecastWeatherEntity>> {
+        return weatherRepository.fetchForecast(lat, lon)
+    }
+}
