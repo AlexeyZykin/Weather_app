@@ -1,0 +1,92 @@
+package com.example.weather_app.presentation.features.home
+
+import android.content.Context
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.bumptech.glide.Glide
+import com.example.weather_app.R
+import com.example.weather_app.presentation.model.ForecastItemUi
+import com.example.weather_app.presentation.model.ForecastWeatherUi
+import com.example.weather_app.presentation.utils.DateTypeConverter
+import com.example.weather_app.presentation.utils.iconRes
+import com.example.weather_app.presentation.utils.imageRes
+import com.squareup.picasso.Picasso
+
+class HourlyForecastAdapter(
+    private val clickListener: ClickListener) :
+    RecyclerView.Adapter<HourlyForecastAdapter.ForecastViewHolder>(), Mapper<ForecastWeatherUi> {
+    private val list = mutableListOf<ForecastItemUi>()
+
+
+    class ForecastViewHolder(view: View) : ViewHolder(view) {
+        private val tvTime = view.findViewById<TextView>(R.id.tvHourlyForecastTime)
+        private val icon = view.findViewById<ImageView>(R.id.icHourlyForecastWeather)
+        private val tvTemp = view.findViewById<TextView>(R.id.tvHourlyForecastTemp)
+
+        fun bind(forecastItem: ForecastItemUi, clickListener: ClickListener) {
+            tvTime.text = DateTypeConverter.convertUnixToHour(forecastItem.dt)
+            val iconRes = forecastItem.weatherType.iconRes(forecastItem.partOfDay)
+            Log.d("AAA", iconRes.toString())
+//            Picasso.get()
+//                .load(R.drawable.ic_feels_like)
+//                .into(icon)
+            Glide.with(icon.context).load(iconRes).centerCrop().into(icon)
+            tvTemp.text = forecastItem.mainInfo.temp.toString() + "°c"
+        }
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ForecastViewHolder {
+        return ForecastViewHolder(
+            LayoutInflater.from(parent.context).inflate(
+                R.layout.item_hourly_forecast,
+                parent,
+                false
+            )
+        )
+    }
+
+    override fun getItemCount() = list.size
+
+    override fun onBindViewHolder(holder: ForecastViewHolder, position: Int) {
+        holder.bind(list[position], clickListener)
+    }
+
+
+    override fun map(source: ForecastWeatherUi) {
+        val newList = source.forecastList.take(8)
+        val diff = DiffUtil(list, newList)
+        val result = androidx.recyclerview.widget.DiffUtil.calculateDiff(diff)
+        list.clear()
+        list.addAll(newList)
+        result.dispatchUpdatesTo(this)
+    }
+
+    interface ClickListener {
+        fun onClick(forecastItem: ForecastItemUi)
+    }
+
+    class DiffUtil(
+        private val oldList: List<ForecastItemUi>,
+        private val newList: List<ForecastItemUi>
+    ) : androidx.recyclerview.widget.DiffUtil.Callback() {
+        override fun getOldListSize() = oldList.size
+
+
+        override fun getNewListSize() = newList.size
+
+
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition].dt == newList[newItemPosition].dt
+        }
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition] == newList[newItemPosition]
+        }
+    }
+}

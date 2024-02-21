@@ -13,8 +13,8 @@ class ForecastItemResponseMapper(
     override fun mapFromResponse(data: ForecastItemResponse): ForecastItemEntity {
         return ForecastItemEntity(
             dt = data.dt,
-            mainInfo = mainInfoResponseMapper.mapFromResponse(data.mainInfo),
-            weather = weatherResponseMapper.mapFromResponse(data.weather),
+            mainInfo = mainInfoResponseMapper.mapFromResponse(data.main),
+            weather = data.weather.map { weatherResponseMapper.mapFromResponse(it) }.first(),
             visibility = data.visibility,
             pop = data.pop,
             clouds = cloudsResponseMapper.mapFromResponse(data.clouds),
@@ -27,8 +27,8 @@ class ForecastItemResponseMapper(
     override fun mapToResponse(data: ForecastItemEntity): ForecastItemResponse {
         return ForecastItemResponse(
             dt = data.dt,
-            mainInfo = mainInfoResponseMapper.mapToResponse(data.mainInfo),
-            weather = weatherResponseMapper.mapToResponse(data.weather),
+            main = mainInfoResponseMapper.mapToResponse(data.mainInfo),
+            weather = listOf(weatherResponseMapper.mapToResponse(data.weather)),
             visibility = data.visibility,
             pop = data.pop,
             clouds = cloudsResponseMapper.mapToResponse(data.clouds),

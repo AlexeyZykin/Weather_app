@@ -19,12 +19,16 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.example.weather_app.R
 import com.example.weather_app.data.model.ForecastItemEntity
 import com.example.weather_app.databinding.FragmentWeatherBinding
 import com.example.weather_app.presentation.dialog.PermissionDialog
 import com.example.weather_app.presentation.model.CurrentWeatherUi
+import com.example.weather_app.presentation.model.ForecastItemUi
 import com.example.weather_app.presentation.utils.DateTypeConverter
+import com.example.weather_app.presentation.utils.iconRes
 import com.example.weather_app.presentation.utils.imageRes
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -32,11 +36,11 @@ import com.squareup.picasso.Picasso
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.Locale
 
-class WeatherFragment : Fragment() {
+class WeatherFragment : Fragment(), HourlyForecastAdapter.ClickListener {
     private lateinit var binding: FragmentWeatherBinding
     private lateinit var pLauncher: ActivityResultLauncher<String>
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private lateinit var adapter: DailyForecastAdapter
+    private lateinit var adapter: HourlyForecastAdapter
     private val viewModel by viewModel<WeatherViewModel>()
     private val alertDialog: AlertDialog by lazy {
         AlertDialog.Builder(requireContext()).create()
@@ -68,8 +72,9 @@ class WeatherFragment : Fragment() {
     }
 
    private fun initRecyclerView() {
-//        adapter = DailyForecastAdapter(this@WeatherFragment)
-//        binding.rvDailyForecast.adapter = adapter
+        adapter = HourlyForecastAdapter(this@WeatherFragment)
+        binding.rvHourlyForecast.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.rvHourlyForecast.adapter = adapter
     }
 
     private fun subscribeObservers() {
@@ -86,19 +91,24 @@ class WeatherFragment : Fragment() {
                     Toast.makeText(requireActivity(), state.msg, Toast.LENGTH_LONG).show()
             }
         }
-//        viewModel.forecastWeather.observe(viewLifecycleOwner) {
-//            it?.let {
-//                adapter.map(it)
-//            }
-//        }
+        viewModel.forecastWeather.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is ForecastUiState.Loading -> alertDialog.show()
+
+                is ForecastUiState.Success -> {
+                    alertDialog.cancel()
+                    adapter.map(state.data)
+                }
+
+                is ForecastUiState.Error ->
+                    Toast.makeText(requireActivity(), state.msg, Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
     @SuppressLint("SetTextI18n")
     private fun updateView(currentWeather: CurrentWeatherUi) {
         weatherImageListener(currentWeather)
-        Picasso.get()
-            .load("https://openweathermap.org/img/wn/${currentWeather.weather.icon}@4x.png")
-            .into(binding.iconWeather)
         getCityName(currentWeather.coord.lat, currentWeather.coord.lon)
         binding.imgSwipeDown.visibility = View.GONE
         binding.tvTemp.text = "${currentWeather.main.temp}${getString(R.string.metric_celsius)}"
@@ -129,7 +139,11 @@ class WeatherFragment : Fragment() {
     private fun weatherImageListener(weather: CurrentWeatherUi) {
         val isNight = isNight(weather.dt, weather.sys.sunrise, weather.sys.sunset)
         val imageRes = weather.weatherType.imageRes(isNight)
-        Picasso.get().load(imageRes).into(binding.imageWeather)
+        Glide.with(requireContext()).load(imageRes).into(binding.imageWeather)
+
+        val partOfDay = if (isNight) "n" else "d"
+        val iconRes = weather.weatherType.iconRes(partOfDay)
+        Glide.with(requireContext()).load(iconRes).into(binding.iconWeather)
     }
 
 
@@ -205,9 +219,13 @@ class WeatherFragment : Fragment() {
             val location = task.result
             if (location != null) {
                 viewModel.fetchRealtimeWeather(task.result.latitude, task.result.longitude)
-                //viewModel.fetchForecast(task.result.latitude, task.result.longitude)
+                viewModel.fetchForecast(task.result.latitude, task.result.longitude)
             }
         }
+    }
+
+    override fun onClick(forecastItem: ForecastItemUi) {
+        TODO("Not yet implemented")
     }
 
 }

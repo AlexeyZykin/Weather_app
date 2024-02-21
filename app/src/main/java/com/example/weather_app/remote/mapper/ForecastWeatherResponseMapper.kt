@@ -10,7 +10,7 @@ class ForecastWeatherResponseMapper(
     override fun mapFromResponse(data: ForecastWeatherResponse): ForecastWeatherEntity {
         return ForecastWeatherEntity(
             cnt = data.cnt,
-            forecastList = data.forecastList.map { forecastItemResponseMapper.mapFromResponse(it) },
+            forecastList = data.list.map { forecastItemResponseMapper.mapFromResponse(it) },
             city = cityResponseMapper.mapFromResponse(data.city)
         )
     }
@@ -18,7 +18,7 @@ class ForecastWeatherResponseMapper(
     override fun mapToResponse(data: ForecastWeatherEntity): ForecastWeatherResponse {
         return ForecastWeatherResponse(
             cnt = data.cnt,
-            forecastList = data.forecastList.map { forecastItemResponseMapper.mapToResponse(it) },
+            list = data.forecastList.map { forecastItemResponseMapper.mapToResponse(it) },
             city = cityResponseMapper.mapToResponse(data.city)
         )
     }

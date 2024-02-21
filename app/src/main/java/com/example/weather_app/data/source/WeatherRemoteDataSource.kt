@@ -8,3 +8,6 @@ interface WeatherRemoteDataSource {
     suspend fun fetchRealtimeWeather(lat: Double, lon: Double): CurrentWeatherEntity
     suspend fun fetchForecast(lat: Double, lon: Double): ForecastWeatherEntity
 }
+
+
+

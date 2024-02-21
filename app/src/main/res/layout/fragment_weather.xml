@@ -96,8 +96,8 @@
 
                     <ImageView
                         android:id="@+id/iconWeather"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="@dimen/icon_weather_size"
+                        android:layout_height="@dimen/icon_weather_size"
                         android:layout_gravity="bottom"
                         android:layout_marginStart="@dimen/standard_margin" />
 
@@ -381,7 +381,30 @@
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
+                <TextView
+                    android:id="@+id/tvLabelForecast"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/medium_margin"
+                    android:layout_marginTop="@dimen/medium_margin"
+                    android:text="@string/forecast"
+                    android:textSize="@dimen/title_text_size"
+                    app:layout_constraintTop_toBottomOf="@+id/cardViewClouds"
+                    app:layout_constraintStart_toStartOf="parent"
+                    />
 
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvHourlyForecast"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/standard_margin"
+                    app:layout_constraintTop_toBottomOf="@+id/tvLabelForecast" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvDailyForecast"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_constraintTop_toBottomOf="@+id/rvHourlyForecast" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

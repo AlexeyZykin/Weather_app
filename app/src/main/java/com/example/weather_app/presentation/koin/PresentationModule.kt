@@ -1,9 +1,12 @@
 package com.example.weather_app.presentation.koin
 
 import com.example.weather_app.presentation.features.home.WeatherViewModel
+import com.example.weather_app.presentation.mapper.CityUiMapper
 import com.example.weather_app.presentation.mapper.CloudsUiMapper
 import com.example.weather_app.presentation.mapper.CoordinatesUiMapper
 import com.example.weather_app.presentation.mapper.CurrentWeatherUiMapper
+import com.example.weather_app.presentation.mapper.ForecastItemUiMapper
+import com.example.weather_app.presentation.mapper.ForecastWeatherUiMapper
 import com.example.weather_app.presentation.mapper.MainInfoUiMapper
 import com.example.weather_app.presentation.mapper.SysUiMapper
 import com.example.weather_app.presentation.mapper.WeatherUiMapper
@@ -12,7 +15,7 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val presentationModule = module {
-    viewModel { WeatherViewModel(get(), get(), get()) }
+    viewModel { WeatherViewModel(get(), get(), get(), get()) }
     factory { CloudsUiMapper() }
     factory { CoordinatesUiMapper() }
     factory { CurrentWeatherUiMapper(get(), get(), get(), get(), get(), get()) }
@@ -20,4 +23,7 @@ val presentationModule = module {
     factory { SysUiMapper() }
     factory { WeatherUiMapper() }
     factory { WindUiMapper() }
+    factory { CityUiMapper(get()) }
+    factory { ForecastItemUiMapper(get(), get(), get(), get()) }
+    factory { ForecastWeatherUiMapper(get(), get()) }
 }
