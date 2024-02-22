@@ -1,8 +1,10 @@
 package com.example.weather_app.cache.room.model
 
+import androidx.room.ColumnInfo
+
 data class MainInfoCache(
-    val temp: Int,
-    val feelsLike: Int,
-    val pressure: Int,
-    val humidity: Int
+    @ColumnInfo("temp") val temp: Int,
+    @ColumnInfo("feelsLike") val feelsLike: Int,
+    @ColumnInfo("pressure") val pressure: Int,
+    @ColumnInfo("humidity") val humidity: Int
 )

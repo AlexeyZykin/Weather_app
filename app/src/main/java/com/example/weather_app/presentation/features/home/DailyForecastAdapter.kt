@@ -62,7 +62,7 @@ class DailyForecastAdapter(
     }
 
     interface ClickListener {
-        fun onClick(forecastItem: ForecastItemUi)
+        fun onClickDailyForecast(forecastItem: ForecastItemUi)
     }
 
     class DiffUtil(

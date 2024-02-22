@@ -22,7 +22,7 @@ class WeatherRepositoryImpl(
 ) : WeatherRepository {
     override suspend fun fetchRealtimeWeather(lat: Double, lon: Double): Flow<Response<CurrentWeather>> = flow {
         emit(Response.Loading(isLoading = true))
-        if (weatherCacheDataSource.isCached())
+        if (weatherCacheDataSource.isCachedCurrentWeather())
             emit(Response.Success(currentWeatherEntityMapper.mapFromEntity(
                 weatherCacheDataSource.getCurrentWeatherFromCache())))
 
@@ -36,7 +36,7 @@ class WeatherRepositoryImpl(
             null
         }
         if (response != null) {
-            weatherCacheDataSource.clearCache()
+            weatherCacheDataSource.clearCacheCurrentWeather()
             weatherCacheDataSource.addCurrentWeatherToCache(response)
             emit(Response.Success(
                     currentWeatherEntityMapper.mapFromEntity(
@@ -50,6 +50,10 @@ class WeatherRepositoryImpl(
         lon: Double
     ): Flow<Response<ForecastWeather>> = flow {
         emit(Response.Loading(isLoading = true))
+        if (weatherCacheDataSource.isCachedForecast())
+            emit(Response.Success(forecastWeatherEntityMapper.mapFromEntity(
+                weatherCacheDataSource.getForecastWeatherFromCache())))
+
         val response = try {
             weatherRemoteDataSource.fetchForecast(lat, lon)
         } catch (e: Exception) {
@@ -57,15 +61,12 @@ class WeatherRepositoryImpl(
             null
         }
 
-        Log.d("forecast", response.toString())
-
         if (response != null) {
-            //weatherCacheDataSource.clearCache()
-            //weatherCacheDataSource.addForecastToCache(response)
-            emit(Response.Success(forecastWeatherEntityMapper.mapFromEntity(response)))
-//            emit(Response.Success(
-//                currentWeatherEntityMapper.mapFromEntity(
-//                    weatherCacheDataSource.getCurrentWeatherFromCache())))
+            weatherCacheDataSource.clearCacheForecastWeather()
+            weatherCacheDataSource.addForecastWeatherToCache(response)
+            emit(Response.Success(
+                forecastWeatherEntityMapper.mapFromEntity(
+                    weatherCacheDataSource.getForecastWeatherFromCache())))
             emit(Response.Loading(false))
         }
     }

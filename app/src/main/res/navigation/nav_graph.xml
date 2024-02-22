@@ -8,6 +8,21 @@
     <fragment
         android:id="@+id/weatherFragment"
         android:name="com.example.weather_app.presentation.features.home.WeatherFragment"
-        android:label="fragment_weather"
-        tools:layout="@layout/fragment_weather" />
+        tools:layout="@layout/fragment_weather" >
+        <action
+            android:id="@+id/action_weatherFragment_to_hourlyForecastDetailsFragment"
+            app:destination="@id/hourlyForecastDetailsFragment"
+            app:enterAnim="@anim/push_left_in"
+            app:exitAnim="@anim/push_left_out"
+            app:popEnterAnim="@anim/push_right_in"
+            app:popExitAnim="@anim/push_right_out" />
+    </fragment>
+    <fragment
+        android:id="@+id/hourlyForecastDetailsFragment"
+        android:name="com.example.weather_app.presentation.features.details.HourlyForecastDetailsFragment"
+        tools:layout="@layout/fragment_hourly_forecast_details" >
+        <argument
+            android:name="dt"
+            app:argType="long" />
+    </fragment>
 </navigation>

@@ -7,6 +7,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.weather_app.R
 import com.example.weather_app.databinding.ActivityMainBinding
 import com.example.weather_app.presentation.features.home.WeatherFragment

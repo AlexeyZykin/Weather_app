@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
@@ -23,12 +24,14 @@ class HourlyForecastAdapter(
         private val tvTime = view.findViewById<TextView>(R.id.tvHourlyForecastTime)
         private val icon = view.findViewById<ImageView>(R.id.icHourlyForecastWeather)
         private val tvTemp = view.findViewById<TextView>(R.id.tvHourlyForecastTemp)
+        private val card = view.findViewById<CardView>(R.id.cvHourlyForecast)
 
         fun bind(forecastItem: ForecastItemUi, clickListener: ClickListener) {
             tvTime.text = DateTypeConverter.convertUnixToHour(forecastItem.dt)
             val iconRes = forecastItem.weatherType.iconRes(forecastItem.partOfDay)
             Glide.with(icon.context).load(iconRes).centerCrop().into(icon)
             tvTemp.text = forecastItem.mainInfo.temp.toString() + "°c"
+            card.setOnClickListener { clickListener.onClickHourlyForecast(forecastItem) }
         }
     }
 
@@ -58,7 +61,7 @@ class HourlyForecastAdapter(
     }
 
     interface ClickListener {
-        fun onClick(forecastItem: ForecastItemUi)
+        fun onClickHourlyForecast(forecastItem: ForecastItemUi)
     }
 
     class DiffUtil(

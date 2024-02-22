@@ -18,7 +18,11 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.weather_app.R
@@ -38,13 +42,14 @@ class WeatherFragment : Fragment(), HourlyForecastAdapter.ClickListener, DailyFo
     private lateinit var binding: FragmentWeatherBinding
     private lateinit var pLauncher: ActivityResultLauncher<String>
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private val viewModel by viewModel<WeatherViewModel>()
+    private var isToolbarExpanded = true
     private val hourlyForecastAdapter: HourlyForecastAdapter by lazy {
         HourlyForecastAdapter(this@WeatherFragment)
     }
     private val dailyForecastAdapter: DailyForecastAdapter by lazy {
         DailyForecastAdapter(this@WeatherFragment)
     }
-    private val viewModel by viewModel<WeatherViewModel>()
     private val alertDialog: AlertDialog by lazy {
         AlertDialog.Builder(requireContext()).create()
     }
@@ -59,11 +64,16 @@ class WeatherFragment : Fragment(), HourlyForecastAdapter.ClickListener, DailyFo
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.toolbar.setupWithNavController(findNavController())
+        binding.appBarLayout.setExpanded(isToolbarExpanded)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
         initRecyclerView()
         permissionListener()
         subscribeObservers()
         getWeatherByCurrentLocation()
+        savedInstanceState?.let {
+            isToolbarExpanded = it.getBoolean(KEY_TOOLBAR_EXPANDED, true)
+        }
         binding.swipeRefresh.setOnRefreshListener {
             getWeatherByCurrentLocation()
             binding.swipeRefresh.isRefreshing = false
@@ -72,6 +82,11 @@ class WeatherFragment : Fragment(), HourlyForecastAdapter.ClickListener, DailyFo
             val isExpanded = verticalOffset == 0
             binding.swipeRefresh.isEnabled = isExpanded
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBoolean(KEY_TOOLBAR_EXPANDED, isToolbarExpanded)
     }
 
    private fun initRecyclerView() {
@@ -97,10 +112,10 @@ class WeatherFragment : Fragment(), HourlyForecastAdapter.ClickListener, DailyFo
         }
         viewModel.hourlyForecast.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is ForecastUiState.Loading -> alertDialog.show()
+                is ForecastUiState.Loading -> {}//alertDialog.show()
 
                 is ForecastUiState.Success -> {
-                    alertDialog.cancel()
+                    //alertDialog.cancel()
                     hourlyForecastAdapter.map(state.data)
                 }
 
@@ -238,8 +253,19 @@ class WeatherFragment : Fragment(), HourlyForecastAdapter.ClickListener, DailyFo
         }
     }
 
-    override fun onClick(forecastItem: ForecastItemUi) {
+    override fun onClickDailyForecast(forecastItem: ForecastItemUi) {
         TODO("Not yet implemented")
+    }
+
+    override fun onClickHourlyForecast(forecastItem: ForecastItemUi) {
+        val action = WeatherFragmentDirections.actionWeatherFragmentToHourlyForecastDetailsFragment(forecastItem.dt)
+        findNavController().navigate(action)
+        isToolbarExpanded = false
+    }
+
+
+    companion object {
+        const val KEY_TOOLBAR_EXPANDED = "key_toolbar_expanded"
     }
 
 }

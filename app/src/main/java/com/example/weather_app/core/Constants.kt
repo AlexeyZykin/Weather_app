@@ -5,4 +5,5 @@ object Constants {
     const val UNIT_MEASURE = "metric"
     const val ROOM_DATABASE_NAME = "weather.db"
     const val ROOM_CURRENT_WEATHER_TABLE_NAME = "current_weather"
+    const val ROOM_FORECAST_WEATHER_TABLE_NAME = "forecast_weather"
 }

@@ -8,22 +8,14 @@ import com.example.weather_app.core.Constants
 
 @Entity(tableName = Constants.ROOM_CURRENT_WEATHER_TABLE_NAME)
 data class CurrentWeatherCache(
-    @PrimaryKey(autoGenerate = false)
-    val id: Int,
-    @Embedded
-    val coord: CoordinatesCache,
-    @Embedded
-    val weather: WeatherCache,
-    @Embedded
-    val main: MainInfoCache,
-    val visibility: Int,
-    @Embedded
-    val wind: WindCache,
-    @Embedded
-    val clouds: CloudsCache,
-    val dt: Long,
-    @ColumnInfo("city_name")
-    val name: String,
-    @Embedded
-    val sys: SysCache
+    @PrimaryKey(autoGenerate = false) val id: Int,
+    @Embedded val coord: CoordinatesCache,
+    @Embedded val weather: WeatherCache,
+    @Embedded val main: MainInfoCache,
+    @ColumnInfo("visibility") val visibility: Int,
+    @Embedded val wind: WindCache,
+    @Embedded val clouds: CloudsCache,
+    @ColumnInfo("dt")val dt: Long,
+    @ColumnInfo("city_name") val name: String,
+    @Embedded val sys: SysCache
 )
