@@ -19,10 +19,12 @@
     <dimen name="current_cardView_height">150dp</dimen>
     <dimen name="cardView_elevation">8dp</dimen>
     <dimen name="cardView_corner_radius">16dp</dimen>
+    <dimen name="cardView_large_corner_radius">32dp</dimen>
 
     <dimen name="layout_corner_radius">70dp</dimen>
     <dimen name="medium_padding">12dp</dimen>
     <dimen name="hourly_forecast_card_width">150dp</dimen>
     <dimen name="hourly_forecast_card_height">200dp</dimen>
     <dimen name="icon_weather_size">64dp</dimen>
+    <dimen name="icon_weather_medium_size">48dp</dimen>
 </resources>

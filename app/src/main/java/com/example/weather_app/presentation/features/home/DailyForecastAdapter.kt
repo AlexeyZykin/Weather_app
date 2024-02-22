@@ -6,28 +6,32 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
 import com.example.weather_app.R
 import com.example.weather_app.presentation.model.ForecastItemUi
 import com.example.weather_app.presentation.utils.DateTypeConverter
 import com.example.weather_app.presentation.utils.iconRes
 
-class HourlyForecastAdapter(
-    private val clickListener: ClickListener) :
-    RecyclerView.Adapter<HourlyForecastAdapter.ForecastViewHolder>(), Mapper<List<ForecastItemUi>> {
+class DailyForecastAdapter(
+    private val clickListener: ClickListener
+) :
+    RecyclerView.Adapter<DailyForecastAdapter.ForecastViewHolder>(), Mapper<List<ForecastItemUi>> {
     private val list = mutableListOf<ForecastItemUi>()
 
 
-    class ForecastViewHolder(view: View) : ViewHolder(view) {
-        private val tvTime = view.findViewById<TextView>(R.id.tvHourlyForecastTime)
-        private val icon = view.findViewById<ImageView>(R.id.icHourlyForecastWeather)
-        private val tvTemp = view.findViewById<TextView>(R.id.tvHourlyForecastTemp)
+    class ForecastViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        private val tvDayOfWeek = view.findViewById<TextView>(R.id.tvDayOfWeek)
+        private val icon = view.findViewById<ImageView>(R.id.icDailyForecastWeather)
+        private val tvTemp = view.findViewById<TextView>(R.id.tvDailyForecastTempDay)
 
         fun bind(forecastItem: ForecastItemUi, clickListener: ClickListener) {
-            tvTime.text = DateTypeConverter.convertUnixToHour(forecastItem.dt)
+            val context = tvDayOfWeek.context
+            if (DateTypeConverter.convertUnixToDate(forecastItem.dt) == DateTypeConverter.currentDate())
+                tvDayOfWeek.text = context.getString(R.string.today)
+            else
+                tvDayOfWeek.text = DateTypeConverter.convertUnixToDayOfWeek(forecastItem.dt)
             val iconRes = forecastItem.weatherType.iconRes(forecastItem.partOfDay)
-            Glide.with(icon.context).load(iconRes).centerCrop().into(icon)
+            Glide.with(context).load(iconRes).centerCrop().into(icon)
             tvTemp.text = forecastItem.mainInfo.temp.toString() + "°c"
         }
     }
@@ -35,7 +39,7 @@ class HourlyForecastAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ForecastViewHolder {
         return ForecastViewHolder(
             LayoutInflater.from(parent.context).inflate(
-                R.layout.item_hourly_forecast,
+                R.layout.item_daily_forecast,
                 parent,
                 false
             )

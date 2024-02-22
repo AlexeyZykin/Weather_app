@@ -19,5 +19,6 @@
     <string name="permission_foreground_location_message">"You do not have the necessary permissions for the application to work correctly. You should go to the application settings. "</string>
     <string name="permission_foreground_location_positive">OK</string>
     <string name="forecast">Weather forecast</string>
+    <string name="today">Today</string>
 
 </resources>

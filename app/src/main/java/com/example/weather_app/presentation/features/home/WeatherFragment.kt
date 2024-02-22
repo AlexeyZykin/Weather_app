@@ -22,7 +22,6 @@ import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.weather_app.R
-import com.example.weather_app.data.model.ForecastItemEntity
 import com.example.weather_app.databinding.FragmentWeatherBinding
 import com.example.weather_app.presentation.dialog.PermissionDialog
 import com.example.weather_app.presentation.model.CurrentWeatherUi
@@ -32,15 +31,19 @@ import com.example.weather_app.presentation.utils.iconRes
 import com.example.weather_app.presentation.utils.imageRes
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.squareup.picasso.Picasso
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.Locale
 
-class WeatherFragment : Fragment(), HourlyForecastAdapter.ClickListener {
+class WeatherFragment : Fragment(), HourlyForecastAdapter.ClickListener, DailyForecastAdapter.ClickListener {
     private lateinit var binding: FragmentWeatherBinding
     private lateinit var pLauncher: ActivityResultLauncher<String>
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private lateinit var adapter: HourlyForecastAdapter
+    private val hourlyForecastAdapter: HourlyForecastAdapter by lazy {
+        HourlyForecastAdapter(this@WeatherFragment)
+    }
+    private val dailyForecastAdapter: DailyForecastAdapter by lazy {
+        DailyForecastAdapter(this@WeatherFragment)
+    }
     private val viewModel by viewModel<WeatherViewModel>()
     private val alertDialog: AlertDialog by lazy {
         AlertDialog.Builder(requireContext()).create()
@@ -72,9 +75,10 @@ class WeatherFragment : Fragment(), HourlyForecastAdapter.ClickListener {
     }
 
    private fun initRecyclerView() {
-        adapter = HourlyForecastAdapter(this@WeatherFragment)
-        binding.rvHourlyForecast.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        binding.rvHourlyForecast.adapter = adapter
+       binding.rvDailyForecast.layoutManager = LinearLayoutManager(requireContext())
+       binding.rvDailyForecast.adapter = dailyForecastAdapter
+       binding.rvHourlyForecast.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+       binding.rvHourlyForecast.adapter = hourlyForecastAdapter
     }
 
     private fun subscribeObservers() {
@@ -91,14 +95,24 @@ class WeatherFragment : Fragment(), HourlyForecastAdapter.ClickListener {
                     Toast.makeText(requireActivity(), state.msg, Toast.LENGTH_LONG).show()
             }
         }
-        viewModel.forecastWeather.observe(viewLifecycleOwner) { state ->
+        viewModel.hourlyForecast.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is ForecastUiState.Loading -> alertDialog.show()
 
                 is ForecastUiState.Success -> {
                     alertDialog.cancel()
-                    adapter.map(state.data)
+                    hourlyForecastAdapter.map(state.data)
                 }
+
+                is ForecastUiState.Error ->
+                    Toast.makeText(requireActivity(), state.msg, Toast.LENGTH_LONG).show()
+            }
+        }
+        viewModel.dailyForecast.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is ForecastUiState.Loading -> {}
+
+                is ForecastUiState.Success -> dailyForecastAdapter.map(state.data)
 
                 is ForecastUiState.Error ->
                     Toast.makeText(requireActivity(), state.msg, Toast.LENGTH_LONG).show()

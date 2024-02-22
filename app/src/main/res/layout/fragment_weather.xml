@@ -105,7 +105,7 @@
                         android:id="@+id/tvRealtimeWeatherDesc"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/medium_margin"
+                        android:layout_marginTop="@dimen/large_margin"
                         android:padding="@dimen/standard_padding"
                         android:textSize="@dimen/standard_text_size" />
                 </LinearLayout>
@@ -389,9 +389,8 @@
                     android:layout_marginTop="@dimen/medium_margin"
                     android:text="@string/forecast"
                     android:textSize="@dimen/title_text_size"
-                    app:layout_constraintTop_toBottomOf="@+id/cardViewClouds"
                     app:layout_constraintStart_toStartOf="parent"
-                    />
+                    app:layout_constraintTop_toBottomOf="@+id/cardViewClouds" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvHourlyForecast"
@@ -404,6 +403,7 @@
                     android:id="@+id/rvDailyForecast"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/medium_margin"
                     app:layout_constraintTop_toBottomOf="@+id/rvHourlyForecast" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
