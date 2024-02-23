@@ -3,22 +3,25 @@ package com.example.weather_app.data.repository
 import android.util.Log
 import com.example.weather_app.core.Response
 import com.example.weather_app.data.mapper.CurrentWeatherEntityMapper
+import com.example.weather_app.data.mapper.ForecastItemEntityMapper
 import com.example.weather_app.data.mapper.ForecastWeatherEntityMapper
 import com.example.weather_app.data.source.WeatherCacheDataSource
 import com.example.weather_app.data.source.WeatherRemoteDataSource
 import com.example.weather_app.domain.model.CurrentWeather
+import com.example.weather_app.domain.model.ForecastItem
 import com.example.weather_app.domain.model.ForecastWeather
 import com.example.weather_app.domain.repository.WeatherRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import java.lang.Exception
 import java.net.UnknownHostException
+
 
 class WeatherRepositoryImpl(
     private val weatherRemoteDataSource: WeatherRemoteDataSource,
     private val weatherCacheDataSource: WeatherCacheDataSource,
     private val currentWeatherEntityMapper: CurrentWeatherEntityMapper,
-    private val forecastWeatherEntityMapper: ForecastWeatherEntityMapper
+    private val forecastWeatherEntityMapper: ForecastWeatherEntityMapper,
+    private val forecastItemEntityMapper: ForecastItemEntityMapper
 ) : WeatherRepository {
     override suspend fun fetchRealtimeWeather(lat: Double, lon: Double): Flow<Response<CurrentWeather>> = flow {
         emit(Response.Loading(isLoading = true))
@@ -68,6 +71,23 @@ class WeatherRepositoryImpl(
                 forecastWeatherEntityMapper.mapFromEntity(
                     weatherCacheDataSource.getForecastWeatherFromCache())))
             emit(Response.Loading(false))
+        }
+    }
+
+    override suspend fun fetchForecastByTime(dt: Long): Flow<Response<ForecastItem>> = flow {
+        emit(Response.Loading(isLoading = true))
+
+        val cachedData = try {
+            weatherCacheDataSource.getForecastByTime(dt)
+        }
+        catch (e: Exception) {
+            emit(Response.Error(e.message ?: "Error"))
+            null
+        }
+
+        if (cachedData != null) {
+            emit(Response.Success(forecastItemEntityMapper.mapFromEntity(cachedData)))
+            emit(Response.Loading(isLoading = false))
         }
     }
 }

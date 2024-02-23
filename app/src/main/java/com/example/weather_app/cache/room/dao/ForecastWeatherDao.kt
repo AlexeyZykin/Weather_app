@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.example.weather_app.cache.room.model.ForecastItemCache
 import com.example.weather_app.cache.room.model.ForecastWeatherCache
 import com.example.weather_app.core.Constants
 

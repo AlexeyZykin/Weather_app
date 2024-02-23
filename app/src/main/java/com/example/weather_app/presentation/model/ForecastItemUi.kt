@@ -7,7 +7,7 @@ data class ForecastItemUi(
     val weather: WeatherUi,
     val weatherType: WeatherType,
     val visibility: Int,
-    val pop: Double,
+    val probabilityOfPrecipitation: Int,
     val clouds: CloudsUi,
     val wind: WindUi,
     val partOfDay: String,

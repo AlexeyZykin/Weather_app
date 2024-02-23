@@ -23,7 +23,7 @@ val cacheModule = module {
     single { provideDatabase(androidContext()) }
     single { provideCurrentWeatherDao(get()) }
     single { provideForecastWeatherDao(get()) }
-    single<WeatherCacheDataSource> { WeatherCacheDataSourceImpl(get(), get(), get(), get()) }
+    single<WeatherCacheDataSource> { WeatherCacheDataSourceImpl(get(), get(), get(), get(), get()) }
     factory { CloudsCacheMapper() }
     factory { CoordinatesCacheMapper() }
     factory { CurrentWeatherCacheMapper(get(), get(), get(), get(), get(), get()) }

@@ -1,6 +1,7 @@
 package com.example.weather_app.data.source
 
 import com.example.weather_app.data.model.CurrentWeatherEntity
+import com.example.weather_app.data.model.ForecastItemEntity
 import com.example.weather_app.data.model.ForecastWeatherEntity
 
 interface WeatherCacheDataSource {
@@ -12,4 +13,5 @@ interface WeatherCacheDataSource {
     suspend fun getForecastWeatherFromCache(): ForecastWeatherEntity
     suspend fun clearCacheForecastWeather()
     suspend fun isCachedForecast(): Boolean
+    suspend fun getForecastByTime(dt: Long): ForecastItemEntity
 }

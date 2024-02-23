@@ -91,6 +91,7 @@
 
                 <LinearLayout
                     android:id="@+id/linear_layout_weather_desc"
+                    android:layout_marginTop="@dimen/medium_margin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toBottomOf="@+id/linear_layout_mainInfo">
@@ -106,8 +107,8 @@
                         android:id="@+id/tvRealtimeWeatherDesc"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/large_margin"
-                        android:padding="@dimen/standard_padding"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="@dimen/standard_margin"
                         android:textSize="@dimen/standard_text_size" />
                 </LinearLayout>
 
@@ -397,7 +398,7 @@
                     android:id="@+id/rvHourlyForecast"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="@dimen/standard_margin"
+                    android:layout_marginTop="@dimen/medium_margin"
                     app:layout_constraintTop_toBottomOf="@+id/tvLabelForecast" />
 
                 <androidx.recyclerview.widget.RecyclerView

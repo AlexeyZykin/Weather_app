@@ -13,6 +13,6 @@ import com.example.weather_app.core.Constants
 data class ForecastWeatherCache(
     @PrimaryKey(autoGenerate = true) val id: Int?,
     @ColumnInfo("cnt") val cnt: Int,
-    @TypeConverters val forecastList: List<ForecastItemCache>,
+    @TypeConverters @ColumnInfo("forecastList") val forecastList: List<ForecastItemCache>,
     @Embedded val city: CityCache
 )

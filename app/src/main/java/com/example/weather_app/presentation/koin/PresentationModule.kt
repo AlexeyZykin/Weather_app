@@ -1,5 +1,6 @@
 package com.example.weather_app.presentation.koin
 
+import com.example.weather_app.presentation.features.details.ForecastDetailsViewModel
 import com.example.weather_app.presentation.features.home.WeatherViewModel
 import com.example.weather_app.presentation.mapper.CityUiMapper
 import com.example.weather_app.presentation.mapper.CloudsUiMapper
@@ -16,6 +17,7 @@ import org.koin.dsl.module
 
 val presentationModule = module {
     viewModel { WeatherViewModel(get(), get(), get(), get()) }
+    viewModel { ForecastDetailsViewModel(get(), get()) }
     factory { CloudsUiMapper() }
     factory { CoordinatesUiMapper() }
     factory { CurrentWeatherUiMapper(get(), get(), get(), get(), get(), get()) }

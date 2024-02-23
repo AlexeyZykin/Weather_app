@@ -106,8 +106,10 @@ class WeatherFragment : Fragment(), HourlyForecastAdapter.ClickListener, DailyFo
                     updateView(state.data)
                 }
 
-                is CurrentWeatherUiState.Error ->
+                is CurrentWeatherUiState.Error -> {
+                    alertDialog.cancel()
                     Toast.makeText(requireActivity(), state.msg, Toast.LENGTH_LONG).show()
+                }
             }
         }
         viewModel.hourlyForecast.observe(viewLifecycleOwner) { state ->

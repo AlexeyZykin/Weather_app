@@ -22,5 +22,7 @@
     <string name="today">Today</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hourly_forecast_toolbar_title">Hourly forecast</string>
+    <string name="probability_of_precipitation">"Probability of precipitation"</string>
 
 </resources>
