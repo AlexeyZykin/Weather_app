@@ -29,19 +29,29 @@
             android:id="@+id/tvHourlyForecastDetailsDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/large_margin"
+            android:layout_marginEnd="@dimen/medium_margin"
             android:layout_marginTop="@dimen/large_margin"
             android:textSize="@dimen/medium_text_size"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvHourlyForecastTemp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/large_margin"
+            android:textSize="@dimen/huge_text_size"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvHourlyForecastDetailsDate"
+            />
 
         <LinearLayout
             android:id="@+id/linear_layout_weather_desc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/medium_margin"
-            android:layout_marginTop="@dimen/medium_margin"
-            app:layout_constraintTop_toBottomOf="@+id/tvHourlyForecastDetailsDate">
+            android:layout_marginTop="@dimen/standard_margin"
+            app:layout_constraintTop_toBottomOf="@+id/tvHourlyForecastTemp">
 
             <ImageView
                 android:id="@+id/iconWeather"
@@ -61,7 +71,7 @@
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="@dimen/current_cardView_height"
+            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/medium_margin"
             android:layout_marginEnd="@dimen/medium_margin"
             android:layout_marginBottom="@dimen/medium_margin"
@@ -98,6 +108,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/standard_margin"
+                    android:layout_marginBottom="@dimen/standard_margin"
                     android:textSize="@dimen/medium_text_size" />
 
             </LinearLayout>

@@ -9,7 +9,8 @@
     <dimen name="standard_padding">8dp</dimen>
     <dimen name="large_padding">16dp</dimen>
 
-    <dimen name="large_text_size">64sp</dimen>
+    <dimen name="huge_text_size">64sp</dimen>
+    <dimen name="large_text_size">48sp</dimen>
     <dimen name="medium_text_size">32sp</dimen>
     <dimen name="standard_text_size">18sp</dimen>
     <dimen name="small_text_size">14sp</dimen>
@@ -17,6 +18,7 @@
 
     <dimen name="current_cardView_width">150dp</dimen>
     <dimen name="current_cardView_height">150dp</dimen>
+    <dimen name="daily_forecast_card_height">200dp</dimen>
     <dimen name="cardView_elevation">8dp</dimen>
     <dimen name="cardView_corner_radius">16dp</dimen>
     <dimen name="cardView_large_corner_radius">32dp</dimen>

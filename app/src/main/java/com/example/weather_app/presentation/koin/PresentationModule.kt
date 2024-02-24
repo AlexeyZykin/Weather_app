@@ -17,7 +17,7 @@ import org.koin.dsl.module
 
 val presentationModule = module {
     viewModel { WeatherViewModel(get(), get(), get(), get()) }
-    viewModel { ForecastDetailsViewModel(get(), get()) }
+    viewModel { ForecastDetailsViewModel(get(), get(), get()) }
     factory { CloudsUiMapper() }
     factory { CoordinatesUiMapper() }
     factory { CurrentWeatherUiMapper(get(), get(), get(), get(), get(), get()) }

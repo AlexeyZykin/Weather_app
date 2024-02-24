@@ -79,7 +79,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/standard_margin"
                         android:padding="@dimen/standard_padding"
-                        android:textSize="@dimen/large_text_size" />
+                        android:textSize="@dimen/huge_text_size" />
 
                     <TextView
                         android:id="@+id/tvRealtimeWeatherTitle"

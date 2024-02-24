@@ -90,4 +90,20 @@ class WeatherRepositoryImpl(
             emit(Response.Loading(isLoading = false))
         }
     }
+
+    override suspend fun fetchForecastByDay(dtTxt: String): Flow<Response<List<ForecastItem>>> = flow {
+        emit(Response.Loading(isLoading = true))
+        val cachedData = try {
+            weatherCacheDataSource.getForecastByDay(dtTxt)
+        }
+        catch (e: Exception) {
+            emit(Response.Error(e.message ?: "Error"))
+            null
+        }
+
+        if (cachedData != null) {
+            emit(Response.Success(cachedData.map { forecastItemEntityMapper.mapFromEntity(it) }))
+            emit(Response.Loading(isLoading = false))
+        }
+    }
 }

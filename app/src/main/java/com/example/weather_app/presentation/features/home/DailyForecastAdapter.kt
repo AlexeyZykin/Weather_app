@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.weather_app.R
@@ -23,6 +24,7 @@ class DailyForecastAdapter(
         private val tvDayOfWeek = view.findViewById<TextView>(R.id.tvDayOfWeek)
         private val icon = view.findViewById<ImageView>(R.id.icDailyForecastWeather)
         private val tvTemp = view.findViewById<TextView>(R.id.tvDailyForecastTempDay)
+        private val card = view.findViewById<CardView>(R.id.cvDailyForecast)
 
         fun bind(forecastItem: ForecastItemUi, clickListener: ClickListener) {
             val context = tvDayOfWeek.context
@@ -33,6 +35,7 @@ class DailyForecastAdapter(
             val iconRes = forecastItem.weatherType.iconRes(forecastItem.partOfDay)
             Glide.with(context).load(iconRes).centerCrop().into(icon)
             tvTemp.text = forecastItem.mainInfo.temp.toString() + "°c"
+            card.setOnClickListener { clickListener.onClickDailyForecast(forecastItem) }
         }
     }
 

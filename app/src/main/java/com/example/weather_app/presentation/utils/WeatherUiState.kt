@@ -1,4 +1,4 @@
-package com.example.weather_app.presentation.features.details
+package com.example.weather_app.presentation.utils
 
 sealed class WeatherUiState<T> {
     data class Loading<T>(val isLoading: Boolean): WeatherUiState<T>()

@@ -16,7 +16,7 @@ class WeatherCacheDataSourceImpl(
     private val currentWeatherCacheMapper: CurrentWeatherCacheMapper,
     private val forecastWeatherCacheMapper: ForecastWeatherCacheMapper,
     private val forecastItemCacheMapper: ForecastItemCacheMapper
-    ) : WeatherCacheDataSource{
+) : WeatherCacheDataSource {
     override suspend fun addCurrentWeatherToCache(data: CurrentWeatherEntity) {
         currentWeatherDao.addCurrentWeather(currentWeatherCacheMapper.mapToCache(data))
     }
@@ -53,5 +53,13 @@ class WeatherCacheDataSourceImpl(
         return forecastItemCacheMapper.mapFromCache(
             forecastWeatherDao.getForecastWeather().forecastList.first { it.dt == dt }
         )
+    }
+
+    override suspend fun getForecastByDay(dtTxt: String): List<ForecastItemEntity> {
+        return forecastWeatherDao.getForecastWeather().forecastList.filter {
+            it.dtTxt.substring(0, 10) == dtTxt.substring(0, 10)
+        }.map {
+            forecastItemCacheMapper.mapFromCache(it)
+        }
     }
 }

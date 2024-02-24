@@ -14,4 +14,5 @@ interface WeatherCacheDataSource {
     suspend fun clearCacheForecastWeather()
     suspend fun isCachedForecast(): Boolean
     suspend fun getForecastByTime(dt: Long): ForecastItemEntity
+    suspend fun getForecastByDay(dtTxt: String): List<ForecastItemEntity>
 }

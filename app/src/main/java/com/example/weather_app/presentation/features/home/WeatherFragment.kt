@@ -18,16 +18,15 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.weather_app.R
 import com.example.weather_app.databinding.FragmentWeatherBinding
 import com.example.weather_app.presentation.dialog.PermissionDialog
+import com.example.weather_app.presentation.utils.WeatherUiState
 import com.example.weather_app.presentation.model.CurrentWeatherUi
 import com.example.weather_app.presentation.model.ForecastItemUi
 import com.example.weather_app.presentation.utils.DateTypeConverter
@@ -99,39 +98,31 @@ class WeatherFragment : Fragment(), HourlyForecastAdapter.ClickListener, DailyFo
     private fun subscribeObservers() {
         viewModel.currentWeather.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is CurrentWeatherUiState.Loading -> alertDialog.show()
+                is WeatherUiState.Loading -> {}//if (state.isLoading) alertDialog.show() else alertDialog.cancel()
 
-                is CurrentWeatherUiState.Success -> {
-                    alertDialog.cancel()
-                    updateView(state.data)
-                }
+                is WeatherUiState.Success -> state.data?.let { updateView(it) }
 
-                is CurrentWeatherUiState.Error -> {
-                    alertDialog.cancel()
+                is WeatherUiState.Error ->
                     Toast.makeText(requireActivity(), state.msg, Toast.LENGTH_LONG).show()
-                }
             }
         }
         viewModel.hourlyForecast.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is ForecastUiState.Loading -> {}//alertDialog.show()
+                is WeatherUiState.Loading -> {}
 
-                is ForecastUiState.Success -> {
-                    //alertDialog.cancel()
-                    hourlyForecastAdapter.map(state.data)
-                }
+                is WeatherUiState.Success -> state.data?.let { hourlyForecastAdapter.map(it) }
 
-                is ForecastUiState.Error ->
+                is WeatherUiState.Error ->
                     Toast.makeText(requireActivity(), state.msg, Toast.LENGTH_LONG).show()
             }
         }
         viewModel.dailyForecast.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is ForecastUiState.Loading -> {}
+                is WeatherUiState.Loading -> {}
 
-                is ForecastUiState.Success -> dailyForecastAdapter.map(state.data)
+                is WeatherUiState.Success -> state.data?.let { dailyForecastAdapter.map(it) }
 
-                is ForecastUiState.Error ->
+                is WeatherUiState.Error ->
                     Toast.makeText(requireActivity(), state.msg, Toast.LENGTH_LONG).show()
             }
         }
@@ -256,7 +247,9 @@ class WeatherFragment : Fragment(), HourlyForecastAdapter.ClickListener, DailyFo
     }
 
     override fun onClickDailyForecast(forecastItem: ForecastItemUi) {
-        TODO("Not yet implemented")
+        val action = WeatherFragmentDirections.actionWeatherFragmentToDailyForecastDetailsFragment(forecastItem.dtTxt)
+        findNavController().navigate(action)
+        isToolbarExpanded = false
     }
 
     override fun onClickHourlyForecast(forecastItem: ForecastItemUi) {
@@ -269,5 +262,4 @@ class WeatherFragment : Fragment(), HourlyForecastAdapter.ClickListener, DailyFo
     companion object {
         const val KEY_TOOLBAR_EXPANDED = "key_toolbar_expanded"
     }
-
 }

@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".presentation.features.details.DailyForecastDetailsFragment">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/dailyForecastAppBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/dailyForecastDetailsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize">
+
+        <TextView
+            android:id="@+id/tvDailyForecastDetailsDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/large_margin"
+            android:layout_marginTop="@dimen/medium_margin"
+            android:textSize="@dimen/medium_text_size"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cvDailyForecastAtDay"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/daily_forecast_card_height"
+            android:layout_marginStart="@dimen/medium_margin"
+            android:layout_marginTop="@dimen/large_margin"
+            android:layout_marginEnd="@dimen/medium_margin"
+            app:cardCornerRadius="@dimen/cardView_large_corner_radius"
+            app:cardElevation="@dimen/cardView_elevation"
+            app:layout_constraintTop_toBottomOf="@+id/tvDailyForecastDetailsDate">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/daily_forecast_day" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/semi_transparent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvTempDay"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/medium_margin"
+                        android:layout_marginTop="@dimen/standard_margin"
+                        android:textSize="@dimen/large_text_size" />
+
+                    <ImageView
+                        android:id="@+id/icDayForecast"
+                        android:layout_width="@dimen/icon_weather_size"
+                        android:layout_height="@dimen/icon_weather_size"
+                        android:layout_gravity="bottom"
+                        android:layout_marginStart="@dimen/standard_margin" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvDayForecastFeelsLike"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/medium_margin"
+                    android:layout_marginTop="@dimen/standard_margin"
+                    android:textSize="@dimen/title_text_size" />
+
+                <TextView
+                    android:id="@+id/tvDayForecastWind"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/medium_margin"
+                    android:layout_marginTop="@dimen/standard_margin"
+                    android:textSize="@dimen/title_text_size" />
+
+                <TextView
+                    android:id="@+id/tvDayForecastPrecipitation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/medium_margin"
+                    android:layout_marginTop="@dimen/standard_margin"
+                    android:textSize="@dimen/standard_text_size" />
+
+
+            </LinearLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cvDailyForecastAtNight"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/daily_forecast_card_height"
+            android:layout_marginStart="@dimen/medium_margin"
+            android:layout_marginTop="@dimen/medium_margin"
+            android:layout_marginEnd="@dimen/medium_margin"
+            app:cardCornerRadius="@dimen/cardView_large_corner_radius"
+            app:cardElevation="@dimen/cardView_elevation"
+            app:layout_constraintTop_toBottomOf="@+id/cvDailyForecastAtDay">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/daily_forecast_night" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/semi_transparent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvTempNight"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/medium_margin"
+                        android:layout_marginTop="@dimen/standard_margin"
+                        android:textSize="@dimen/large_text_size" />
+
+                    <ImageView
+                        android:id="@+id/icNightForecast"
+                        android:layout_width="@dimen/icon_weather_size"
+                        android:layout_height="@dimen/icon_weather_size"
+                        android:layout_gravity="bottom"
+                        android:layout_marginStart="@dimen/standard_margin" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvNightForecastFeelsLike"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/medium_margin"
+                    android:layout_marginTop="@dimen/standard_margin"
+                    android:textSize="@dimen/title_text_size" />
+
+                <TextView
+                    android:id="@+id/tvNightForecastWind"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/medium_margin"
+                    android:layout_marginTop="@dimen/standard_margin"
+                    android:textSize="@dimen/title_text_size" />
+
+                <TextView
+                    android:id="@+id/tvNightForecastPrecipitation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/medium_margin"
+                    android:layout_marginTop="@dimen/standard_margin"
+                    android:textSize="@dimen/standard_text_size" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>
