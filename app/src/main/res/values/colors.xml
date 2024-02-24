@@ -13,4 +13,5 @@
     <color name="dark">#121212</color>
     <color name="dark_blue">#333A73</color>
     <color name="semi_transparent">#60000000</color>
+    <color name="semi_transparent_dark">#80000000</color>
 </resources>
