@@ -1,11 +1,11 @@
 package com.example.weather_app.remote.source
 
-import com.example.weather_app.data.model.CurrentWeatherEntity
-import com.example.weather_app.data.model.ForecastWeatherEntity
+import com.example.weather_app.data.model.weather.CurrentWeatherEntity
+import com.example.weather_app.data.model.weather.ForecastWeatherEntity
 import com.example.weather_app.data.source.WeatherRemoteDataSource
 import com.example.weather_app.remote.api.WeatherService
-import com.example.weather_app.remote.mapper.CurrentWeatherResponseMapper
-import com.example.weather_app.remote.mapper.ForecastWeatherResponseMapper
+import com.example.weather_app.remote.mapper.weather.CurrentWeatherResponseMapper
+import com.example.weather_app.remote.mapper.weather.ForecastWeatherResponseMapper
 
 class WeatherRemoteDataSourceImpl(
     private val weatherService: WeatherService,

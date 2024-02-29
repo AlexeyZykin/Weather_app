@@ -14,7 +14,7 @@ import com.example.weather_app.R
 import com.example.weather_app.databinding.FragmentHourlyForecastDetailsBinding
 import com.example.weather_app.presentation.model.ForecastItemUi
 import com.example.weather_app.presentation.utils.DateTypeConverter
-import com.example.weather_app.presentation.utils.WeatherUiState
+import com.example.weather_app.presentation.utils.UiState
 import com.example.weather_app.presentation.utils.iconRes
 import com.example.weather_app.presentation.utils.imageRes
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -44,11 +44,11 @@ class HourlyForecastDetailsFragment : Fragment() {
     private fun subscribeObserver() {
         viewModel.hourlyForecastDetails.observe(viewLifecycleOwner) { weatherState ->
             when (weatherState) {
-                is WeatherUiState.Loading -> {}
+                is UiState.Loading -> {}
 
-                is WeatherUiState.Success -> weatherState.data?.let { updateView(it) }
+                is UiState.Success -> weatherState.data?.let { updateView(it) }
 
-                is WeatherUiState.Error -> Toast.makeText(requireActivity(), weatherState.msg, Toast.LENGTH_LONG).show()
+                is UiState.Error -> Toast.makeText(requireActivity(), weatherState.msg, Toast.LENGTH_LONG).show()
             }
         }
     }
@@ -57,7 +57,6 @@ class HourlyForecastDetailsFragment : Fragment() {
         val isNight = data.partOfDay == "n"
         val imageRes = data.weatherType.imageRes(isNight)
         binding.layout.setBackgroundResource(imageRes)
-        binding.toolbar.title = requireContext().getString(R.string.hourly_forecast_toolbar_title)
         binding.tvHourlyForecastDetailsDate.text = DateTypeConverter.convertUnixToHourlyForecastDetailsDate(data.dt)
         val iconRes = data.weatherType.iconRes(data.partOfDay)
         Glide.with(requireContext()).load(iconRes).into(binding.iconWeather)

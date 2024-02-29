@@ -1,7 +1,7 @@
 package com.example.weather_app.cache.mapper
 
 import com.example.weather_app.cache.room.model.CityCache
-import com.example.weather_app.data.model.CityEntity
+import com.example.weather_app.data.model.weather.CityEntity
 
 class CityCacheMapper(private val coordinatesCacheMapper: CoordinatesCacheMapper) : Mapper<CityCache, CityEntity>{
     override fun mapFromCache(data: CityCache): CityEntity {

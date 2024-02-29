@@ -1,7 +1,7 @@
 package com.example.weather_app.data.mapper
 
-import com.example.weather_app.data.model.CityEntity
-import com.example.weather_app.domain.model.City
+import com.example.weather_app.data.model.weather.CityEntity
+import com.example.weather_app.domain.model.weather.City
 
 class CityEntityMapper(private val coordinatesEntityMapper: CoordinatesEntityMapper) : Mapper<CityEntity, City> {
     override fun mapFromEntity(data: CityEntity): City {

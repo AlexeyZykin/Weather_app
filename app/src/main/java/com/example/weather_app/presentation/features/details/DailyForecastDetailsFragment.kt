@@ -2,7 +2,6 @@ package com.example.weather_app.presentation.features.details
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +15,7 @@ import com.example.weather_app.R
 import com.example.weather_app.databinding.FragmentDailyForecastDetailsBinding
 import com.example.weather_app.presentation.model.ForecastItemUi
 import com.example.weather_app.presentation.utils.DateTypeConverter
-import com.example.weather_app.presentation.utils.WeatherUiState
+import com.example.weather_app.presentation.utils.UiState
 import com.example.weather_app.presentation.utils.iconRes
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -44,11 +43,11 @@ class DailyForecastDetailsFragment : Fragment() {
     private fun subscribeObserver() {
         viewModel.dailyForecastDetails.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is WeatherUiState.Loading -> {}
+                is UiState.Loading -> {}
 
-                is WeatherUiState.Success -> state.data?.let { updateView(it) }
+                is UiState.Success -> state.data?.let { updateView(it) }
 
-                is WeatherUiState.Error -> Toast.makeText(
+                is UiState.Error -> Toast.makeText(
                     requireActivity(),
                     state.msg,
                     Toast.LENGTH_LONG
@@ -59,7 +58,6 @@ class DailyForecastDetailsFragment : Fragment() {
 
     @SuppressLint("SetTextI18n")
     private fun updateView(data: List<ForecastItemUi>) {
-        binding.toolbar.title = getString(R.string.daily_forecast)
         binding.tvDailyForecastDetailsDate.text =
             DateTypeConverter.convertUnixToDailyForecastDetailsDate(data.first().dt)
         val dayForecast = data.first()
@@ -83,7 +81,7 @@ class DailyForecastDetailsFragment : Fragment() {
                 "${nightForecast.wind.speed} ${getString(R.string.metric_wind_speed)}"
         binding.tvNightForecastPrecipitation.text = getString(R.string.probability_of_precipitation) +
                 " ${nightForecast.probabilityOfPrecipitation}${getString(R.string.metric_percent)}"
-        val iconNightRes = nightForecast.weatherType.iconRes("d")
+        val iconNightRes = nightForecast.weatherType.iconRes("n")
         Glide.with(requireContext()).load(iconNightRes).into(binding.icNightForecast)
     }
 }

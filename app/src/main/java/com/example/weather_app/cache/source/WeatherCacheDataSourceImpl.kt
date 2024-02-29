@@ -5,9 +5,9 @@ import com.example.weather_app.cache.mapper.ForecastItemCacheMapper
 import com.example.weather_app.cache.mapper.ForecastWeatherCacheMapper
 import com.example.weather_app.cache.room.dao.CurrentWeatherDao
 import com.example.weather_app.cache.room.dao.ForecastWeatherDao
-import com.example.weather_app.data.model.CurrentWeatherEntity
-import com.example.weather_app.data.model.ForecastItemEntity
-import com.example.weather_app.data.model.ForecastWeatherEntity
+import com.example.weather_app.data.model.weather.CurrentWeatherEntity
+import com.example.weather_app.data.model.weather.ForecastItemEntity
+import com.example.weather_app.data.model.weather.ForecastWeatherEntity
 import com.example.weather_app.data.source.WeatherCacheDataSource
 
 class WeatherCacheDataSourceImpl(

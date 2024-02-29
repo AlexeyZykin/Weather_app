@@ -1,7 +1,7 @@
 package com.example.weather_app.data.mapper
 
-import com.example.weather_app.data.model.WeatherEntity
-import com.example.weather_app.domain.model.Weather
+import com.example.weather_app.data.model.weather.WeatherEntity
+import com.example.weather_app.domain.model.weather.Weather
 
 
 class WeatherEntityMapper : Mapper<WeatherEntity, Weather>{

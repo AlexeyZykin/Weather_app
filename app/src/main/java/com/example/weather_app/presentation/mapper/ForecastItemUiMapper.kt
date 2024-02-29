@@ -1,6 +1,6 @@
 package com.example.weather_app.presentation.mapper
 
-import com.example.weather_app.domain.model.ForecastItem
+import com.example.weather_app.domain.model.weather.ForecastItem
 import com.example.weather_app.presentation.model.ForecastItemUi
 
 class ForecastItemUiMapper(

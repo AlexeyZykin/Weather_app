@@ -1,6 +1,6 @@
 package com.example.weather_app.presentation.mapper
 
-import com.example.weather_app.domain.model.MainInfo
+import com.example.weather_app.domain.model.weather.MainInfo
 import com.example.weather_app.presentation.model.MainInfoUi
 
 class MainInfoUiMapper : Mapper<MainInfoUi, MainInfo> {

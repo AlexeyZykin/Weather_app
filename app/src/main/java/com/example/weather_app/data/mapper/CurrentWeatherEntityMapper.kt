@@ -1,7 +1,7 @@
 package com.example.weather_app.data.mapper
 
-import com.example.weather_app.data.model.CurrentWeatherEntity
-import com.example.weather_app.domain.model.CurrentWeather
+import com.example.weather_app.data.model.weather.CurrentWeatherEntity
+import com.example.weather_app.domain.model.weather.CurrentWeather
 
 class CurrentWeatherEntityMapper(
     private val coordinatesEntityMapper: CoordinatesEntityMapper,

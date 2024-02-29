@@ -29,4 +29,6 @@
     <dimen name="hourly_forecast_card_height">200dp</dimen>
     <dimen name="icon_weather_size">64dp</dimen>
     <dimen name="icon_weather_medium_size">48dp</dimen>
+    <dimen name="search_width">2dp</dimen>
+    <dimen name="place_dialog_fragment_height">600dp</dimen>
 </resources>

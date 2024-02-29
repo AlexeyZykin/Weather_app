@@ -1,15 +1,14 @@
 package com.example.weather_app.data.repository
 
-import android.util.Log
 import com.example.weather_app.core.Response
 import com.example.weather_app.data.mapper.CurrentWeatherEntityMapper
 import com.example.weather_app.data.mapper.ForecastItemEntityMapper
 import com.example.weather_app.data.mapper.ForecastWeatherEntityMapper
 import com.example.weather_app.data.source.WeatherCacheDataSource
 import com.example.weather_app.data.source.WeatherRemoteDataSource
-import com.example.weather_app.domain.model.CurrentWeather
-import com.example.weather_app.domain.model.ForecastItem
-import com.example.weather_app.domain.model.ForecastWeather
+import com.example.weather_app.domain.model.weather.CurrentWeather
+import com.example.weather_app.domain.model.weather.ForecastItem
+import com.example.weather_app.domain.model.weather.ForecastWeather
 import com.example.weather_app.domain.repository.WeatherRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -32,7 +31,8 @@ class WeatherRepositoryImpl(
         val response = try {
             weatherRemoteDataSource.fetchRealtimeWeather(lat, lon)
         } catch (e: Exception) {
-            emit(Response.Error("No network available, please check your WiFi or Data connection"))
+            //emit(Response.Error("No network available, please check your WiFi or Data connection"))
+            emit(Response.Error(e.message ?: "Error"))
             null
         } catch (e: UnknownHostException) {
             emit(Response.Error(e.message ?: "Error"))
@@ -60,7 +60,8 @@ class WeatherRepositoryImpl(
         val response = try {
             weatherRemoteDataSource.fetchForecast(lat, lon)
         } catch (e: Exception) {
-            emit(Response.Error("No network available, please check your WiFi or Data connection"))
+            //emit(Response.Error("No network available, please check your WiFi or Data connection"))
+            emit(Response.Error(e.message ?: "Error"))
             null
         }
 

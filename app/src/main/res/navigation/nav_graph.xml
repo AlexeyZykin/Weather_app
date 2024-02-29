@@ -15,10 +15,14 @@
         <action
             android:id="@+id/action_weatherFragment_to_dailyForecastDetailsFragment"
             app:destination="@id/dailyForecastDetailsFragment" />
+        <action
+            android:id="@+id/action_weatherFragment_to_locationManagementFragment"
+            app:destination="@id/locationManagementFragment" />
     </fragment>
     <fragment
         android:id="@+id/hourlyForecastDetailsFragment"
         android:name="com.example.weather_app.presentation.features.details.HourlyForecastDetailsFragment"
+        android:label="@string/hourly_forecast_toolbar_title"
         tools:layout="@layout/fragment_hourly_forecast_details">
         <argument
             android:name="dt"
@@ -27,9 +31,25 @@
     <fragment
         android:id="@+id/dailyForecastDetailsFragment"
         android:name="com.example.weather_app.presentation.features.details.DailyForecastDetailsFragment"
+        android:label="@string/daily_forecast"
         tools:layout="@layout/fragment_daily_forecast_details">
         <argument
             android:name="dtTxt"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/locationManagementFragment"
+        android:name="com.example.weather_app.presentation.features.location.LocationManagementFragment"
+        android:label="@string/location_management"
+        tools:layout="@layout/fragment_location_management" >
+        <action
+            android:id="@+id/action_locationManagementFragment_to_searchPlaceFragment"
+            app:destination="@id/searchPlaceFragment"
+            app:enterAnim="@anim/slide_up" />
+    </fragment>
+    <dialog
+        android:id="@+id/searchPlaceFragment"
+        android:name="com.example.weather_app.presentation.features.location.SearchPlaceFragment"
+        android:label="fragment_search_place"
+        tools:layout="@layout/fragment_search_place" />
 </navigation>

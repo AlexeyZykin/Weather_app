@@ -1,6 +1,6 @@
 package com.example.weather_app.presentation.mapper
 
-import com.example.weather_app.domain.model.Sys
+import com.example.weather_app.domain.model.weather.Sys
 import com.example.weather_app.presentation.model.SysUi
 
 class SysUiMapper : Mapper<SysUi, Sys> {

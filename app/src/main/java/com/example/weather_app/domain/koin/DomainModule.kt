@@ -1,5 +1,6 @@
 package com.example.weather_app.domain.koin
 
+import com.example.weather_app.domain.usecase.FetchAutocompletePlacesUseCase
 import com.example.weather_app.domain.usecase.FetchForecastByDayUseCase
 import com.example.weather_app.domain.usecase.FetchForecastByTimeUseCase
 import com.example.weather_app.domain.usecase.FetchForecastUseCase
@@ -11,4 +12,5 @@ val domainModule = module {
     factory { FetchForecastUseCase(get()) }
     factory { FetchForecastByTimeUseCase(get()) }
     factory { FetchForecastByDayUseCase(get()) }
+    factory { FetchAutocompletePlacesUseCase(get()) }
 }

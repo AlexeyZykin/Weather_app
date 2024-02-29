@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide
 import com.example.weather_app.R
 import com.example.weather_app.presentation.model.ForecastItemUi
 import com.example.weather_app.presentation.utils.DateTypeConverter
+import com.example.weather_app.presentation.utils.Mapper
 import com.example.weather_app.presentation.utils.iconRes
 
 class HourlyForecastAdapter(

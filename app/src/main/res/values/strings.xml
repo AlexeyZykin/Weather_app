@@ -25,6 +25,12 @@
     <string name="hourly_forecast_toolbar_title">Hourly forecast</string>
     <string name="probability_of_precipitation">"Probability of precipitation"</string>
     <string name="daily_forecast">Daily forecast</string>
+    <string name="search">Search</string>
+    <string name="location_management">Location management</string>
+    <string name="location">Location</string>
+    <string name="refresh">Refresh data</string>
+    <string name="add_city_title">Add city</string>
+    <string name="places_autocomplete_no_results">Error! Incorrect city entered</string>
 
 
 </resources>

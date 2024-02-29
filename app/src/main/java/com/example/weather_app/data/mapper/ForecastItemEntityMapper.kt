@@ -1,7 +1,7 @@
 package com.example.weather_app.data.mapper
 
-import com.example.weather_app.data.model.ForecastItemEntity
-import com.example.weather_app.domain.model.ForecastItem
+import com.example.weather_app.data.model.weather.ForecastItemEntity
+import com.example.weather_app.domain.model.weather.ForecastItem
 
 class ForecastItemEntityMapper(
     private val mainInfoEntityMapper: MainInfoEntityMapper,

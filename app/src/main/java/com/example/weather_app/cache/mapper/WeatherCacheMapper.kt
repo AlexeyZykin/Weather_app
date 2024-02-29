@@ -1,7 +1,7 @@
 package com.example.weather_app.cache.mapper
 
 import com.example.weather_app.cache.room.model.WeatherCache
-import com.example.weather_app.data.model.WeatherEntity
+import com.example.weather_app.data.model.weather.WeatherEntity
 
 class WeatherCacheMapper : Mapper<WeatherCache, WeatherEntity> {
     override fun mapFromCache(data: WeatherCache): WeatherEntity {

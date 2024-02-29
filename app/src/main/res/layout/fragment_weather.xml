@@ -48,6 +48,7 @@
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
+                    app:menu="@menu/search_view_menu"
                     android:layout_height="?attr/actionBarSize"/>
 
 

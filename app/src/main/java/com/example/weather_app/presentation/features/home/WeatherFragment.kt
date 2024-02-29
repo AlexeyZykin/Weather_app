@@ -10,6 +10,7 @@ import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -26,7 +27,7 @@ import com.bumptech.glide.Glide
 import com.example.weather_app.R
 import com.example.weather_app.databinding.FragmentWeatherBinding
 import com.example.weather_app.presentation.dialog.PermissionDialog
-import com.example.weather_app.presentation.utils.WeatherUiState
+import com.example.weather_app.presentation.utils.UiState
 import com.example.weather_app.presentation.model.CurrentWeatherUi
 import com.example.weather_app.presentation.model.ForecastItemUi
 import com.example.weather_app.presentation.utils.DateTypeConverter
@@ -39,10 +40,11 @@ import java.util.Locale
 
 class WeatherFragment : Fragment(), HourlyForecastAdapter.ClickListener, DailyForecastAdapter.ClickListener {
     private lateinit var binding: FragmentWeatherBinding
-    private lateinit var pLauncher: ActivityResultLauncher<String>
+    private lateinit var pLauncher: ActivityResultLauncher<Array<String>>
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private val viewModel by viewModel<WeatherViewModel>()
     private var isToolbarExpanded = true
+    private var isPermissionDialogShown = false
     private val hourlyForecastAdapter: HourlyForecastAdapter by lazy {
         HourlyForecastAdapter(this@WeatherFragment)
     }
@@ -63,13 +65,13 @@ class WeatherFragment : Fragment(), HourlyForecastAdapter.ClickListener, DailyFo
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
         binding.toolbar.setupWithNavController(findNavController())
         binding.appBarLayout.setExpanded(isToolbarExpanded)
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
         initRecyclerView()
+        setupMenu()
         permissionListener()
         subscribeObservers()
-        getWeatherByCurrentLocation()
         savedInstanceState?.let {
             isToolbarExpanded = it.getBoolean(KEY_TOOLBAR_EXPANDED, true)
         }
@@ -82,6 +84,31 @@ class WeatherFragment : Fragment(), HourlyForecastAdapter.ClickListener, DailyFo
             binding.swipeRefresh.isEnabled = isExpanded
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        getWeatherByCurrentLocation()
+        Log.d("AAA", "resume")
+    }
+
+
+    private fun setupMenu() {
+        binding.toolbar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.search_item -> {
+                    val action = WeatherFragmentDirections.actionWeatherFragmentToLocationManagementFragment()
+                    findNavController().navigate(action)
+                    true
+                }
+                R.id.refreshMenuItem -> {
+                    getWeatherByCurrentLocation()
+                    true
+                }
+                else -> false
+            }
+        }
+    }
+
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -98,31 +125,31 @@ class WeatherFragment : Fragment(), HourlyForecastAdapter.ClickListener, DailyFo
     private fun subscribeObservers() {
         viewModel.currentWeather.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is WeatherUiState.Loading -> {}//if (state.isLoading) alertDialog.show() else alertDialog.cancel()
+                is UiState.Loading -> binding.swipeRefresh.isRefreshing = state.isLoading
 
-                is WeatherUiState.Success -> state.data?.let { updateView(it) }
+                is UiState.Success -> state.data?.let { updateView(it) }
 
-                is WeatherUiState.Error ->
+                is UiState.Error ->
                     Toast.makeText(requireActivity(), state.msg, Toast.LENGTH_LONG).show()
             }
         }
         viewModel.hourlyForecast.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is WeatherUiState.Loading -> {}
+                is UiState.Loading -> {}//binding.swipeRefresh.isRefreshing = state.isLoading
 
-                is WeatherUiState.Success -> state.data?.let { hourlyForecastAdapter.map(it) }
+                is UiState.Success -> state.data?.let { hourlyForecastAdapter.map(it) }
 
-                is WeatherUiState.Error ->
+                is UiState.Error ->
                     Toast.makeText(requireActivity(), state.msg, Toast.LENGTH_LONG).show()
             }
         }
         viewModel.dailyForecast.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is WeatherUiState.Loading -> {}
+                is UiState.Loading -> {}//binding.swipeRefresh.isRefreshing = state.isLoading
 
-                is WeatherUiState.Success -> state.data?.let { dailyForecastAdapter.map(it) }
+                is UiState.Success -> state.data?.let { dailyForecastAdapter.map(it) }
 
-                is WeatherUiState.Error ->
+                is UiState.Error ->
                     Toast.makeText(requireActivity(), state.msg, Toast.LENGTH_LONG).show()
             }
         }
@@ -182,14 +209,23 @@ class WeatherFragment : Fragment(), HourlyForecastAdapter.ClickListener, DailyFo
         return ActivityCompat.checkSelfPermission(
             requireContext(),
             Manifest.permission.ACCESS_FINE_LOCATION
-        ) == PackageManager.PERMISSION_GRANTED
+        ) == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED
     }
 
     private fun permissionListener() {
         pLauncher = registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) {
-            if (!it) requestForegroundLocationDialog()
+            ActivityResultContracts.RequestMultiplePermissions()
+        ) { permissions ->
+            val allPermissionsGranted = permissions.all { it.value }
+
+            if (!allPermissionsGranted && !isPermissionDialogShown) {
+                isPermissionDialogShown = true
+                requestForegroundLocationDialog()
+            }
             binding.imgSwipeDown.visibility = View.VISIBLE
         }
     }
@@ -208,8 +244,12 @@ class WeatherFragment : Fragment(), HourlyForecastAdapter.ClickListener, DailyFo
     }
 
     private fun requestPermission() {
+        val permissions = arrayOf(
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        )
         if (!checkLocationPermission())
-            pLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+            pLauncher.launch(permissions)
     }
 
 

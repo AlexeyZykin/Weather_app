@@ -1,7 +1,7 @@
 package com.example.weather_app.data.mapper
 
-import com.example.weather_app.data.model.MainInfoEntity
-import com.example.weather_app.domain.model.MainInfo
+import com.example.weather_app.data.model.weather.MainInfoEntity
+import com.example.weather_app.domain.model.weather.MainInfo
 
 class MainInfoEntityMapper : Mapper<MainInfoEntity, MainInfo> {
     override fun mapFromEntity(data: MainInfoEntity): MainInfo {

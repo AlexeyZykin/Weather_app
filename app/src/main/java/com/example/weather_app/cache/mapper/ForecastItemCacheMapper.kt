@@ -1,7 +1,7 @@
 package com.example.weather_app.cache.mapper
 
 import com.example.weather_app.cache.room.model.ForecastItemCache
-import com.example.weather_app.data.model.ForecastItemEntity
+import com.example.weather_app.data.model.weather.ForecastItemEntity
 
 class ForecastItemCacheMapper(
     private val mainInfoCacheMapper: MainInfoCacheMapper,

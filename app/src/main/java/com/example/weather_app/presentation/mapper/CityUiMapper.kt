@@ -1,6 +1,6 @@
 package com.example.weather_app.presentation.mapper
 
-import com.example.weather_app.domain.model.City
+import com.example.weather_app.domain.model.weather.City
 import com.example.weather_app.presentation.model.CityUi
 
 class CityUiMapper(private val coordinatesUiMapper: CoordinatesUiMapper) : Mapper<CityUi, City> {

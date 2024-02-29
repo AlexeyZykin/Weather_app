@@ -1,7 +1,7 @@
 package com.example.weather_app.cache.mapper
 
 import com.example.weather_app.cache.room.model.CurrentWeatherCache
-import com.example.weather_app.data.model.CurrentWeatherEntity
+import com.example.weather_app.data.model.weather.CurrentWeatherEntity
 
 class CurrentWeatherCacheMapper(
     private val coordinatesCacheMapper: CoordinatesCacheMapper,
