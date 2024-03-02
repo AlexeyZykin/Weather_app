@@ -31,8 +31,7 @@ class WeatherRepositoryImpl(
         val response = try {
             weatherRemoteDataSource.fetchRealtimeWeather(lat, lon)
         } catch (e: Exception) {
-            //emit(Response.Error("No network available, please check your WiFi or Data connection"))
-            emit(Response.Error(e.message ?: "Error"))
+            emit(Response.Error("No network available, please check your WiFi or Data connection"))
             null
         } catch (e: UnknownHostException) {
             emit(Response.Error(e.message ?: "Error"))
@@ -60,8 +59,7 @@ class WeatherRepositoryImpl(
         val response = try {
             weatherRemoteDataSource.fetchForecast(lat, lon)
         } catch (e: Exception) {
-            //emit(Response.Error("No network available, please check your WiFi or Data connection"))
-            emit(Response.Error(e.message ?: "Error"))
+            emit(Response.Error("No network available, please check your WiFi or Data connection"))
             null
         }
 

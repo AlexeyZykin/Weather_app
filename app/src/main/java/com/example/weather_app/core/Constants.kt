@@ -7,4 +7,5 @@ object Constants {
     const val ROOM_DATABASE_NAME = "weather.db"
     const val ROOM_CURRENT_WEATHER_TABLE_NAME = "current_weather"
     const val ROOM_FORECAST_WEATHER_TABLE_NAME = "forecast_weather"
+    const val ROOM_PLACE_TABLE_NAME = "place"
 }

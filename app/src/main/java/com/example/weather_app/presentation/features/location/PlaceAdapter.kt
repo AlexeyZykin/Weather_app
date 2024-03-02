@@ -7,35 +7,30 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weather_app.R
-import com.example.weather_app.presentation.model.place.AutocompletePlaceUi
 import com.example.weather_app.presentation.model.place.PlaceUi
 import com.example.weather_app.presentation.utils.Mapper
 
+class PlaceAdapter(private val clickListener: ClickListener) : RecyclerView.Adapter<PlaceAdapter.PlaceViewHolder>(), Mapper<List<PlaceUi>> {
 
-class AutocompletePlacesAdapter(private val clickListener: ClickListener) :
-    RecyclerView.Adapter<AutocompletePlacesAdapter.AutocompletePlacesViewHolder>(),
-    Mapper<List<PlaceUi>> {
-        private val list = mutableListOf<PlaceUi>()
+    private val list = mutableListOf<PlaceUi>()
 
 
-    class AutocompletePlacesViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        private val cityName = view.findViewById<TextView>(R.id.tvAutoCompleteCity)
-        private val cvAutocompletePlace = view.findViewById<CardView>(R.id.cvAutocompletePlace)
+    class PlaceViewHolder(view: View): RecyclerView.ViewHolder(view) {
+        private val tvCity = view.findViewById<TextView>(R.id.tvPlaceCityName)
+        private val cvPlace = view.findViewById<CardView>(R.id.cvPlaceItem)
         fun bind(place: PlaceUi, clickListener: ClickListener) {
-            cityName.text = place.city
-            cvAutocompletePlace.setOnClickListener {
-                clickListener.onClick(place)
+            tvCity.text = place.city
+            cvPlace.setOnLongClickListener {
+                clickListener.onLongClick(place)
+                true
             }
         }
     }
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): AutocompletePlacesViewHolder {
-        return AutocompletePlacesViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaceViewHolder {
+        return PlaceViewHolder(
             LayoutInflater.from(parent.context).inflate(
-                R.layout.item_autocomplete_place,
+                R.layout.item_place,
                 parent,
                 false
             )
@@ -44,7 +39,7 @@ class AutocompletePlacesAdapter(private val clickListener: ClickListener) :
 
     override fun getItemCount() = list.size
 
-    override fun onBindViewHolder(holder: AutocompletePlacesViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: PlaceViewHolder, position: Int) {
         holder.bind(list[position], clickListener)
     }
 
@@ -58,8 +53,8 @@ class AutocompletePlacesAdapter(private val clickListener: ClickListener) :
 
     interface ClickListener {
         fun onClick(place: PlaceUi)
+        fun onLongClick(place: PlaceUi)
     }
-
 
     class DiffUtil(
         private val oldList: List<PlaceUi>,

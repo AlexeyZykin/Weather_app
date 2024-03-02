@@ -31,6 +31,10 @@
     <string name="refresh">Refresh data</string>
     <string name="add_city_title">Add city</string>
     <string name="places_autocomplete_no_results">Error! Incorrect city entered</string>
+    <string name="delete_all_places">Delete all places</string>
+    <string name="delete">Delete</string>
+    <string name="cancel_dialog">Cancel</string>
+    <string name="delete_place">Delete place</string>
 
 
 </resources>

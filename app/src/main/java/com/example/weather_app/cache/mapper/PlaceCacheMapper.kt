@@ -1,12 +1,12 @@
-package com.example.weather_app.presentation.mapper.place
+package com.example.weather_app.cache.mapper
 
-import com.example.weather_app.domain.model.place.Place
-import com.example.weather_app.presentation.mapper.Mapper
-import com.example.weather_app.presentation.model.place.PlaceUi
+import com.example.weather_app.cache.mapper.Mapper
+import com.example.weather_app.cache.room.model.PlaceCache
+import com.example.weather_app.data.model.place.PlaceEntity
 
-class PlaceUiMapper : Mapper<PlaceUi, Place> {
-    override fun mapFromUi(data: PlaceUi): Place {
-        return Place(
+class PlaceCacheMapper : Mapper<PlaceCache, PlaceEntity> {
+    override fun mapFromCache(data: PlaceCache): PlaceEntity {
+        return PlaceEntity(
             id = data.id,
             city = data.city,
             lon = data.lon,
@@ -17,8 +17,8 @@ class PlaceUiMapper : Mapper<PlaceUi, Place> {
         )
     }
 
-    override fun mapToUi(data: Place): PlaceUi {
-        return PlaceUi(
+    override fun mapToCache(data: PlaceEntity): PlaceCache {
+        return PlaceCache(
             id = data.id,
             city = data.city,
             lon = data.lon,

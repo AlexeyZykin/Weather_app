@@ -22,7 +22,7 @@ android {
         properties.load(project.rootProject.file("local.properties").newDataInputStream())
 
         buildConfigField("String", "API_KEY_WEATHER", "\"${properties.getProperty("API_KEY_WEATHER")}\"")
-        buildConfigField("String", "API_KEY_PLACE_AUTOCOMPLETE", "\"${properties.getProperty("API_KEY_PLACE_AUTOCOMPLETE")}\"")
+        buildConfigField("String", "API_KEY_PLACE", "\"${properties.getProperty("API_KEY_PLACE")}\"")
     }
 
     buildTypes {

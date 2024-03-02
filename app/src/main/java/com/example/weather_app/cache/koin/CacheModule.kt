@@ -9,12 +9,15 @@ import com.example.weather_app.cache.mapper.CurrentWeatherCacheMapper
 import com.example.weather_app.cache.mapper.ForecastItemCacheMapper
 import com.example.weather_app.cache.mapper.ForecastWeatherCacheMapper
 import com.example.weather_app.cache.mapper.MainInfoCacheMapper
+import com.example.weather_app.cache.mapper.PlaceCacheMapper
 import com.example.weather_app.cache.mapper.SysCacheMapper
 import com.example.weather_app.cache.mapper.WeatherCacheMapper
 import com.example.weather_app.cache.mapper.WindCacheMapper
 import com.example.weather_app.cache.room.db.WeatherDatabase
+import com.example.weather_app.cache.source.PlaceCacheDataSourceImpl
 import com.example.weather_app.cache.source.WeatherCacheDataSourceImpl
 import com.example.weather_app.core.Constants
+import com.example.weather_app.data.source.PlaceCacheDataSource
 import com.example.weather_app.data.source.WeatherCacheDataSource
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
@@ -23,7 +26,9 @@ val cacheModule = module {
     single { provideDatabase(androidContext()) }
     single { provideCurrentWeatherDao(get()) }
     single { provideForecastWeatherDao(get()) }
+    single { providePlaceDao(get()) }
     single<WeatherCacheDataSource> { WeatherCacheDataSourceImpl(get(), get(), get(), get(), get()) }
+    single<PlaceCacheDataSource> { PlaceCacheDataSourceImpl(get(), get()) }
     factory { CloudsCacheMapper() }
     factory { CoordinatesCacheMapper() }
     factory { CurrentWeatherCacheMapper(get(), get(), get(), get(), get(), get()) }
@@ -34,6 +39,7 @@ val cacheModule = module {
     factory { CityCacheMapper(get()) }
     factory { ForecastItemCacheMapper(get(), get(), get(), get()) }
     factory { ForecastWeatherCacheMapper(get(), get()) }
+    factory { PlaceCacheMapper() }
 }
 
 private fun provideDatabase(context: Context): WeatherDatabase {
@@ -47,3 +53,5 @@ private fun provideDatabase(context: Context): WeatherDatabase {
 private fun provideCurrentWeatherDao(weatherDatabase: WeatherDatabase) = weatherDatabase.getCurrentWeatherDao()
 
 private fun provideForecastWeatherDao(weatherDatabase: WeatherDatabase) = weatherDatabase.getForecastWeatherDao()
+
+private fun providePlaceDao(weatherDatabase: WeatherDatabase) = weatherDatabase.getPlaceDao()

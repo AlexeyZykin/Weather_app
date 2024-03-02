@@ -3,7 +3,7 @@ package com.example.weather_app.remote.koin
 import com.example.weather_app.data.source.WeatherRemoteDataSource
 import com.example.weather_app.remote.api.WeatherService
 import com.example.weather_app.core.Constants
-import com.example.weather_app.data.source.PlaceSearchRemoteDataSource
+import com.example.weather_app.data.source.PlaceRemoteDataSource
 import com.example.weather_app.remote.api.PlaceService
 import com.example.weather_app.remote.mapper.place.AutocompletePlaceResponseMapper
 import com.example.weather_app.remote.mapper.place.PlaceResponseMapper
@@ -17,12 +17,11 @@ import com.example.weather_app.remote.mapper.weather.MainInfoResponseMapper
 import com.example.weather_app.remote.mapper.weather.SysResponseMapper
 import com.example.weather_app.remote.mapper.weather.WeatherResponseMapper
 import com.example.weather_app.remote.mapper.weather.WindResponseMapper
-import com.example.weather_app.remote.source.PlaceSearchRemoteDataSourceImpl
+import com.example.weather_app.remote.source.PlaceRemoteDataSourceImpl
 import com.example.weather_app.remote.source.WeatherRemoteDataSourceImpl
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.core.qualifier.named
-import org.koin.core.scope.get
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -51,7 +50,7 @@ val weatherApiModule = module {
 val placesApiModule = module {
     single(named("PLACE_API")) { providePlaceRetrofit(get()) }
     single { providePlaceService(get(named("PLACE_API"))) }
-    single<PlaceSearchRemoteDataSource> { PlaceSearchRemoteDataSourceImpl(get(), get()) }
+    single<PlaceRemoteDataSource> { PlaceRemoteDataSourceImpl(get(), get(), get()) }
     factory { AutocompletePlaceResponseMapper(get()) }
     factory { PlaceResponseMapper() }
 }

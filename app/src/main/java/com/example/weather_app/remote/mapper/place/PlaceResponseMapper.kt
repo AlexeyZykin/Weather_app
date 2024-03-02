@@ -7,6 +7,7 @@ import com.example.weather_app.remote.model.place.PlaceResponse
 class PlaceResponseMapper : Mapper<PlaceResponse, PlaceEntity> {
     override fun mapFromResponse(data: PlaceResponse): PlaceEntity {
         return PlaceEntity(
+            id = null,
             city = data.city,
             lon = data.lon,
             lat = data.lat,

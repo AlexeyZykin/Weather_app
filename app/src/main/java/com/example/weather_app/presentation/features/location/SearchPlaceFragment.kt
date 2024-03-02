@@ -1,7 +1,5 @@
 package com.example.weather_app.presentation.features.location
 
-import android.app.Dialog
-import android.location.Geocoder
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,20 +10,16 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weather_app.R
 import com.example.weather_app.databinding.FragmentSearchPlaceBinding
-import com.example.weather_app.presentation.model.place.AutocompletePlaceUi
 import com.example.weather_app.presentation.model.place.PlaceUi
 import com.example.weather_app.presentation.utils.UiState
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.Locale
 
 
 class SearchPlaceFragment : BottomSheetDialogFragment() {
     private lateinit var binding: FragmentSearchPlaceBinding
-    private val viewModel by viewModel<LocationViewModel>()
-    private val autocompleteAdapter: AutocompletePlacesAdapter by lazy {
-        AutocompletePlacesAdapter()
-    }
+    private lateinit var autocompleteAdapter: AutocompletePlacesAdapter
+    private val viewModel by viewModel<SearchPlaceViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,10 +34,10 @@ class SearchPlaceFragment : BottomSheetDialogFragment() {
         initRecyclerView()
         binding.icCloseDialog.setOnClickListener { findNavController().popBackStack() }
         searchViewListener()
-        subscribeObserver()
+        subscribeObservers()
     }
 
-    private fun subscribeObserver() {
+    private fun subscribeObservers() {
         viewModel.autocompletePlaces.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is UiState.Loading -> {}
@@ -54,9 +48,25 @@ class SearchPlaceFragment : BottomSheetDialogFragment() {
                     Toast.makeText(requireActivity(), state.msg, Toast.LENGTH_LONG).show()
             }
         }
+        viewModel.place.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is UiState.Loading -> {}
+
+                is UiState.Success -> findNavController().popBackStack()
+
+                is UiState.Error ->
+                    Toast.makeText(requireActivity(), state.msg, Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
     private fun initRecyclerView() {
+        autocompleteAdapter = AutocompletePlacesAdapter(object : AutocompletePlacesAdapter.ClickListener {
+            override fun onClick(place: PlaceUi) {
+                viewModel.addPlace(place)
+                findNavController().popBackStack()
+            }
+        })
         binding.rvAutocompletePlaces.layoutManager = LinearLayoutManager(requireContext())
         binding.rvAutocompletePlaces.adapter = autocompleteAdapter
     }
@@ -66,7 +76,10 @@ class SearchPlaceFragment : BottomSheetDialogFragment() {
         binding.searchView.onActionViewExpanded()
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                addPlace(query)
+                if (!query.isNullOrEmpty() && query.length >= 2)
+                    viewModel.fetchPlace(query)
+                else
+                    Toast.makeText(requireActivity(), getString(R.string.places_autocomplete_no_results), Toast.LENGTH_LONG).show()
                 return true
             }
 
@@ -80,24 +93,19 @@ class SearchPlaceFragment : BottomSheetDialogFragment() {
         })
     }
 
-    private fun addPlace(cityName: String?) {
+
+    // If the geocoding api stops working, use this geocoder
+/*    private fun addPlace(cityName: String) {
         val geoCoder = Geocoder(requireContext(), Locale("en"))
-        val address = geoCoder.getFromLocationName("Moscow", 1)
+        val address = geoCoder.getFromLocationName(cityName, 1)
         if (!address.isNullOrEmpty()) {
             val lat = address[0].latitude
             val lon = address[0].longitude
-            // Example: viewModel.addPlace(PlaceUi(cityName, lat, lon))
+            viewModel.addPlace(PlaceUi(city = cityName, lon = lon, lat = lat))
         }
         else {
             Toast.makeText(requireActivity(), getString(R.string.places_autocomplete_no_results), Toast.LENGTH_LONG).show()
         }
-    }
-
-
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return super.onCreateDialog(savedInstanceState)
-
-    }
-
+    } */
 
 }
