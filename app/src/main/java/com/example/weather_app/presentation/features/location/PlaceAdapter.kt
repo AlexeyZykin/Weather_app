@@ -1,26 +1,32 @@
 package com.example.weather_app.presentation.features.location
 
+import android.content.SharedPreferences
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.weather_app.R
+import com.example.weather_app.core.Config
+import com.example.weather_app.databinding.ItemPlaceBinding
 import com.example.weather_app.presentation.model.place.PlaceUi
 import com.example.weather_app.presentation.utils.Mapper
 
-class PlaceAdapter(private val clickListener: ClickListener) : RecyclerView.Adapter<PlaceAdapter.PlaceViewHolder>(), Mapper<List<PlaceUi>> {
+class PlaceAdapter(
+    private val clickListener: ClickListener,
+    private val sharedPref: SharedPreferences
+) : RecyclerView.Adapter<PlaceAdapter.PlaceViewHolder>(), Mapper<List<PlaceUi>> {
 
     private val list = mutableListOf<PlaceUi>()
 
-
-    class PlaceViewHolder(view: View): RecyclerView.ViewHolder(view) {
-        private val tvCity = view.findViewById<TextView>(R.id.tvPlaceCityName)
-        private val cvPlace = view.findViewById<CardView>(R.id.cvPlaceItem)
-        fun bind(place: PlaceUi, clickListener: ClickListener) {
-            tvCity.text = place.city
-            cvPlace.setOnLongClickListener {
+    class PlaceViewHolder(private val binding: ItemPlaceBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(place: PlaceUi, clickListener: ClickListener, sharedPref: SharedPreferences) {
+            val selectedPlace = sharedPref.getString(Config.SHARED_PREFS_SELECTED_PLACE, "")
+            val currentPlace = sharedPref.getString(Config.SHARED_PREFS_CURRENT_PLACE, "")
+            binding.tvPlaceCityName.text = place.city
+            binding.icIsCurrent.visibility = if (place.city == currentPlace) View.VISIBLE else View.GONE
+            binding.isSelected.visibility = if (place.city == selectedPlace) View.VISIBLE else View.GONE
+            binding.cvPlaceItem.setOnClickListener { clickListener.onClick(place) }
+            binding.cvPlaceItem.setOnLongClickListener {
                 clickListener.onLongClick(place)
                 true
             }
@@ -28,19 +34,14 @@ class PlaceAdapter(private val clickListener: ClickListener) : RecyclerView.Adap
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaceViewHolder {
-        return PlaceViewHolder(
-            LayoutInflater.from(parent.context).inflate(
-                R.layout.item_place,
-                parent,
-                false
-            )
-        )
+        val binding = ItemPlaceBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return PlaceViewHolder(binding)
     }
 
     override fun getItemCount() = list.size
 
     override fun onBindViewHolder(holder: PlaceViewHolder, position: Int) {
-        holder.bind(list[position], clickListener)
+        holder.bind(list[position], clickListener, sharedPref)
     }
 
     override fun map(source: List<PlaceUi>) {

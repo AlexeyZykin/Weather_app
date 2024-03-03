@@ -9,11 +9,9 @@ import com.example.weather_app.domain.model.place.AutocompletePlace
 import com.example.weather_app.domain.model.place.Place
 import com.example.weather_app.domain.repository.PlaceRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
-import kotlinx.coroutines.flow.onCompletion
 
 class PlaceRepositoryImpl(
     private val placeCacheDataSource: PlaceCacheDataSource,
@@ -60,6 +58,10 @@ class PlaceRepositoryImpl(
         }
     }
 
+    override suspend fun loadPlace(city: String): Place {
+        return placeEntityMapper.mapFromEntity(placeCacheDataSource.loadPlaceFromCache(city))
+    }
+
     override suspend fun fetchAllPlaces(): Flow<Response<List<Place>>> {
         val loading = flow<Response<List<Place>>> { emit(Response.Loading(true)) }
         val cachedPlaces: Flow<Response<List<Place>>> = placeCacheDataSource.getPlacesFromCache()
@@ -72,11 +74,15 @@ class PlaceRepositoryImpl(
         placeCacheDataSource.addPlaceToCache(placeEntityMapper.mapToEntity(place))
     }
 
-    override suspend fun deleteAllPlaces() {
-        placeCacheDataSource.clearCache()
+    override suspend fun deleteAllPlaces(currentPlace: String) {
+        placeCacheDataSource.deletePlacesExceptCurrent(currentPlace)
     }
 
     override suspend fun deletePlace(id: Int) {
-        placeCacheDataSource.deletePlace(id)
+        placeCacheDataSource.deletePlaceFromCache(id)
+    }
+
+    override suspend fun updatePlace(place: Place) {
+        placeCacheDataSource.updatePlace(placeEntityMapper.mapToEntity(place))
     }
 }

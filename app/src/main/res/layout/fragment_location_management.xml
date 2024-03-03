@@ -23,7 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="?attr/actionBarSize"
-        android:background="@drawable/image_location_management3">
+        android:background="@drawable/image_location_management2">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvPlaces"

@@ -4,9 +4,9 @@ import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.weather_app.core.Constants
+import com.example.weather_app.core.Config
 
-@Entity(tableName = Constants.ROOM_CURRENT_WEATHER_TABLE_NAME)
+@Entity(tableName = Config.ROOM_CURRENT_WEATHER_TABLE_NAME)
 data class CurrentWeatherCache(
     @PrimaryKey(autoGenerate = false) val id: Int,
     @Embedded val coord: CoordinatesCache,

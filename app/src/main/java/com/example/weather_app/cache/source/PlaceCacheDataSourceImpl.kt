@@ -5,6 +5,7 @@ import com.example.weather_app.cache.room.dao.PlaceDao
 import com.example.weather_app.data.model.place.PlaceEntity
 import com.example.weather_app.data.source.PlaceCacheDataSource
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 
 class PlaceCacheDataSourceImpl(
@@ -16,15 +17,28 @@ class PlaceCacheDataSourceImpl(
     }
 
     override suspend fun addPlaceToCache(place: PlaceEntity) {
-        placeDao.addPlace(placeCacheMapper.mapToCache(place))
+        val cachedPlaces = placeDao.getPlaces().firstOrNull()
+        val newPlace = placeCacheMapper.mapToCache(place)
+        val cityIsCached = cachedPlaces?.find { it.city == newPlace.city }
+        if (cityIsCached == null)
+            placeDao.addPlace(newPlace)
     }
 
-    override suspend fun deletePlace(id: Int) {
+    override suspend fun loadPlaceFromCache(city: String): PlaceEntity {
+        return placeCacheMapper.mapFromCache(placeDao.getPlaceByCity(city))
+
+    }
+
+    override suspend fun deletePlaceFromCache(id: Int) {
         placeDao.deletePlace(id)
     }
 
-    override suspend fun clearCache() {
-        placeDao.deleteAllPlaces()
+    override suspend fun updatePlace(place: PlaceEntity) {
+        placeDao.updatePlace(placeCacheMapper.mapToCache(place))
+    }
+
+    override suspend fun deletePlacesExceptCurrent(currentCity: String) {
+        placeDao.deleteAllPlacesExceptCurrent(currentCity)
     }
 
     override suspend fun isCached() {

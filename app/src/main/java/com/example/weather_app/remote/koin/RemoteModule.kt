@@ -2,7 +2,7 @@ package com.example.weather_app.remote.koin
 
 import com.example.weather_app.data.source.WeatherRemoteDataSource
 import com.example.weather_app.remote.api.WeatherService
-import com.example.weather_app.core.Constants
+import com.example.weather_app.core.Config
 import com.example.weather_app.data.source.PlaceRemoteDataSource
 import com.example.weather_app.remote.api.PlaceService
 import com.example.weather_app.remote.mapper.place.AutocompletePlaceResponseMapper
@@ -59,7 +59,7 @@ private fun providePlaceRetrofit(client: OkHttpClient): Retrofit {
     return Retrofit.Builder()
         .addConverterFactory(GsonConverterFactory.create())
         .client(client)
-        .baseUrl(Constants.BASE_URL_PLACE_API)
+        .baseUrl(Config.BASE_URL_PLACE_API)
         .build()
 }
 
@@ -71,7 +71,7 @@ private fun provideWeatherRetrofit(client: OkHttpClient): Retrofit {
     return Retrofit.Builder()
         .addConverterFactory(GsonConverterFactory.create())
         .client(client)
-        .baseUrl(Constants.BASE_URL_WEATHER_API)
+        .baseUrl(Config.BASE_URL_WEATHER_API)
         .build()
 }
 

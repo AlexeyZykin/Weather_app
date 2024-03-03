@@ -67,7 +67,6 @@ class AutocompletePlacesAdapter(private val clickListener: ClickListener) :
     ) : androidx.recyclerview.widget.DiffUtil.Callback() {
         override fun getOldListSize() = oldList.size
 
-
         override fun getNewListSize() = newList.size
 
         //todo("change field")

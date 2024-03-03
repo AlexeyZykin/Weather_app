@@ -4,22 +4,21 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.weather_app.cache.room.model.ForecastItemCache
 import com.example.weather_app.cache.room.model.ForecastWeatherCache
-import com.example.weather_app.core.Constants
+import com.example.weather_app.core.Config
 
 
 @Dao
 interface ForecastWeatherDao {
-    @Query("SELECT * FROM ${Constants.ROOM_FORECAST_WEATHER_TABLE_NAME}")
+    @Query("SELECT * FROM ${Config.ROOM_FORECAST_WEATHER_TABLE_NAME}")
     fun getForecastWeather(): ForecastWeatherCache
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addForecastWeather(data: ForecastWeatherCache)
 
-    @Query("DELETE FROM ${Constants.ROOM_FORECAST_WEATHER_TABLE_NAME}")
+    @Query("DELETE FROM ${Config.ROOM_FORECAST_WEATHER_TABLE_NAME}")
     fun deleteForecastWeather()
 
-    @Query("SELECT (SELECT COUNT(*) FROM ${Constants.ROOM_FORECAST_WEATHER_TABLE_NAME}) != 0")
+    @Query("SELECT (SELECT COUNT(*) FROM ${Config.ROOM_FORECAST_WEATHER_TABLE_NAME}) != 0")
     suspend fun isNotEmpty(): Boolean
 }

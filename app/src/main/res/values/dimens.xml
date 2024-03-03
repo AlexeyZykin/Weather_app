@@ -31,4 +31,7 @@
     <dimen name="icon_weather_medium_size">48dp</dimen>
     <dimen name="search_width">2dp</dimen>
     <dimen name="place_dialog_fragment_height">600dp</dimen>
+    <dimen name="icon_medium_size">32dp</dimen>
+    <dimen name="place_target_marker_width">7dp</dimen>
+    <dimen name="icon_standard_size">24dp</dimen>
 </resources>

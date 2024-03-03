@@ -16,7 +16,7 @@ import com.example.weather_app.cache.mapper.WindCacheMapper
 import com.example.weather_app.cache.room.db.WeatherDatabase
 import com.example.weather_app.cache.source.PlaceCacheDataSourceImpl
 import com.example.weather_app.cache.source.WeatherCacheDataSourceImpl
-import com.example.weather_app.core.Constants
+import com.example.weather_app.core.Config
 import com.example.weather_app.data.source.PlaceCacheDataSource
 import com.example.weather_app.data.source.WeatherCacheDataSource
 import org.koin.android.ext.koin.androidContext
@@ -46,7 +46,7 @@ private fun provideDatabase(context: Context): WeatherDatabase {
     return Room.databaseBuilder(
         context,
         WeatherDatabase::class.java,
-        Constants.ROOM_DATABASE_NAME
+        Config.ROOM_DATABASE_NAME
     ).build()
 }
 

@@ -8,6 +8,7 @@ import com.example.weather_app.core.Response
 import com.example.weather_app.domain.usecase.DeleteAllPlacesUseCase
 import com.example.weather_app.domain.usecase.DeletePlaceUseCase
 import com.example.weather_app.domain.usecase.FetchAllPlacesUseCase
+import com.example.weather_app.domain.usecase.UpdatePlaceUseCase
 import com.example.weather_app.presentation.mapper.place.PlaceUiMapper
 import com.example.weather_app.presentation.model.place.PlaceUi
 import com.example.weather_app.presentation.utils.UiState
@@ -19,6 +20,7 @@ class LocationManagementViewModel(
     private val fetchAllPlacesUseCase: FetchAllPlacesUseCase,
     private val deleteAllPlacesUseCase: DeleteAllPlacesUseCase,
     private val deletePlaceUseCase: DeletePlaceUseCase,
+    private val updatePlaceUseCase: UpdatePlaceUseCase,
     private val placeUiMapper: PlaceUiMapper
 ) : ViewModel() {
     private val _places = MutableLiveData<UiState<List<PlaceUi>>>()
@@ -41,12 +43,15 @@ class LocationManagementViewModel(
         }
     }
 
-    fun deleteAllPlaces() = viewModelScope.launch(Dispatchers.IO) {
-        deleteAllPlacesUseCase.invoke()
+    fun deletePlacesExceptCurrent(currentPlace: String) = viewModelScope.launch(Dispatchers.IO) {
+        deleteAllPlacesUseCase.invoke(currentPlace)
     }
 
     fun deletePlace(id: Int) = viewModelScope.launch(Dispatchers.IO) {
         deletePlaceUseCase.invoke(id)
     }
 
+    fun updatePlace(placeUi: PlaceUi) = viewModelScope.launch {
+        updatePlaceUseCase.invoke(placeUiMapper.mapFromUi(placeUi))
+    }
 }

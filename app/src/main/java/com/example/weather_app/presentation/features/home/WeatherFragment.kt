@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.location.LocationManager
@@ -25,11 +26,13 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.weather_app.R
+import com.example.weather_app.core.Config
 import com.example.weather_app.databinding.FragmentWeatherBinding
 import com.example.weather_app.presentation.dialog.PermissionDialog
 import com.example.weather_app.presentation.utils.UiState
 import com.example.weather_app.presentation.model.CurrentWeatherUi
 import com.example.weather_app.presentation.model.ForecastItemUi
+import com.example.weather_app.presentation.model.place.PlaceUi
 import com.example.weather_app.presentation.utils.DateTypeConverter
 import com.example.weather_app.presentation.utils.iconRes
 import com.example.weather_app.presentation.utils.imageRes
@@ -54,6 +57,9 @@ class WeatherFragment : Fragment(), HourlyForecastAdapter.ClickListener, DailyFo
     private val alertDialog: AlertDialog by lazy {
         AlertDialog.Builder(requireContext()).create()
     }
+    private val sharedPref: SharedPreferences by lazy {
+        requireContext().getSharedPreferences(Config.APP_PREFS, Context.MODE_PRIVATE)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -68,6 +74,7 @@ class WeatherFragment : Fragment(), HourlyForecastAdapter.ClickListener, DailyFo
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
         binding.toolbar.setupWithNavController(findNavController())
         binding.appBarLayout.setExpanded(isToolbarExpanded)
+        setupSelectedPlace()
         initRecyclerView()
         setupMenu()
         permissionListener()
@@ -88,7 +95,6 @@ class WeatherFragment : Fragment(), HourlyForecastAdapter.ClickListener, DailyFo
     override fun onResume() {
         super.onResume()
         getWeatherByCurrentLocation()
-        Log.d("AAA", "resume")
     }
 
 
@@ -202,7 +208,28 @@ class WeatherFragment : Fragment(), HourlyForecastAdapter.ClickListener, DailyFo
         val geoCoder = Geocoder(requireContext(), Locale("en"))
         val address = geoCoder.getFromLocation(lat, long, 3)
         cityName = address?.get(0)?.locality
-        cityName?.let { binding.collapsingToolbar.title = cityName }
+        cityName?.let { city ->
+            binding.collapsingToolbar.title = city
+            setupCurrentPlace(city)
+        }
+    }
+
+    private fun setupCurrentPlace(city: String) {
+        //todo (fix current place change)
+        val currentPlace = sharedPref.getString(Config.SHARED_PREFS_CURRENT_PLACE, "")
+        if (currentPlace == "")
+            sharedPref.edit().putString(Config.SHARED_PREFS_CURRENT_PLACE, city).apply()
+        val selectedPlace = sharedPref.getString(Config.SHARED_PREFS_SELECTED_PLACE, "")
+        if (selectedPlace == "") {
+            sharedPref.edit().putString(Config.SHARED_PREFS_SELECTED_PLACE, city).apply()
+            viewModel.fetchPlace(city)
+        }
+    }
+
+    private fun setupSelectedPlace() {
+        val selectedPlace = sharedPref.getString(Config.SHARED_PREFS_SELECTED_PLACE, "")
+        if (selectedPlace != "")
+            selectedPlace?.let { viewModel.loadPlace(it) }
     }
 
     private fun checkLocationPermission(): Boolean {
@@ -280,8 +307,7 @@ class WeatherFragment : Fragment(), HourlyForecastAdapter.ClickListener, DailyFo
         fusedLocationClient.lastLocation.addOnCompleteListener { task ->
             val location = task.result
             if (location != null) {
-                viewModel.fetchRealtimeWeather(task.result.latitude, task.result.longitude)
-                viewModel.fetchForecast(task.result.latitude, task.result.longitude)
+                showWeather(task.result.latitude, task.result.longitude)
             }
         }
     }
@@ -298,6 +324,19 @@ class WeatherFragment : Fragment(), HourlyForecastAdapter.ClickListener, DailyFo
         isToolbarExpanded = false
     }
 
+    private fun showWeather(lat: Double, lon: Double) {
+        val selectedPlace = sharedPref.getString(Config.SHARED_PREFS_SELECTED_PLACE, "")
+        if (selectedPlace == "") {
+            viewModel.fetchRealtimeWeather(lat, lon)
+            viewModel.fetchForecast(lat, lon)
+        }
+        else {
+            viewModel.place.observe(viewLifecycleOwner) { place ->
+                viewModel.fetchRealtimeWeather(place.lat, place.lon)
+                viewModel.fetchForecast(place.lat, place.lon)
+            }
+        }
+    }
 
     companion object {
         const val KEY_TOOLBAR_EXPANDED = "key_toolbar_expanded"

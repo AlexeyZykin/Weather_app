@@ -6,7 +6,9 @@ import kotlinx.coroutines.flow.Flow
 interface PlaceCacheDataSource {
     suspend fun getPlacesFromCache(): Flow<List<PlaceEntity>>
     suspend fun addPlaceToCache(place: PlaceEntity)
-    suspend fun deletePlace(id: Int)
-    suspend fun clearCache()
+    suspend fun loadPlaceFromCache(city: String): PlaceEntity
+    suspend fun deletePlaceFromCache(id: Int)
+    suspend fun updatePlace(place: PlaceEntity)
+    suspend fun deletePlacesExceptCurrent(currentCity: String)
     suspend fun isCached()
 }

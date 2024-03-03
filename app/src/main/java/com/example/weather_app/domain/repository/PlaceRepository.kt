@@ -9,8 +9,10 @@ import kotlinx.coroutines.flow.Flow
 interface PlaceRepository {
     suspend fun fetchAutocompletePlaces(textInput: String): Flow<Response<AutocompletePlace>>
     suspend fun fetchPlace(city: String): Flow<Response<Place>>
+    suspend fun loadPlace(city: String): Place
     suspend fun fetchAllPlaces(): Flow<Response<List<Place>>>
     suspend fun addPlace(place: Place)
-    suspend fun deleteAllPlaces()
+    suspend fun deleteAllPlaces(currentPlace: String)
     suspend fun deletePlace(id: Int)
+    suspend fun updatePlace(place: Place)
 }

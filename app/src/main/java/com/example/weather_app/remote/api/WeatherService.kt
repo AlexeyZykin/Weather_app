@@ -1,7 +1,7 @@
 package com.example.weather_app.remote.api
 
 import com.example.weather_app.BuildConfig
-import com.example.weather_app.core.Constants
+import com.example.weather_app.core.Config
 
 import com.example.weather_app.remote.model.weather.CurrentWeatherResponse
 import com.example.weather_app.remote.model.weather.ForecastWeatherResponse
@@ -14,7 +14,7 @@ interface WeatherService {
         @Query("lat") lat: Double = 0.0,
         @Query("lon") lon: Double = 0.0,
         @Query("q") cityName: String = "",
-        @Query("units") unit: String = Constants.UNIT_MEASURE,
+        @Query("units") unit: String = Config.UNIT_MEASURE,
         @Query("appid") apiKey: String = BuildConfig.API_KEY_WEATHER
         ): CurrentWeatherResponse
 
@@ -23,7 +23,7 @@ interface WeatherService {
     suspend fun getForecast(
         @Query("lat") lat: Double = 0.0,
         @Query("lon") lon: Double = 0.0,
-        @Query("units") unit: String = Constants.UNIT_MEASURE,
+        @Query("units") unit: String = Config.UNIT_MEASURE,
         @Query("appid") apiKey: String = BuildConfig.API_KEY_WEATHER
     ): ForecastWeatherResponse
 }

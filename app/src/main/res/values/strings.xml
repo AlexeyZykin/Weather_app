@@ -35,6 +35,13 @@
     <string name="delete">Delete</string>
     <string name="cancel_dialog">Cancel</string>
     <string name="delete_place">Delete place</string>
+    <string name="ok_dialog">OK</string>
+    <string name="current_place_deleting">Current place deleting</string>
+    <string name="current_place_deleting_message">You cannot delete the current location</string>
+    <string name="place_selection_dialog_tittle">Place selection</string>
+    <string name="place_selection_dialog_message">Are you sure you want to select this place?</string>
+    <string name="yes_dialog">YES</string>
+    <string name="no_dialog">NO</string>
 
 
 </resources>
