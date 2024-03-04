@@ -4,6 +4,7 @@ _______________
 ### App Preview
 ![Screenshot_1](screenshots/current_weather.png)
 ![Screenshot_2](screenshots/forecast_weather.png)
+![Screenshot_3](screenshots/location_management.png)
 _______________
 ### Tech stack
 + #### Kotlin
@@ -20,4 +21,6 @@ _______________
 + #### ViewModel - stores UI-related data
 + #### Navigation - used for navigation between fragments
 + #### Glide - used for working with images
++ #### Weather Api - OpenWeatherMap
++ #### Location Api - Geoapify
 
