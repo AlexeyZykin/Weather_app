@@ -4,11 +4,10 @@ import com.example.weather_app.data.model.place.PlaceEntity
 import kotlinx.coroutines.flow.Flow
 
 interface PlaceCacheDataSource {
-    suspend fun getPlacesFromCache(): Flow<List<PlaceEntity>>
+    fun getPlacesFromCache(): Flow<List<PlaceEntity>>
     suspend fun addPlaceToCache(place: PlaceEntity)
     suspend fun loadPlaceFromCache(city: String): PlaceEntity
     suspend fun deletePlaceFromCache(id: Int)
-    suspend fun updatePlace(place: PlaceEntity)
     suspend fun deletePlacesExceptCurrent(currentCity: String)
     suspend fun isCached()
 }

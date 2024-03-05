@@ -12,7 +12,7 @@ class PlaceCacheDataSourceImpl(
     private val placeDao: PlaceDao,
     private val placeCacheMapper: PlaceCacheMapper
 ) : PlaceCacheDataSource {
-    override suspend fun getPlacesFromCache(): Flow<List<PlaceEntity>> {
+    override fun getPlacesFromCache(): Flow<List<PlaceEntity>> {
         return placeDao.getPlaces().map { list -> list.map { placeCacheMapper.mapFromCache(it) } }
     }
 
@@ -31,10 +31,6 @@ class PlaceCacheDataSourceImpl(
 
     override suspend fun deletePlaceFromCache(id: Int) {
         placeDao.deletePlace(id)
-    }
-
-    override suspend fun updatePlace(place: PlaceEntity) {
-        placeDao.updatePlace(placeCacheMapper.mapToCache(place))
     }
 
     override suspend fun deletePlacesExceptCurrent(currentCity: String) {

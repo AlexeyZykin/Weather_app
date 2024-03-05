@@ -11,9 +11,7 @@ class PlaceEntityMapper : Mapper<PlaceEntity, Place> {
             city = data.city,
             lon = data.lon,
             lat = data.lat,
-            placeIdStr = data.placeIdStr,
-            isCurrentPlace = data.isCurrentPlace,
-            isTarget = data.isTarget
+            placeIdStr = data.placeIdStr
         )
     }
 
@@ -23,9 +21,7 @@ class PlaceEntityMapper : Mapper<PlaceEntity, Place> {
             city = data.city,
             lon = data.lon,
             lat = data.lat,
-            placeIdStr = data.placeIdStr,
-            isCurrentPlace = data.isCurrentPlace,
-            isTarget = data.isTarget
+            placeIdStr = data.placeIdStr
         )
     }
 }

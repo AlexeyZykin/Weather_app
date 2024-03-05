@@ -6,7 +6,7 @@ import com.example.weather_app.domain.repository.WeatherRepository
 import kotlinx.coroutines.flow.Flow
 
 class FetchRealtimeWeatherUseCase(private val weatherRepository: WeatherRepository) {
-    suspend fun invoke(lat: Double, lon: Double): Flow<Response<CurrentWeather>> {
+    fun invoke(lat: Double, lon: Double): Flow<Response<CurrentWeather>> {
         return weatherRepository.fetchRealtimeWeather(lat, lon)
     }
 }

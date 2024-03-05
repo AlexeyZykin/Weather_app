@@ -1,9 +1,11 @@
 package com.example.weather_app.presentation.features.location
 
+import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.navigation.fragment.findNavController
@@ -12,6 +14,8 @@ import com.example.weather_app.R
 import com.example.weather_app.databinding.FragmentSearchPlaceBinding
 import com.example.weather_app.presentation.model.place.PlaceUi
 import com.example.weather_app.presentation.utils.UiState
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -32,9 +36,9 @@ class SearchPlaceFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
-        binding.icCloseDialog.setOnClickListener { findNavController().popBackStack() }
         searchViewListener()
         subscribeObservers()
+        binding.icCloseDialog.setOnClickListener { findNavController().popBackStack() }
     }
 
     private fun subscribeObservers() {
@@ -76,10 +80,10 @@ class SearchPlaceFragment : BottomSheetDialogFragment() {
         binding.searchView.onActionViewExpanded()
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                if (!query.isNullOrEmpty() && query.length >= 2)
+                if (!query.isNullOrEmpty() && query.length >= 3)
                     viewModel.fetchPlace(query)
                 else
-                    Toast.makeText(requireActivity(), getString(R.string.places_autocomplete_no_results), Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), getString(R.string.places_autocomplete_no_results), Toast.LENGTH_LONG).show()
                 return true
             }
 

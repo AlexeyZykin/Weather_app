@@ -7,8 +7,8 @@ import com.example.weather_app.domain.model.weather.ForecastWeather
 import kotlinx.coroutines.flow.Flow
 
 interface WeatherRepository {
-    suspend fun fetchRealtimeWeather(lat: Double, lon: Double): Flow<Response<CurrentWeather>>
-    suspend fun fetchForecast(lat: Double, lon: Double): Flow<Response<ForecastWeather>>
-    suspend fun fetchForecastByTime(dt: Long): Flow<Response<ForecastItem>>
-    suspend fun fetchForecastByDay(dtTxt: String): Flow<Response<List<ForecastItem>>>
+    fun fetchRealtimeWeather(lat: Double, lon: Double): Flow<Response<CurrentWeather>>
+    fun fetchForecast(lat: Double, lon: Double): Flow<Response<ForecastWeather>>
+    fun fetchForecastByTime(dt: Long): Flow<Response<ForecastItem>>
+    fun fetchForecastByDay(dtTxt: String): Flow<Response<List<ForecastItem>>>
 }

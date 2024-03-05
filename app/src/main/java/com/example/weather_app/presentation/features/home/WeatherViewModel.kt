@@ -43,18 +43,20 @@ class WeatherViewModel(
     fun fetchRealtimeWeather(lat: Double, lon: Double) = viewModelScope.launch(Dispatchers.IO) {
         fetchRealtimeWeatherUseCase.invoke(lat, lon).distinctUntilChanged().collect {
             when (it) {
-                is Response.Loading -> if (it.isLoading) _currentWeather.postValue(
-                    UiState.Loading(isLoading = true)
+                is Response.Loading -> _currentWeather.postValue(
+                    UiState.Loading()
                 )
-                else _currentWeather.postValue(UiState.Loading(isLoading = false))
 
-                is Response.Success -> if (it.data != null) _currentWeather.postValue(
+                is Response.Success -> if (it.data != null) {
+                _currentWeather.postValue(
                     UiState.Success(currentWeatherUiMapper.mapToUi(it.data))
                 )
+                }
 
-                is Response.Error -> _currentWeather.postValue(
-                    UiState.Error(it.msg)
-                )
+                is Response.Error -> {
+                    _currentWeather.postValue(UiState.Loading())
+                    _currentWeather.postValue(UiState.Error(it.msg))
+                }
             }
         }
     }
@@ -62,13 +64,9 @@ class WeatherViewModel(
     fun fetchForecast(lat: Double, lon: Double) = viewModelScope.launch(Dispatchers.IO) {
         fetchForecastUseCase.invoke(lat, lon).distinctUntilChanged().collect {
             when (it) {
-                is Response.Loading -> if (it.isLoading) {
-                    _hourlyForecast.postValue(UiState.Loading(isLoading = true))
-                    _dailyForecast.postValue(UiState.Loading(isLoading = true))
-                }
-                else {
-                    _hourlyForecast.postValue(UiState.Loading(isLoading = false))
-                    _dailyForecast.postValue(UiState.Loading(isLoading = false))
+                is Response.Loading -> {
+                    _hourlyForecast.postValue(UiState.Loading())
+                    _dailyForecast.postValue(UiState.Loading())
                 }
 
                 is Response.Success -> if (it.data != null) {

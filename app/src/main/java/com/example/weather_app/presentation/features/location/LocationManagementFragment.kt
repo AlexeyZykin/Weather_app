@@ -89,6 +89,7 @@ class LocationManagementFragment : Fragment() {
                 val currentPlace = sharedPref.getString(Config.SHARED_PREFS_CURRENT_PLACE, "")
                 if (currentPlace != null) {
                     viewModel.deletePlacesExceptCurrent(currentPlace)
+                    sharedPref.edit().putString(Config.SHARED_PREFS_SELECTED_PLACE, currentPlace).apply()
                 }
             }
 

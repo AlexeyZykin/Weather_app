@@ -33,19 +33,19 @@ class SearchPlaceViewModel(
     fun fetchAutocompletePlaces(inputText: String) = viewModelScope.launch(Dispatchers.IO) {
         fetchAutocompletePlacesUseCase.invoke(inputText).distinctUntilChanged().collect { state ->
             when (state) {
-                is Response.Loading -> if (state.isLoading) _autocompletePlaces.postValue(
-                    UiState.Loading(true)
+                is Response.Loading -> _autocompletePlaces.postValue(
+                    UiState.Loading()
                 )
 
                 is Response.Success -> if (state.data != null) {
-                    _autocompletePlaces.postValue(UiState.Loading(false))
+                    _autocompletePlaces.postValue(UiState.Loading())
                     _autocompletePlaces.postValue(
                         UiState.Success(autocompletePlaceUiMapper.mapToUi(state.data))
                     )
                 }
 
                 is Response.Error -> {
-                    _autocompletePlaces.postValue(UiState.Loading(false))
+                    _autocompletePlaces.postValue(UiState.Loading())
                     _autocompletePlaces.postValue(UiState.Error(state.msg))
                 }
             }
@@ -56,17 +56,17 @@ class SearchPlaceViewModel(
     fun fetchPlace(city: String) = viewModelScope.launch(Dispatchers.IO) {
         fetchPlaceUseCase.invoke(city).distinctUntilChanged().collect { state ->
             when (state) {
-                is Response.Loading -> if (state.isLoading) _place.postValue(UiState.Loading(true))
+                is Response.Loading -> _place.postValue(UiState.Loading())
 
                 is Response.Success -> {
                     if (state.data != null) {
-                        _place.postValue(UiState.Loading(false))
+                        _place.postValue(UiState.Loading())
                         _place.postValue(UiState.Success(placeUiMapper.mapToUi(state.data)))
                     }
                 }
 
                 is Response.Error -> {
-                    _place.postValue(UiState.Loading(false))
+                    _place.postValue(UiState.Loading())
                     _place.postValue(UiState.Error(state.msg))
                 }
             }

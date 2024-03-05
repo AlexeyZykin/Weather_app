@@ -6,17 +6,19 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.weather_app.cache.room.model.CurrentWeatherCache
 import com.example.weather_app.core.Config
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CurrentWeatherDao {
+
     @Query("SELECT * FROM ${Config.ROOM_CURRENT_WEATHER_TABLE_NAME}")
-    fun getLastCurrentWeather(): CurrentWeatherCache
+    suspend fun getCurrentWeather(): CurrentWeatherCache
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addCurrentWeather(data: CurrentWeatherCache)
+    suspend fun addCurrentWeather(data: CurrentWeatherCache)
 
     @Query("DELETE FROM ${Config.ROOM_CURRENT_WEATHER_TABLE_NAME}")
-    fun deleteCurrentWeather()
+    suspend fun deleteCurrentWeather()
 
     @Query("SELECT (SELECT COUNT(*) FROM ${Config.ROOM_CURRENT_WEATHER_TABLE_NAME}) != 0")
     suspend fun isNotEmpty(): Boolean

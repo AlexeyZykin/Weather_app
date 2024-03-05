@@ -11,7 +11,17 @@ import com.example.weather_app.domain.model.weather.ForecastItem
 import com.example.weather_app.domain.model.weather.ForecastWeather
 import com.example.weather_app.domain.repository.WeatherRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flatMapConcat
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flatMapMerge
+import kotlinx.coroutines.flow.flatten
+import kotlinx.coroutines.flow.flattenConcat
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
+import kotlinx.coroutines.flow.merge
 import java.net.UnknownHostException
 
 
@@ -22,41 +32,46 @@ class WeatherRepositoryImpl(
     private val forecastWeatherEntityMapper: ForecastWeatherEntityMapper,
     private val forecastItemEntityMapper: ForecastItemEntityMapper
 ) : WeatherRepository {
-    override suspend fun fetchRealtimeWeather(lat: Double, lon: Double): Flow<Response<CurrentWeather>> = flow {
-        emit(Response.Loading(isLoading = true))
+
+    override fun fetchRealtimeWeather(lat: Double, lon: Double): Flow<Response<CurrentWeather>> = flow {
+        emit(Response.Loading())
         if (weatherCacheDataSource.isCachedCurrentWeather())
             emit(Response.Success(currentWeatherEntityMapper.mapFromEntity(
-                weatherCacheDataSource.getCurrentWeatherFromCache())))
+                weatherCacheDataSource.getCurrentWeather())))
 
         val response = try {
+            emit(Response.Loading())
             weatherRemoteDataSource.fetchRealtimeWeather(lat, lon)
         } catch (e: Exception) {
             emit(Response.Error("No network available, please check your WiFi or Data connection"))
             null
-        } catch (e: UnknownHostException) {
-            emit(Response.Error(e.message ?: "Error"))
-            null
         }
+
         if (response != null) {
             weatherCacheDataSource.clearCacheCurrentWeather()
             weatherCacheDataSource.addCurrentWeatherToCache(response)
             emit(Response.Success(
                     currentWeatherEntityMapper.mapFromEntity(
-                        weatherCacheDataSource.getCurrentWeatherFromCache())))
-            emit(Response.Loading(false))
+                        weatherCacheDataSource.getCurrentWeather())))
         }
     }
 
-    override suspend fun fetchForecast(
+    override fun fetchForecast(
         lat: Double,
         lon: Double
     ): Flow<Response<ForecastWeather>> = flow {
-        emit(Response.Loading(isLoading = true))
+        emit(Response.Loading())
         if (weatherCacheDataSource.isCachedForecast())
-            emit(Response.Success(forecastWeatherEntityMapper.mapFromEntity(
-                weatherCacheDataSource.getForecastWeatherFromCache())))
+            emit(
+                Response.Success(
+                    forecastWeatherEntityMapper.mapFromEntity(
+                        weatherCacheDataSource.getForecastWeatherFromCache()
+                    )
+                )
+            )
 
         val response = try {
+            emit(Response.Loading())
             weatherRemoteDataSource.fetchForecast(lat, lon)
         } catch (e: Exception) {
             emit(Response.Error("No network available, please check your WiFi or Data connection"))
@@ -66,43 +81,43 @@ class WeatherRepositoryImpl(
         if (response != null) {
             weatherCacheDataSource.clearCacheForecastWeather()
             weatherCacheDataSource.addForecastWeatherToCache(response)
-            emit(Response.Success(
-                forecastWeatherEntityMapper.mapFromEntity(
-                    weatherCacheDataSource.getForecastWeatherFromCache())))
-            emit(Response.Loading(false))
+            emit(
+                Response.Success(
+                    forecastWeatherEntityMapper.mapFromEntity(
+                        weatherCacheDataSource.getForecastWeatherFromCache()
+                    )
+                )
+            )
         }
     }
 
-    override suspend fun fetchForecastByTime(dt: Long): Flow<Response<ForecastItem>> = flow {
-        emit(Response.Loading(isLoading = true))
+    override fun fetchForecastByTime(dt: Long): Flow<Response<ForecastItem>> = flow {
+        emit(Response.Loading())
 
         val cachedData = try {
             weatherCacheDataSource.getForecastByTime(dt)
-        }
-        catch (e: Exception) {
+        } catch (e: Exception) {
             emit(Response.Error(e.message ?: "Error"))
             null
         }
 
-        if (cachedData != null) {
+        if (cachedData != null)
             emit(Response.Success(forecastItemEntityMapper.mapFromEntity(cachedData)))
-            emit(Response.Loading(isLoading = false))
-        }
+
     }
 
-    override suspend fun fetchForecastByDay(dtTxt: String): Flow<Response<List<ForecastItem>>> = flow {
-        emit(Response.Loading(isLoading = true))
-        val cachedData = try {
-            weatherCacheDataSource.getForecastByDay(dtTxt)
-        }
-        catch (e: Exception) {
-            emit(Response.Error(e.message ?: "Error"))
-            null
-        }
+    override fun fetchForecastByDay(dtTxt: String): Flow<Response<List<ForecastItem>>> =
+        flow {
+            emit(Response.Loading())
+            val cachedData = try {
+                weatherCacheDataSource.getForecastByDay(dtTxt)
+            } catch (e: Exception) {
+                emit(Response.Error(e.message ?: "Error"))
+                null
+            }
 
-        if (cachedData != null) {
-            emit(Response.Success(cachedData.map { forecastItemEntityMapper.mapFromEntity(it) }))
-            emit(Response.Loading(isLoading = false))
+            if (cachedData != null)
+                emit(Response.Success(cachedData.map { forecastItemEntityMapper.mapFromEntity(it) }))
+
         }
-    }
 }

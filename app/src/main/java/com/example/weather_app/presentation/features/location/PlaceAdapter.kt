@@ -20,11 +20,9 @@ class PlaceAdapter(
     class PlaceViewHolder(private val binding: ItemPlaceBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(place: PlaceUi, clickListener: ClickListener, sharedPref: SharedPreferences) {
-            val selectedPlace = sharedPref.getString(Config.SHARED_PREFS_SELECTED_PLACE, "")
             val currentPlace = sharedPref.getString(Config.SHARED_PREFS_CURRENT_PLACE, "")
             binding.tvPlaceCityName.text = place.city
             binding.icIsCurrent.visibility = if (place.city == currentPlace) View.VISIBLE else View.GONE
-            binding.isSelected.visibility = if (place.city == selectedPlace) View.VISIBLE else View.GONE
             binding.cvPlaceItem.setOnClickListener { clickListener.onClick(place) }
             binding.cvPlaceItem.setOnLongClickListener {
                 clickListener.onLongClick(place)

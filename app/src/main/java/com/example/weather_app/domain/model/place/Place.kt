@@ -5,7 +5,5 @@ data class Place(
     val city: String,
     val lon: Double,
     val lat: Double,
-    val placeIdStr: String,
-    val isCurrentPlace: Boolean = false,
-    val isTarget: Boolean = false
+    val placeIdStr: String
 )

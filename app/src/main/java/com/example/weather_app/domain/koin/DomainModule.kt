@@ -11,7 +11,6 @@ import com.example.weather_app.domain.usecase.FetchForecastUseCase
 import com.example.weather_app.domain.usecase.FetchPlaceUseCase
 import com.example.weather_app.domain.usecase.FetchRealtimeWeatherUseCase
 import com.example.weather_app.domain.usecase.LoadPlaceUseCase
-import com.example.weather_app.domain.usecase.UpdatePlaceUseCase
 import org.koin.dsl.module
 
 val domainModule = module {
@@ -26,6 +25,5 @@ val domainModule = module {
     factory { AddPlaceUseCase(get()) }
     factory { DeleteAllPlacesUseCase(get()) }
     factory { DeletePlaceUseCase(get()) }
-    factory { UpdatePlaceUseCase(get()) }
     factory { LoadPlaceUseCase(get()) }
 }

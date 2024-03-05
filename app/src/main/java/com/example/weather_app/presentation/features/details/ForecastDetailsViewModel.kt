@@ -27,13 +27,13 @@ class ForecastDetailsViewModel(
 
     fun fetchHourlyForecast(dt: Long) = viewModelScope.launch(Dispatchers.IO) {
         fetchForecastByTimeUseCase.invoke(dt).distinctUntilChanged().collect { state ->
-            when (state) {
-                is Response.Loading -> if (state.isLoading) _hourlyForecastDetails.postValue(
-                    UiState.Loading(true)
+            when (state)  {
+                is Response.Loading -> _hourlyForecastDetails.postValue(
+                    UiState.Loading()
                 )
 
                 is Response.Success -> if (state.data != null) {
-                    _hourlyForecastDetails.postValue(UiState.Loading(false))
+                    _hourlyForecastDetails.postValue(UiState.Loading())
                     _hourlyForecastDetails.postValue(
                         UiState.Success(forecastItemUiMapper.mapToUi(state.data))
                     )
@@ -47,12 +47,12 @@ class ForecastDetailsViewModel(
     fun fetchDailyForecast(dtTxt: String) = viewModelScope.launch(Dispatchers.IO) {
         fetchForecastByDayUseCase.invoke(dtTxt).distinctUntilChanged().collect { state ->
             when (state) {
-                is Response.Loading -> if (state.isLoading) _dailyForecastDetails.postValue(
-                    UiState.Loading(true)
+                is Response.Loading -> _dailyForecastDetails.postValue(
+                    UiState.Loading()
                 )
 
                 is Response.Success -> if (state.data != null) {
-                    _dailyForecastDetails.postValue(UiState.Loading(isLoading = false))
+                    _dailyForecastDetails.postValue(UiState.Loading())
                     dailyForecastHandling(state.data.map { forecastItemUiMapper.mapToUi(it) })
                 }
 

@@ -12,6 +12,7 @@ object DateTypeConverter {
     private const val DATE_FORMAT = "d MMM"
     private const val HOURLY_FORECAST_DETAILS_DATE_FORMAT = "EE H:mm"
     private const val DAILY_FORECAST_DETAILS_DATE_FORMAT = "EEEE d"
+    private const val DAILY_FORECAST_DETAILS_REQUEST_DATE = "y-MM-dd"
     //todo("change lang")
     fun convertUnixToDateString(unix: Long): String {
         val sdf = SimpleDateFormat(OUTPUT_TIME_FORMAT, Locale("en"))
@@ -53,5 +54,11 @@ object DateTypeConverter {
         val sdf = SimpleDateFormat(DATE_FORMAT, Locale("en"))
         val time = Calendar.getInstance().time
         return sdf.format(time)
+    }
+
+    fun convertUnixToDayForecastDateRequest(unix: Long): String {
+        val sdf = SimpleDateFormat(DAILY_FORECAST_DETAILS_REQUEST_DATE, Locale("en"))
+        val date = Date(unix * 1000)
+        return sdf.format(date)
     }
 }

@@ -20,9 +20,9 @@ class PlaceRepositoryImpl(
     private val placeEntityMapper: PlaceEntityMapper
 ) :
     PlaceRepository {
-    override suspend fun fetchAutocompletePlaces(textInput: String): Flow<Response<AutocompletePlace>> =
+    override fun fetchAutocompletePlaces(textInput: String): Flow<Response<AutocompletePlace>> =
         flow {
-            emit(Response.Loading(true))
+            emit(Response.Loading())
 
             val response = try {
                 placeRemoteDataSource.fetchAutocompletePlaces(textInput)
@@ -37,12 +37,12 @@ class PlaceRepositoryImpl(
                         autocompletePlaceEntityMapper.mapFromEntity(response)
                     )
                 )
-                emit(Response.Loading(false))
+                emit(Response.Loading())
             }
         }
 
-    override suspend fun fetchPlace(city: String): Flow<Response<Place>> = flow {
-        emit(Response.Loading(true))
+    override fun fetchPlace(city: String): Flow<Response<Place>> = flow {
+        emit(Response.Loading())
 
         val response = try {
             placeRemoteDataSource.fetchPlace(city)
@@ -54,7 +54,7 @@ class PlaceRepositoryImpl(
         if (response != null) {
             placeCacheDataSource.addPlaceToCache(response)
             emit(Response.Success(placeEntityMapper.mapFromEntity(response)))
-            emit(Response.Loading(false))
+            emit(Response.Loading())
         }
     }
 
@@ -62,8 +62,8 @@ class PlaceRepositoryImpl(
         return placeEntityMapper.mapFromEntity(placeCacheDataSource.loadPlaceFromCache(city))
     }
 
-    override suspend fun fetchAllPlaces(): Flow<Response<List<Place>>> {
-        val loading = flow<Response<List<Place>>> { emit(Response.Loading(true)) }
+    override fun fetchAllPlaces(): Flow<Response<List<Place>>> {
+        val loading = flow<Response<List<Place>>> { emit(Response.Loading()) }
         val cachedPlaces: Flow<Response<List<Place>>> = placeCacheDataSource.getPlacesFromCache()
             .map { places -> places.map { placeEntityMapper.mapFromEntity(it) } }
             .map { Response.Success(it) }
@@ -80,9 +80,5 @@ class PlaceRepositoryImpl(
 
     override suspend fun deletePlace(id: Int) {
         placeCacheDataSource.deletePlaceFromCache(id)
-    }
-
-    override suspend fun updatePlace(place: Place) {
-        placeCacheDataSource.updatePlace(placeEntityMapper.mapToEntity(place))
     }
 }

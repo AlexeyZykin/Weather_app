@@ -8,7 +8,6 @@ import com.example.weather_app.core.Response
 import com.example.weather_app.domain.usecase.DeleteAllPlacesUseCase
 import com.example.weather_app.domain.usecase.DeletePlaceUseCase
 import com.example.weather_app.domain.usecase.FetchAllPlacesUseCase
-import com.example.weather_app.domain.usecase.UpdatePlaceUseCase
 import com.example.weather_app.presentation.mapper.place.PlaceUiMapper
 import com.example.weather_app.presentation.model.place.PlaceUi
 import com.example.weather_app.presentation.utils.UiState
@@ -20,7 +19,6 @@ class LocationManagementViewModel(
     private val fetchAllPlacesUseCase: FetchAllPlacesUseCase,
     private val deleteAllPlacesUseCase: DeleteAllPlacesUseCase,
     private val deletePlaceUseCase: DeletePlaceUseCase,
-    private val updatePlaceUseCase: UpdatePlaceUseCase,
     private val placeUiMapper: PlaceUiMapper
 ) : ViewModel() {
     private val _places = MutableLiveData<UiState<List<PlaceUi>>>()
@@ -29,10 +27,10 @@ class LocationManagementViewModel(
     fun fetchAllPlaces() = viewModelScope.launch(Dispatchers.IO) {
         fetchAllPlacesUseCase.invoke().distinctUntilChanged().collect { state ->
             when (state) {
-                is Response.Loading -> if (state.isLoading) _places.postValue(UiState.Loading(true))
+                is Response.Loading ->  _places.postValue(UiState.Loading())
 
                 is Response.Success -> if (state.data != null) {
-                    _places.postValue(UiState.Loading(false))
+                    _places.postValue(UiState.Loading())
                     _places.postValue(
                         UiState.Success(state.data.map { placeUiMapper.mapToUi(it) })
                     )
@@ -49,9 +47,5 @@ class LocationManagementViewModel(
 
     fun deletePlace(id: Int) = viewModelScope.launch(Dispatchers.IO) {
         deletePlaceUseCase.invoke(id)
-    }
-
-    fun updatePlace(placeUi: PlaceUi) = viewModelScope.launch {
-        updatePlaceUseCase.invoke(placeUiMapper.mapFromUi(placeUi))
     }
 }

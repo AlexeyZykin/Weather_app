@@ -6,7 +6,7 @@ import com.example.weather_app.domain.repository.PlaceRepository
 import kotlinx.coroutines.flow.Flow
 
 class FetchPlaceUseCase(private val placeRepository: PlaceRepository) {
-    suspend fun invoke(city: String): Flow<Response<Place>> {
+    fun invoke(city: String): Flow<Response<Place>> {
         return placeRepository.fetchPlace(city)
     }
 }

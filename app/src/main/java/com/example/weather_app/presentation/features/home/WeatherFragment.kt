@@ -19,7 +19,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -32,7 +31,6 @@ import com.example.weather_app.presentation.dialog.PermissionDialog
 import com.example.weather_app.presentation.utils.UiState
 import com.example.weather_app.presentation.model.CurrentWeatherUi
 import com.example.weather_app.presentation.model.ForecastItemUi
-import com.example.weather_app.presentation.model.place.PlaceUi
 import com.example.weather_app.presentation.utils.DateTypeConverter
 import com.example.weather_app.presentation.utils.iconRes
 import com.example.weather_app.presentation.utils.imageRes
@@ -41,7 +39,8 @@ import com.google.android.gms.location.LocationServices
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.Locale
 
-class WeatherFragment : Fragment(), HourlyForecastAdapter.ClickListener, DailyForecastAdapter.ClickListener {
+class WeatherFragment : Fragment(), HourlyForecastAdapter.ClickListener,
+    DailyForecastAdapter.ClickListener {
     private lateinit var binding: FragmentWeatherBinding
     private lateinit var pLauncher: ActivityResultLauncher<Array<String>>
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -53,9 +52,6 @@ class WeatherFragment : Fragment(), HourlyForecastAdapter.ClickListener, DailyFo
     }
     private val dailyForecastAdapter: DailyForecastAdapter by lazy {
         DailyForecastAdapter(this@WeatherFragment)
-    }
-    private val alertDialog: AlertDialog by lazy {
-        AlertDialog.Builder(requireContext()).create()
     }
     private val sharedPref: SharedPreferences by lazy {
         requireContext().getSharedPreferences(Config.APP_PREFS, Context.MODE_PRIVATE)
@@ -74,7 +70,7 @@ class WeatherFragment : Fragment(), HourlyForecastAdapter.ClickListener, DailyFo
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
         binding.toolbar.setupWithNavController(findNavController())
         binding.appBarLayout.setExpanded(isToolbarExpanded)
-        setupSelectedPlace()
+        loadSelectedPlace()
         initRecyclerView()
         setupMenu()
         permissionListener()
@@ -102,14 +98,18 @@ class WeatherFragment : Fragment(), HourlyForecastAdapter.ClickListener, DailyFo
         binding.toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.search_item -> {
-                    val action = WeatherFragmentDirections.actionWeatherFragmentToLocationManagementFragment()
+                    val action =
+                        WeatherFragmentDirections.actionWeatherFragmentToLocationManagementFragment()
                     findNavController().navigate(action)
+                    isToolbarExpanded = true
                     true
                 }
+
                 R.id.refreshMenuItem -> {
                     getWeatherByCurrentLocation()
                     true
                 }
+
                 else -> false
             }
         }
@@ -121,19 +121,23 @@ class WeatherFragment : Fragment(), HourlyForecastAdapter.ClickListener, DailyFo
         outState.putBoolean(KEY_TOOLBAR_EXPANDED, isToolbarExpanded)
     }
 
-   private fun initRecyclerView() {
-       binding.rvDailyForecast.layoutManager = LinearLayoutManager(requireContext())
-       binding.rvDailyForecast.adapter = dailyForecastAdapter
-       binding.rvHourlyForecast.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-       binding.rvHourlyForecast.adapter = hourlyForecastAdapter
+    private fun initRecyclerView() {
+        binding.rvDailyForecast.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvDailyForecast.adapter = dailyForecastAdapter
+        binding.rvHourlyForecast.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.rvHourlyForecast.adapter = hourlyForecastAdapter
     }
 
     private fun subscribeObservers() {
         viewModel.currentWeather.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is UiState.Loading -> binding.swipeRefresh.isRefreshing = state.isLoading
+                is UiState.Loading -> binding.swipeRefresh.isRefreshing = true
 
-                is UiState.Success -> state.data?.let { updateView(it) }
+                is UiState.Success -> {
+                    binding.swipeRefresh.isRefreshing = false
+                    state.data?.let { updateView(it) }
+                }
 
                 is UiState.Error ->
                     Toast.makeText(requireActivity(), state.msg, Toast.LENGTH_LONG).show()
@@ -141,7 +145,7 @@ class WeatherFragment : Fragment(), HourlyForecastAdapter.ClickListener, DailyFo
         }
         viewModel.hourlyForecast.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is UiState.Loading -> {}//binding.swipeRefresh.isRefreshing = state.isLoading
+                is UiState.Loading -> {}
 
                 is UiState.Success -> state.data?.let { hourlyForecastAdapter.map(it) }
 
@@ -151,7 +155,7 @@ class WeatherFragment : Fragment(), HourlyForecastAdapter.ClickListener, DailyFo
         }
         viewModel.dailyForecast.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is UiState.Loading -> {}//binding.swipeRefresh.isRefreshing = state.isLoading
+                is UiState.Loading -> {}
 
                 is UiState.Success -> state.data?.let { dailyForecastAdapter.map(it) }
 
@@ -164,7 +168,8 @@ class WeatherFragment : Fragment(), HourlyForecastAdapter.ClickListener, DailyFo
     @SuppressLint("SetTextI18n")
     private fun updateView(currentWeather: CurrentWeatherUi) {
         weatherImageListener(currentWeather)
-        getCityName(currentWeather.coord.lat, currentWeather.coord.lon)
+        setupTitle()
+        setupSelectedPlace()
         binding.imgSwipeDown.visibility = View.GONE
         binding.tvTemp.text = "${currentWeather.main.temp}${getString(R.string.metric_celsius)}"
         binding.tvRealtimeWeatherTitle.text = currentWeather.weather.main
@@ -201,35 +206,35 @@ class WeatherFragment : Fragment(), HourlyForecastAdapter.ClickListener, DailyFo
         Glide.with(requireContext()).load(iconRes).into(binding.iconWeather)
     }
 
-
-    private fun getCityName(lat: Double, long: Double) {
-        val cityName: String?
-        //todo("change geocoder language")
-        val geoCoder = Geocoder(requireContext(), Locale("en"))
-        val address = geoCoder.getFromLocation(lat, long, 3)
-        cityName = address?.get(0)?.locality
-        cityName?.let { city ->
-            binding.collapsingToolbar.title = city
-            setupCurrentPlace(city)
-        }
+    private fun setupTitle() {
+        val selectedPlace = sharedPref.getString(Config.SHARED_PREFS_SELECTED_PLACE, "")
+        val currentPlace = sharedPref.getString(Config.SHARED_PREFS_CURRENT_PLACE, "")
+        binding.collapsingToolbar.title = if (selectedPlace == "") currentPlace else selectedPlace
     }
 
-    private fun setupCurrentPlace(city: String) {
-        //todo (fix current place change)
-        val currentPlace = sharedPref.getString(Config.SHARED_PREFS_CURRENT_PLACE, "")
-        if (currentPlace == "")
+    private fun setupCurrentPlace(lat: Double, lon: Double) {
+        val geoCoder = Geocoder(requireContext(), Locale("en"))
+        val address = geoCoder.getFromLocation(lat, lon, 3)
+        val cityName: String? = address?.get(0)?.locality
+        cityName?.let { city ->
             sharedPref.edit().putString(Config.SHARED_PREFS_CURRENT_PLACE, city).apply()
-        val selectedPlace = sharedPref.getString(Config.SHARED_PREFS_SELECTED_PLACE, "")
-        if (selectedPlace == "") {
-            sharedPref.edit().putString(Config.SHARED_PREFS_SELECTED_PLACE, city).apply()
-            viewModel.fetchPlace(city)
         }
     }
 
     private fun setupSelectedPlace() {
         val selectedPlace = sharedPref.getString(Config.SHARED_PREFS_SELECTED_PLACE, "")
+        if (selectedPlace == "") {
+            val currentPlace = sharedPref.getString(Config.SHARED_PREFS_CURRENT_PLACE, "")
+            sharedPref.edit().putString(Config.SHARED_PREFS_SELECTED_PLACE, currentPlace).apply()
+            currentPlace?.let { viewModel.fetchPlace(it) }
+        }
+    }
+
+    private fun loadSelectedPlace() {
+        val selectedPlace = sharedPref.getString(Config.SHARED_PREFS_SELECTED_PLACE, "")
         if (selectedPlace != "")
             selectedPlace?.let { viewModel.loadPlace(it) }
+
     }
 
     private fun checkLocationPermission(): Boolean {
@@ -307,19 +312,25 @@ class WeatherFragment : Fragment(), HourlyForecastAdapter.ClickListener, DailyFo
         fusedLocationClient.lastLocation.addOnCompleteListener { task ->
             val location = task.result
             if (location != null) {
+                setupCurrentPlace(task.result.latitude, task.result.longitude)
                 showWeather(task.result.latitude, task.result.longitude)
             }
         }
     }
 
     override fun onClickDailyForecast(forecastItem: ForecastItemUi) {
-        val action = WeatherFragmentDirections.actionWeatherFragmentToDailyForecastDetailsFragment(forecastItem.dtTxt)
+        val dtTxt = DateTypeConverter.convertUnixToDayForecastDateRequest(forecastItem.dt)
+        val action = WeatherFragmentDirections.actionWeatherFragmentToDailyForecastDetailsFragment(
+            dtTxt
+        )
         findNavController().navigate(action)
         isToolbarExpanded = false
     }
 
     override fun onClickHourlyForecast(forecastItem: ForecastItemUi) {
-        val action = WeatherFragmentDirections.actionWeatherFragmentToHourlyForecastDetailsFragment(forecastItem.dt)
+        val action = WeatherFragmentDirections.actionWeatherFragmentToHourlyForecastDetailsFragment(
+            forecastItem.dt
+        )
         findNavController().navigate(action)
         isToolbarExpanded = false
     }
@@ -329,8 +340,7 @@ class WeatherFragment : Fragment(), HourlyForecastAdapter.ClickListener, DailyFo
         if (selectedPlace == "") {
             viewModel.fetchRealtimeWeather(lat, lon)
             viewModel.fetchForecast(lat, lon)
-        }
-        else {
+        } else {
             viewModel.place.observe(viewLifecycleOwner) { place ->
                 viewModel.fetchRealtimeWeather(place.lat, place.lon)
                 viewModel.fetchForecast(place.lat, place.lon)

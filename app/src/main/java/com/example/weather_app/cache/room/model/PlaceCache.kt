@@ -11,7 +11,5 @@ data class PlaceCache(
     @ColumnInfo("city") val city: String,
     @ColumnInfo("lon") val lon: Double,
     @ColumnInfo("lat") val lat: Double,
-    @ColumnInfo("place_id_str") val placeIdStr: String,
-    @ColumnInfo("isCurrentPlace") val isCurrentPlace: Boolean = false,
-    @ColumnInfo("isTarget") val isTarget: Boolean = false
+    @ColumnInfo("place_id_str") val placeIdStr: String
 )

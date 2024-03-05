@@ -23,7 +23,7 @@ val presentationModule = module {
     viewModel { WeatherViewModel(get(), get(), get(), get(), get(), get(), get()) }
     viewModel { ForecastDetailsViewModel(get(), get(), get()) }
     viewModel { SearchPlaceViewModel(get(), get(), get(), get(), get()) }
-    viewModel { LocationManagementViewModel(get(), get(), get(), get(), get()) }
+    viewModel { LocationManagementViewModel(get(), get(), get(), get()) }
     factory { CloudsUiMapper() }
     factory { CoordinatesUiMapper() }
     factory { CurrentWeatherUiMapper(get(), get(), get(), get(), get(), get()) }
