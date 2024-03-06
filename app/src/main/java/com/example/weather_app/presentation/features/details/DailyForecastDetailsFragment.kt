@@ -59,7 +59,7 @@ class DailyForecastDetailsFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     private fun updateView(data: List<ForecastItemUi>) {
         binding.tvDailyForecastDetailsDate.text =
-            DateTypeConverter.convertUnixToDailyForecastDetailsDate(data.first().dt)
+            DateTypeConverter.convertUnixToDateString(data.first().dt, DateTypeConverter.DAILY_FORECAST_DETAILS_DATE_FORMAT)
         val dayForecast = data.first()
         val nightForecast = data.last()
         val celsiusString = getString(R.string.metric_celsius)

@@ -30,10 +30,12 @@ class DailyForecastAdapter(
 
         fun bind(forecastItem: ForecastItemUi, clickListener: ClickListener) {
             val context = tvDayOfWeek.context
-            if (DateTypeConverter.convertUnixToDate(forecastItem.dt) == DateTypeConverter.currentDate())
+            if (DateTypeConverter.convertUnixToDateString(forecastItem.dt, DateTypeConverter.DATE_FORMAT)
+                == DateTypeConverter.currentDate())
                 tvDayOfWeek.text = context.getString(R.string.today)
             else
-                tvDayOfWeek.text = DateTypeConverter.convertUnixToDayOfWeek(forecastItem.dt)
+                tvDayOfWeek.text = DateTypeConverter
+                    .convertUnixToDateString(forecastItem.dt, DateTypeConverter.DAY_OF_WEEK_DATE_FORMAT)
             val iconRes = forecastItem.weatherType.iconRes(forecastItem.partOfDay)
             Glide.with(context).load(iconRes).centerCrop().into(icon)
             tvTemp.text = forecastItem.mainInfo.temp.toString() + "°c"

@@ -177,7 +177,8 @@ class WeatherFragment : Fragment(), HourlyForecastAdapter.ClickListener,
             currentWeather.weather.description.replaceFirstChar {
                 if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString()
             }
-        binding.tvUpdateTime.text = DateTypeConverter.convertUnixToDateString(currentWeather.dt)
+        binding.tvUpdateTime.text = DateTypeConverter
+            .convertUnixToDateString(currentWeather.dt, DateTypeConverter.OUTPUT_TIME_FORMAT)
         binding.tvFeelsLike.text =
             "${currentWeather.main.feelsLike}${getString(R.string.metric_celsius)}"
         binding.tvWindSpeed.text =
@@ -319,7 +320,8 @@ class WeatherFragment : Fragment(), HourlyForecastAdapter.ClickListener,
     }
 
     override fun onClickDailyForecast(forecastItem: ForecastItemUi) {
-        val dtTxt = DateTypeConverter.convertUnixToDayForecastDateRequest(forecastItem.dt)
+        val dtTxt = DateTypeConverter
+            .convertUnixToDateString(forecastItem.dt, DateTypeConverter.DAILY_FORECAST_DETAILS_REQUEST_DATE)
         val action = WeatherFragmentDirections.actionWeatherFragmentToDailyForecastDetailsFragment(
             dtTxt
         )

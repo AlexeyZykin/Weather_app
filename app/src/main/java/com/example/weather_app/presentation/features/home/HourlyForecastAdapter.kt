@@ -28,7 +28,8 @@ class HourlyForecastAdapter(
         private val card = view.findViewById<CardView>(R.id.cvHourlyForecast)
 
         fun bind(forecastItem: ForecastItemUi, clickListener: ClickListener) {
-            tvTime.text = DateTypeConverter.convertUnixToHour(forecastItem.dt)
+            tvTime.text = DateTypeConverter
+                .convertUnixToDateString(forecastItem.dt, DateTypeConverter.HOUR_DATE_FORMAT)
             val iconRes = forecastItem.weatherType.iconRes(forecastItem.partOfDay)
             Glide.with(icon.context).load(iconRes).centerCrop().into(icon)
             tvTemp.text = forecastItem.mainInfo.temp.toString() + "°c"

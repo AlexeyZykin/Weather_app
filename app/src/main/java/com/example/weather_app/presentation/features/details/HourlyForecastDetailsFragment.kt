@@ -57,7 +57,8 @@ class HourlyForecastDetailsFragment : Fragment() {
         val isNight = data.partOfDay == "n"
         val imageRes = data.weatherType.imageRes(isNight)
         binding.layout.setBackgroundResource(imageRes)
-        binding.tvHourlyForecastDetailsDate.text = DateTypeConverter.convertUnixToHourlyForecastDetailsDate(data.dt)
+        binding.tvHourlyForecastDetailsDate.text = DateTypeConverter
+            .convertUnixToDateString(data.dt, DateTypeConverter.HOURLY_FORECAST_DETAILS_DATE_FORMAT)
         val iconRes = data.weatherType.iconRes(data.partOfDay)
         Glide.with(requireContext()).load(iconRes).into(binding.iconWeather)
         binding.tvHourlyForecastDesc.text = data.weather.description.replaceFirstChar {
