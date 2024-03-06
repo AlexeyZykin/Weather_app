@@ -37,7 +37,6 @@ class PlaceRepositoryImpl(
                         autocompletePlaceEntityMapper.mapFromEntity(response)
                     )
                 )
-                emit(Response.Loading())
             }
         }
 
@@ -45,6 +44,7 @@ class PlaceRepositoryImpl(
         emit(Response.Loading())
 
         val response = try {
+            emit(Response.Loading())
             placeRemoteDataSource.fetchPlace(city)
         } catch (e: Exception) {
             emit(Response.Error(e.message ?: "Error"))
@@ -54,7 +54,6 @@ class PlaceRepositoryImpl(
         if (response != null) {
             placeCacheDataSource.addPlaceToCache(response)
             emit(Response.Success(placeEntityMapper.mapFromEntity(response)))
-            emit(Response.Loading())
         }
     }
 

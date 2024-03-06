@@ -38,14 +38,12 @@ class SearchPlaceViewModel(
                 )
 
                 is Response.Success -> if (state.data != null) {
-                    _autocompletePlaces.postValue(UiState.Loading())
                     _autocompletePlaces.postValue(
                         UiState.Success(autocompletePlaceUiMapper.mapToUi(state.data))
                     )
                 }
 
                 is Response.Error -> {
-                    _autocompletePlaces.postValue(UiState.Loading())
                     _autocompletePlaces.postValue(UiState.Error(state.msg))
                 }
             }
@@ -60,13 +58,11 @@ class SearchPlaceViewModel(
 
                 is Response.Success -> {
                     if (state.data != null) {
-                        _place.postValue(UiState.Loading())
                         _place.postValue(UiState.Success(placeUiMapper.mapToUi(state.data)))
                     }
                 }
 
                 is Response.Error -> {
-                    _place.postValue(UiState.Loading())
                     _place.postValue(UiState.Error(state.msg))
                 }
             }

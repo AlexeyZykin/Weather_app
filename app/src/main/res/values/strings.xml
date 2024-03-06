@@ -43,15 +43,16 @@
     <string name="yes_dialog">YES</string>
     <string name="no_dialog">NO</string>
     <string name="places_search_label_best_cities">Best cities</string>
-    <string name="best_cities_moscow">Moscow</string>
-    <string name="best_cities_new_york">New York</string>
-    <string name="best_cities_london">London</string>
-    <string name="best_cities_paris">Paris</string>
-    <string name="best_cities_tokyo">Tokyo</string>
-    <string name="best_cities_dubai">Dubai</string>
-    <string name="best_cities_amsterdam">Amsterdam</string>
-    <string name="best_cities_barcelona">Barcelona</string>
-    <string name="best_cities_seoul">Seoul</string>
-
+    <string-array name="best_cities">
+        <item name="moscow">Moscow</item>
+        <item name="new_york">New York</item>
+        <item name="london">London</item>
+        <item name="paris">Paris</item>
+        <item name="tokyo">Tokyo</item>
+        <item name="dubai">Dubai</item>
+        <item name="seoul">Seoul</item>
+        <item name="amsterdam">Amsterdam</item>
+        <item name="barcelona">Barcelona</item>
+    </string-array>
 
 </resources>

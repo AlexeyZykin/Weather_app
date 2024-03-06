@@ -15,5 +15,7 @@
         <!-- Customize your theme here. -->
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <!-- other styles-->
+        <item name="chipStyle">@style/ChipStyle.Default</item>
     </style>
 </resources>

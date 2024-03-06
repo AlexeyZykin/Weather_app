@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="ChipStyle.Default" parent="@style/Widget.Material3.Chip.Suggestion.Elevated"/>
+</resources>

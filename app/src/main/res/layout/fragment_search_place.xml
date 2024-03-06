@@ -67,70 +67,15 @@
                     app:layout_constraintTop_toBottomOf="@+id/searchView" />
 
                 <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chipGroup"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/large_margin"
                     android:layout_marginTop="@dimen/standard_margin"
                     android:layout_marginEnd="@dimen/large_margin"
-                    app:layout_constraintTop_toBottomOf="@+id/labelBestCities">
-
-                    <com.google.android.material.chip.Chip
-                        style="@style/Widget.Material3.Chip.Assist.Elevated"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/best_cities_moscow" />
-
-                    <com.google.android.material.chip.Chip
-                        style="@style/Widget.Material3.Chip.Assist.Elevated"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/best_cities_new_york" />
-
-                    <com.google.android.material.chip.Chip
-                        style="@style/Widget.Material3.Chip.Assist.Elevated"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/best_cities_london" />
-
-                    <com.google.android.material.chip.Chip
-                        style="@style/Widget.Material3.Chip.Assist.Elevated"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/best_cities_paris" />
-
-                    <com.google.android.material.chip.Chip
-                        style="@style/Widget.Material3.Chip.Assist.Elevated"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/best_cities_tokyo" />
-
-                    <com.google.android.material.chip.Chip
-                        style="@style/Widget.Material3.Chip.Assist.Elevated"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/best_cities_dubai" />
-
-                    <com.google.android.material.chip.Chip
-                        style="@style/Widget.Material3.Chip.Assist.Elevated"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/best_cities_seoul" />
-
-                    <com.google.android.material.chip.Chip
-                        style="@style/Widget.Material3.Chip.Assist.Elevated"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/best_cities_amsterdam" />
-
-                    <com.google.android.material.chip.Chip
-                        style="@style/Widget.Material3.Chip.Assist.Elevated"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/best_cities_barcelona" />
-
-
-                </com.google.android.material.chip.ChipGroup>
-
+                    app:layout_constraintTop_toBottomOf="@+id/labelBestCities"
+                    app:selectionRequired="true"
+                    app:singleSelection="true" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvAutocompletePlaces"
