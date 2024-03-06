@@ -46,7 +46,6 @@ class WeatherFragment : Fragment(), HourlyForecastAdapter.ClickListener,
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private val viewModel by viewModel<WeatherViewModel>()
     private var isToolbarExpanded = true
-    private var isPermissionDialogShown = false
     private val hourlyForecastAdapter: HourlyForecastAdapter by lazy {
         HourlyForecastAdapter(this@WeatherFragment)
     }
@@ -88,8 +87,8 @@ class WeatherFragment : Fragment(), HourlyForecastAdapter.ClickListener,
         }
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onStart() {
+        super.onStart()
         getWeatherByCurrentLocation()
     }
 
@@ -255,8 +254,7 @@ class WeatherFragment : Fragment(), HourlyForecastAdapter.ClickListener,
         ) { permissions ->
             val allPermissionsGranted = permissions.all { it.value }
 
-            if (!allPermissionsGranted && !isPermissionDialogShown) {
-                isPermissionDialogShown = true
+            if (!allPermissionsGranted) {
                 requestForegroundLocationDialog()
             }
             binding.imgSwipeDown.visibility = View.VISIBLE
