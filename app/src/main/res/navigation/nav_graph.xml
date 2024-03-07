@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/weatherFragment"
-        android:name="com.example.weather_app.presentation.features.home.WeatherFragment"
+        android:name="com.example.weather_app.presentation.ui.home.WeatherFragment"
         tools:layout="@layout/fragment_weather">
         <action
             android:id="@+id/action_weatherFragment_to_hourlyForecastDetailsFragment"
@@ -21,7 +21,7 @@
     </fragment>
     <fragment
         android:id="@+id/hourlyForecastDetailsFragment"
-        android:name="com.example.weather_app.presentation.features.details.HourlyForecastDetailsFragment"
+        android:name="com.example.weather_app.presentation.ui.details.HourlyForecastDetailsFragment"
         android:label="@string/hourly_forecast_toolbar_title"
         tools:layout="@layout/fragment_hourly_forecast_details">
         <argument
@@ -30,7 +30,7 @@
     </fragment>
     <fragment
         android:id="@+id/dailyForecastDetailsFragment"
-        android:name="com.example.weather_app.presentation.features.details.DailyForecastDetailsFragment"
+        android:name="com.example.weather_app.presentation.ui.details.DailyForecastDetailsFragment"
         android:label="@string/daily_forecast"
         tools:layout="@layout/fragment_daily_forecast_details">
         <argument
@@ -39,7 +39,7 @@
     </fragment>
     <fragment
         android:id="@+id/locationManagementFragment"
-        android:name="com.example.weather_app.presentation.features.location.LocationManagementFragment"
+        android:name="com.example.weather_app.presentation.ui.place.LocationManagementFragment"
         android:label="@string/location_management"
         tools:layout="@layout/fragment_location_management" >
         <action
@@ -49,7 +49,7 @@
     </fragment>
     <dialog
         android:id="@+id/searchPlaceFragment"
-        android:name="com.example.weather_app.presentation.features.location.SearchPlaceFragment"
+        android:name="com.example.weather_app.presentation.ui.place.SearchPlaceFragment"
         android:label="fragment_search_place"
         tools:layout="@layout/fragment_search_place" />
 </navigation>

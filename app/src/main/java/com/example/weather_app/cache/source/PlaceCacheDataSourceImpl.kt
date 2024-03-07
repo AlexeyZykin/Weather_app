@@ -1,6 +1,6 @@
 package com.example.weather_app.cache.source
 
-import com.example.weather_app.cache.mapper.PlaceCacheMapper
+import com.example.weather_app.cache.mapper.place.PlaceCacheMapper
 import com.example.weather_app.cache.room.dao.PlaceDao
 import com.example.weather_app.data.model.place.PlaceEntity
 import com.example.weather_app.data.source.PlaceCacheDataSource

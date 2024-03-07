@@ -1,17 +1,17 @@
 package com.example.weather_app.data.koin
 
 import com.example.weather_app.data.mapper.place.AutocompletePlaceEntityMapper
-import com.example.weather_app.data.mapper.CityEntityMapper
-import com.example.weather_app.data.mapper.CloudsEntityMapper
-import com.example.weather_app.data.mapper.CoordinatesEntityMapper
-import com.example.weather_app.data.mapper.CurrentWeatherEntityMapper
-import com.example.weather_app.data.mapper.ForecastItemEntityMapper
-import com.example.weather_app.data.mapper.ForecastWeatherEntityMapper
-import com.example.weather_app.data.mapper.MainInfoEntityMapper
+import com.example.weather_app.data.mapper.weather.CityEntityMapper
+import com.example.weather_app.data.mapper.weather.CloudsEntityMapper
+import com.example.weather_app.data.mapper.weather.CoordinatesEntityMapper
+import com.example.weather_app.data.mapper.weather.CurrentWeatherEntityMapper
+import com.example.weather_app.data.mapper.weather.ForecastItemEntityMapper
+import com.example.weather_app.data.mapper.weather.ForecastWeatherEntityMapper
+import com.example.weather_app.data.mapper.weather.MainInfoEntityMapper
 import com.example.weather_app.data.mapper.place.PlaceEntityMapper
-import com.example.weather_app.data.mapper.SysEntityMapper
-import com.example.weather_app.data.mapper.WeatherEntityMapper
-import com.example.weather_app.data.mapper.WindEntityMapper
+import com.example.weather_app.data.mapper.weather.SysEntityMapper
+import com.example.weather_app.data.mapper.weather.WeatherEntityMapper
+import com.example.weather_app.data.mapper.weather.WindEntityMapper
 import com.example.weather_app.data.repository.PlaceRepositoryImpl
 import com.example.weather_app.data.repository.WeatherRepositoryImpl
 import com.example.weather_app.domain.repository.PlaceRepository

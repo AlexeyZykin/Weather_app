@@ -1,9 +1,9 @@
 package com.example.weather_app.data.repository
 
 import com.example.weather_app.core.Response
-import com.example.weather_app.data.mapper.CurrentWeatherEntityMapper
-import com.example.weather_app.data.mapper.ForecastItemEntityMapper
-import com.example.weather_app.data.mapper.ForecastWeatherEntityMapper
+import com.example.weather_app.data.mapper.weather.CurrentWeatherEntityMapper
+import com.example.weather_app.data.mapper.weather.ForecastItemEntityMapper
+import com.example.weather_app.data.mapper.weather.ForecastWeatherEntityMapper
 import com.example.weather_app.data.source.WeatherCacheDataSource
 import com.example.weather_app.data.source.WeatherRemoteDataSource
 import com.example.weather_app.domain.model.weather.CurrentWeather
@@ -11,18 +11,7 @@ import com.example.weather_app.domain.model.weather.ForecastItem
 import com.example.weather_app.domain.model.weather.ForecastWeather
 import com.example.weather_app.domain.repository.WeatherRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flatMapConcat
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flatMapMerge
-import kotlinx.coroutines.flow.flatten
-import kotlinx.coroutines.flow.flattenConcat
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.mapNotNull
-import kotlinx.coroutines.flow.merge
-import java.net.UnknownHostException
 
 
 class WeatherRepositoryImpl(

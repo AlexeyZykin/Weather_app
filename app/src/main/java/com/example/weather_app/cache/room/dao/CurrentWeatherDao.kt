@@ -4,9 +4,8 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.weather_app.cache.room.model.CurrentWeatherCache
+import com.example.weather_app.cache.room.model.weather.CurrentWeatherCache
 import com.example.weather_app.core.Config
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CurrentWeatherDao {

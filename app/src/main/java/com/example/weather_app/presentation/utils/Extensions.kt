@@ -1,7 +1,7 @@
 package com.example.weather_app.presentation.utils
 
 import com.example.weather_app.R
-import com.example.weather_app.presentation.model.WeatherType
+import com.example.weather_app.presentation.model.weather.WeatherType
 
 fun WeatherType.imageRes(isNight: Boolean): Int = if (isNight) {
     when (this) {

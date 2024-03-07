@@ -7,9 +7,9 @@ import com.example.weather_app.cache.room.converter.Converters
 import com.example.weather_app.cache.room.dao.CurrentWeatherDao
 import com.example.weather_app.cache.room.dao.ForecastWeatherDao
 import com.example.weather_app.cache.room.dao.PlaceDao
-import com.example.weather_app.cache.room.model.CurrentWeatherCache
-import com.example.weather_app.cache.room.model.ForecastWeatherCache
-import com.example.weather_app.cache.room.model.PlaceCache
+import com.example.weather_app.cache.room.model.weather.CurrentWeatherCache
+import com.example.weather_app.cache.room.model.weather.ForecastWeatherCache
+import com.example.weather_app.cache.room.model.place.PlaceCache
 
 @Database(
     entities = [CurrentWeatherCache::class, ForecastWeatherCache::class, PlaceCache::class],

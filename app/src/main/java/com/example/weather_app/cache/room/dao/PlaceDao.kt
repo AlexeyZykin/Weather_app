@@ -5,7 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.example.weather_app.cache.room.model.PlaceCache
+import com.example.weather_app.cache.room.model.place.PlaceCache
 import com.example.weather_app.core.Config
 import kotlinx.coroutines.flow.Flow
 

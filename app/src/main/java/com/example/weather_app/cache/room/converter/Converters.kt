@@ -1,7 +1,7 @@
 package com.example.weather_app.cache.room.converter
 
 import androidx.room.TypeConverter
-import com.example.weather_app.cache.room.model.ForecastItemCache
+import com.example.weather_app.cache.room.model.weather.ForecastItemCache
 import com.google.gson.Gson
 
 class Converters {
