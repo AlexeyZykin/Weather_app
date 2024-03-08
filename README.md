@@ -1,6 +1,4 @@
 # Weather App
-#### Project in progress...
-_______________
 ### App Preview
 ![Screenshot_1](screenshots/current_weather.png)
 ![Screenshot_2](screenshots/forecast_weather.png)
